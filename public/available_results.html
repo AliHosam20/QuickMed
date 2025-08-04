@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Available Results - QuickMed</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+  <style>
+    body { 
+      background: #f8f9fa; 
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    #loadingSpinner {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.9);
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Professional Sidebar Navigation */
+    .sidebar {
+      height: 100vh;
+      width: 280px;
+      background: linear-gradient(180deg, #2c3e50 0%, #34495e 100%);
+      padding: 0;
+      position: fixed;
+      top: 0;
+      left: 0;
+      color: white;
+      box-shadow: 4px 0 15px rgba(0, 0, 0, 0.1);
+      z-index: 1000;
+      overflow-y: auto;
+      transition: transform 0.3s ease;
+    }
+
+    .sidebar.collapsed {
+      transform: translateX(-280px);
+    }
+
+    /* Toggle Button */
+    .sidebar-toggle {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      z-index: 1001;
+      background: linear-gradient(135deg, #3498db, #2980b9);
+      border: none;
+      color: white;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+      transition: all 0.3s ease;
+      transform: translateX(280px);
+    }
+
+    .sidebar-toggle:hover {
+      transform: scale(1.1);
+      box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
+    }
+
+    .sidebar-toggle.collapsed {
+      left: 20px;
+    }
+
+    /* Overlay for mobile */
+    .sidebar-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 999;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .sidebar-overlay.show {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .sidebar-header {
+      padding: 30px 25px 20px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      text-align: center;
+      background: rgba(255, 255, 255, 0.05);
+      margin: 15px;
+      border-radius: 15px;
+    }
+
+    .sidebar-logo-container {
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
+    .sidebar-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #ecf0f1;
+      margin: 0;
+    }
+
+    .sidebar-subtitle {
+      font-size: 0.85rem;
+      color: #bdc3c7;
+      margin: 5px 0 0 0;
+    }
+
+    .nav-section {
+      padding: 20px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .nav-section-title {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: #95a5a6;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      padding: 0 25px 10px;
+      margin: 0;
+    }
+
+    .sidebar .nav-link {
+      color: #ecf0f1;
+      font-weight: 500;
+      margin: 2px 15px;
+      padding: 12px 20px;
+      border-radius: 12px;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .sidebar .nav-link:hover {
+      background: linear-gradient(135deg, #3498db, #2980b9);
+      color: white;
+      transform: translateX(5px);
+      box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+    }
+
+    .sidebar .nav-link.active {
+      background: linear-gradient(135deg, #e74c3c, #c0392b);
+      color: white;
+      box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+    }
+
+    .sidebar .nav-link i {
+      font-size: 1.1rem;
+      margin-right: 12px;
+      width: 20px;
+      text-align: center;
+    }
+
+    .sidebar .nav-link .nav-text {
+      flex: 1;
+    }
+
+    .user-section {
+      padding: 20px 25px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      margin-top: auto;
+    }
+
+    .user-info {
+      display: flex;
+      align-items: center;
+      padding: 15px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 12px;
+      margin-bottom: 15px;
+    }
+
+    .user-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #3498db, #2980b9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 12px;
+      font-size: 1.2rem;
+    }
+
+    .user-details h6 {
+      margin: 0;
+      font-size: 0.9rem;
+      color: #ecf0f1;
+    }
+
+    .user-details p {
+      margin: 0;
+      font-size: 0.8rem;
+      color: #bdc3c7;
+    }
+
+    .logout-btn {
+      width: 100%;
+      padding: 10px;
+      background: rgba(231, 76, 60, 0.1);
+      border: 1px solid rgba(231, 76, 60, 0.3);
+      color: #e74c3c;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .logout-btn:hover {
+      background: #e74c3c;
+      color: white;
+      text-decoration: none;
+    }
+
+    .main-content {
+      margin-left: 280px;
+      padding: 40px 20px;
+      min-height: 100vh;
+      transition: margin-left 0.3s ease;
+    }
+
+    .main-content.expanded {
+      margin-left: 0;
+    }
+    
+    .logo-bar {
+      background: linear-gradient(135deg, #ffffff, #f8f9fa);
+      padding: 30px 0;
+      text-align: center;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+      margin: -40px -20px 40px -20px;
+      border-bottom: 3px solid #3498db;
+      position: relative;
+    }
+
+    .logo-bar::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #3498db, #2980b9, #3498db);
+    }
+
+    .main-logo-container {
+      text-align: center;
+      padding: 20px 0;
+    }
+
+    .main-logo-container i {
+      transition: all 0.3s ease;
+    }
+
+    .main-logo-container:hover i {
+      transform: scale(1.1);
+      color: #2980b9;
+    }
+
+    .results-header {
+      background: linear-gradient(135deg, #3498db, #2980b9);
+      color: white;
+      padding: 40px;
+      border-radius: 1.5rem;
+      text-align: center;
+      margin-bottom: 40px;
+      box-shadow: 0 10px 30px rgba(52, 152, 219, 0.3);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .results-header::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+      animation: float 6s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-20px) rotate(180deg); }
+    }
+
+    .results-header h1 {
+      font-weight: 700;
+      margin-bottom: 15px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .results-header .lead {
+      font-size: 1.2rem;
+      opacity: 0.9;
+      position: relative;
+      z-index: 2;
+    }
+
+    .clinic-card {
+      background: white;
+      border-radius: 1.5rem;
+      padding: 30px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+      border: none;
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 30px;
+    }
+
+    .clinic-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--card-color), var(--card-color-light));
+    }
+
+    .clinic-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+    }
+
+    .card-primary {
+      --card-color: #3498db;
+      --card-color-light: #5dade2;
+    }
+
+    .card-success {
+      --card-color: #27ae60;
+      --card-color-light: #58d68d;
+    }
+
+    .card-warning {
+      --card-color: #f39c12;
+      --card-color-light: #f7dc6f;
+    }
+
+    .card-info {
+      --card-color: #17a2b8;
+      --card-color-light: #5dade2;
+    }
+
+    .card-danger {
+      --card-color: #e74c3c;
+      --card-color-light: #ec7063;
+    }
+
+    .card-purple {
+      --card-color: #9b59b6;
+      --card-color-light: #bb8fce;
+    }
+
+    .clinic-image {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 1rem;
+      margin-bottom: 20px;
+    }
+
+    .clinic-title {
+      font-weight: 700;
+      margin-bottom: 15px;
+      color: #2c3e50;
+      font-size: 1.3rem;
+    }
+
+    .clinic-description {
+      color: #6c757d;
+      margin-bottom: 20px;
+      line-height: 1.6;
+    }
+
+    .clinic-info {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+      color: #6c757d;
+    }
+
+    .clinic-info i {
+      margin-right: 10px;
+      color: #3498db;
+      width: 20px;
+    }
+
+    .clinic-rating {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .clinic-rating .stars {
+      color: #f39c12;
+      margin-right: 10px;
+    }
+
+    .clinic-rating .rating-text {
+      color: #6c757d;
+      font-weight: 600;
+    }
+
+    .btn-modern {
+      padding: 12px 25px;
+      border-radius: 25px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      border: none;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-modern::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: left 0.5s;
+    }
+
+    .btn-modern:hover::before {
+      left: 100%;
+    }
+
+    .filters-section {
+      background: white;
+      border-radius: 1.5rem;
+      padding: 30px;
+      margin-bottom: 30px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    }
+
+    .filter-group {
+      margin-bottom: 20px;
+    }
+
+    .filter-label {
+      font-weight: 600;
+      color: #2c3e50;
+      margin-bottom: 10px;
+    }
+
+    .filter-control {
+      border: 2px solid #e9ecef;
+      border-radius: 1rem;
+      padding: 12px 20px;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      background: #f8f9fa;
+    }
+
+    .filter-control:focus {
+      border-color: #3498db;
+      box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.25);
+      background: white;
+    }
+
+    .price-range {
+      background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+      border-radius: 1.5rem;
+      padding: 30px;
+      margin-bottom: 30px;
+    }
+
+    .price-slider {
+      width: 100%;
+      margin: 20px 0;
+    }
+
+    .price-labels {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 10px;
+    }
+
+    .price-label {
+      font-weight: 600;
+      color: #3498db;
+    }
+
+    @media (max-width: 768px) {
+      .sidebar {
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+      }
+
+      .sidebar.collapsed {
+        transform: translateX(-100%);
+      }
+
+      .sidebar-toggle {
+        left: 20px;
+        top: 20px;
+      }
+
+      .main-content {
+        margin-left: 0;
+        padding-top: 80px;
+      }
+
+      .logo-bar {
+        margin: -40px -20px 40px -20px;
+        padding-top: 60px;
+      }
+
+      .results-header {
+        padding: 30px 20px;
+      }
+
+      .clinic-card {
+        margin-bottom: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Loading Spinner -->
+<div id="loadingSpinner">
+  <div class="spinner-border text-primary" role="status">
+    <span class="visually-hidden">Loading...</span>
+  </div>
+</div>
+
+<!-- Sidebar Toggle Button -->
+<button class="sidebar-toggle" id="sidebarToggle">
+  <i class="bi bi-list"></i>
+</button>
+
+<!-- Sidebar Overlay -->
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+<!-- Professional Sidebar Navigation -->
+<div class="sidebar d-flex flex-column">
+  <!-- Sidebar Header -->
+  <div class="sidebar-header">
+    <div class="sidebar-logo-container">
+      <i class="bi bi-heart-pulse-fill" style="font-size: 2rem; color: #3498db; margin-bottom: 10px;"></i>
+    </div>
+    <h5 class="sidebar-title">QuickMed</h5>
+    <p class="sidebar-subtitle">Healthcare Management</p>
+  </div>
+
+  <!-- Main Navigation -->
+  <div class="nav-section">
+    <h6 class="nav-section-title">Main Menu</h6>
+    <a class="nav-link" href="homepage.html">
+      <i class="bi bi-speedometer2"></i>
+      <span class="nav-text">Dashboard</span>
+    </a>
+    <a class="nav-link active" href="available_results.html">
+      <i class="bi bi-search"></i>
+      <span class="nav-text">Find Clinics</span>
+    </a>
+    <a class="nav-link" href="ClinicProfile.html">
+      <i class="bi bi-building"></i>
+      <span class="nav-text">Clinic Profile</span>
+    </a>
+  </div>
+
+  <!-- Services Navigation -->
+  <div class="nav-section">
+    <h6 class="nav-section-title">Services</h6>
+    <a class="nav-link" href="available.html">
+      <i class="bi bi-calendar-check"></i>
+      <span class="nav-text">Book Appointment</span>
+    </a>
+    <a class="nav-link" href="profile.html">
+      <i class="bi bi-file-medical"></i>
+      <span class="nav-text">Medical Records</span>
+    </a>
+    <a class="nav-link" href="notifications.html">
+      <i class="bi bi-bell"></i>
+      <span class="nav-text">Notifications</span>
+    </a>
+  </div>
+
+  <!-- Support Navigation -->
+  <div class="nav-section">
+    <h6 class="nav-section-title">Support</h6>
+    <a class="nav-link" href="support.html">
+      <i class="bi bi-headset"></i>
+      <span class="nav-text">Help & Support</span>
+    </a>
+    <a class="nav-link" href="settings.html">
+      <i class="bi bi-gear"></i>
+      <span class="nav-text">Settings</span>
+    </a>
+  </div>
+
+  <!-- User Section -->
+  <div class="user-section">
+    <div class="user-info">
+      <div class="user-avatar">
+        <i class="bi bi-person"></i>
+      </div>
+      <div class="user-details">
+        <h6>John Doe</h6>
+        <p>Patient</p>
+      </div>
+    </div>
+    <a href="index.html" class="logout-btn">
+      <i class="bi bi-box-arrow-right me-2"></i>
+      Logout
+    </a>
+  </div>
+</div>
+
+<!-- Logo Bar -->
+<div class="logo-bar">
+  <div class="main-logo-container">
+    <i class="bi bi-heart-pulse-fill" style="font-size: 3rem; color: #3498db; margin-bottom: 15px;"></i>
+    <h3 style="color: #2c3e50; margin: 0; font-weight: 700;">QuickMed</h3>
+    <p style="color: #7f8c8d; margin: 5px 0 0 0; font-size: 0.9rem;">Healthcare Management System</p>
+  </div>
+</div>
+
+<!-- Main Content -->
+<div class="main-content">
+  
+  <!-- Results Header -->
+  <div class="results-header">
+    <h1>Available Clinics</h1>
+    <p class="lead">Find the best healthcare providers in your area with available appointments</p>
+  </div>
+
+  <!-- Filters Section -->
+  <div class="filters-section">
+    <div class="row">
+      <div class="col-md-3">
+        <div class="filter-group">
+          <label class="filter-label">Treatment Type</label>
+          <select class="form-control filter-control" id="treatmentFilter">
+            <option value="">All Treatments</option>
+            <option value="general">General Checkup</option>
+            <option value="specialist">Specialist Consultation</option>
+            <option value="laboratory">Laboratory Tests</option>
+            <option value="imaging">Imaging Services</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="filter-group">
+          <label class="filter-label">Location</label>
+          <input type="text" class="form-control filter-control" id="locationFilter" placeholder="Enter location">
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="filter-group">
+          <label class="filter-label">Rating</label>
+          <select class="form-control filter-control" id="ratingFilter">
+            <option value="">Any Rating</option>
+            <option value="4">4+ Stars</option>
+            <option value="3">3+ Stars</option>
+            <option value="2">2+ Stars</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="filter-group">
+          <label class="filter-label">Availability</label>
+          <select class="form-control filter-control" id="availabilityFilter">
+            <option value="">Any Time</option>
+            <option value="today">Today</option>
+            <option value="tomorrow">Tomorrow</option>
+            <option value="week">This Week</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Price Range Section -->
+  <div class="price-range">
+    <h5 class="mb-3">Price Range</h5>
+    <input type="range" class="form-range price-slider" id="priceSlider" min="0" max="1000" value="500">
+    <div class="price-labels">
+      <span class="price-label">₪0</span>
+      <span class="price-label">₪500</span>
+      <span class="price-label">₪1000+</span>
+    </div>
+  </div>
+
+  <!-- Clinics Results -->
+  <div class="row" id="clinicsContainer">
+    <!-- Clinics will be loaded here -->
+  </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  // Simulate loading spinner
+  window.addEventListener('load', () => {
+    const spinner = document.getElementById('loadingSpinner');
+    setTimeout(() => spinner.style.display = 'none', 1000);
+  });
+
+  // Load clinics from API
+  async function loadClinics() {
+    try {
+      const response = await fetch('/api/clinics');
+      const clinics = await response.json();
+      displayClinics(clinics);
+    } catch (error) {
+      console.error('Error loading clinics:', error);
+      // Show sample data if API fails
+      displaySampleClinics();
+    }
+  }
+
+  // Load available slots
+  async function loadAvailableSlots() {
+    try {
+      const response = await fetch('/api/available-slots');
+      const slots = await response.json();
+      return slots;
+    } catch (error) {
+      console.error('Error loading available slots:', error);
+      return [];
+    }
+  }
+
+  // Display clinics
+  function displayClinics(clinics) {
+    const container = document.getElementById('clinicsContainer');
+    if (container) {
+      container.innerHTML = '';
+      
+      clinics.forEach(clinic => {
+        const clinicCard = document.createElement('div');
+        clinicCard.className = 'col-lg-6 col-xl-4 mb-4';
+        clinicCard.innerHTML = `
+          <div class="clinic-card card-primary">
+            <img src="${clinic.image_url || 'https://via.placeholder.com/400x200/3498db/ffffff?text=Clinic'}" 
+                 alt="${clinic.name}" class="clinic-image">
+            <h5 class="clinic-title">${clinic.name}</h5>
+            <p class="clinic-description">${clinic.description}</p>
+            
+            <div class="clinic-info">
+              <i class="bi bi-geo-alt"></i>
+              <span>${clinic.location}</span>
+            </div>
+            
+            <div class="clinic-info">
+              <i class="bi bi-clock"></i>
+              <span>${clinic.hours}</span>
+            </div>
+            
+            <div class="clinic-info">
+              <i class="bi bi-telephone"></i>
+              <span>${clinic.phone}</span>
+            </div>
+            
+            <div class="clinic-rating">
+              <div class="stars">
+                ${'★'.repeat(Math.floor(clinic.rating))}${'☆'.repeat(5 - Math.floor(clinic.rating))}
+              </div>
+              <span class="rating-text">${clinic.rating}/5 (${clinic.review_count} reviews)</span>
+            </div>
+            
+            <div class="clinic-info">
+              <i class="bi bi-tag"></i>
+              <span>${clinic.price_range}</span>
+            </div>
+            
+            <div class="d-grid gap-2">
+              <a href="ClinicProfile.html" class="btn btn-primary btn-modern">
+                <i class="bi bi-eye me-2"></i>View Details
+              </a>
+              <a href="available.html" class="btn btn-outline-primary btn-modern">
+                <i class="bi bi-calendar-plus me-2"></i>Book Appointment
+              </a>
+            </div>
+          </div>
+        `;
+        container.appendChild(clinicCard);
+      });
+    }
+  }
+
+  // Display sample clinics if API fails
+  function displaySampleClinics() {
+    const sampleClinics = [
+      {
+        name: "Tel Aviv Medical Center",
+        description: "Comprehensive healthcare facility offering a wide range of medical services with state-of-the-art equipment.",
+        location: "Tel Aviv, Israel",
+        hours: "Mon-Fri: 8:00-20:00, Sat: 9:00-15:00",
+        phone: "+972-3-123-4567",
+        rating: 4.5,
+        review_count: 128,
+        price_range: "₪150-₪500",
+        image_url: "https://via.placeholder.com/400x200/3498db/ffffff?text=Tel+Aviv+Medical+Center"
+      },
+      {
+        name: "Jerusalem Health Clinic",
+        description: "Specialized medical clinic providing personalized care and expert consultation services.",
+        location: "Jerusalem, Israel",
+        hours: "Sun-Thu: 7:00-19:00, Fri: 8:00-14:00",
+        phone: "+972-2-987-6543",
+        rating: 4.8,
+        review_count: 95,
+        price_range: "₪200-₪600",
+        image_url: "https://via.placeholder.com/400x200/27ae60/ffffff?text=Jerusalem+Health+Clinic"
+      },
+      {
+        name: "Haifa Family Medicine",
+        description: "Family-oriented medical practice focusing on preventive care and comprehensive health management.",
+        location: "Haifa, Israel",
+        hours: "Mon-Fri: 9:00-18:00, Sat: 9:00-13:00",
+        phone: "+972-4-555-1234",
+        rating: 4.3,
+        review_count: 67,
+        price_range: "₪120-₪400",
+        image_url: "https://via.placeholder.com/400x200/f39c12/ffffff?text=Haifa+Family+Medicine"
+      }
+    ];
+    
+    displayClinics(sampleClinics);
+  }
+
+  // Filter results
+  function filterResults() {
+    const treatmentFilter = document.getElementById('treatmentFilter').value;
+    const locationFilter = document.getElementById('locationFilter').value;
+    const ratingFilter = document.getElementById('ratingFilter').value;
+    const availabilityFilter = document.getElementById('availabilityFilter').value;
+    const priceSlider = document.getElementById('priceSlider').value;
+    
+    // Apply filters to displayed clinics
+    const clinicCards = document.querySelectorAll('.clinic-card');
+    clinicCards.forEach(card => {
+      let show = true;
+      
+      // Add your filtering logic here
+      // For now, just show all cards
+      
+      card.closest('.col-lg-6').style.display = show ? 'block' : 'none';
+    });
+  }
+
+  // Sidebar toggle functionality
+  document.addEventListener('DOMContentLoaded', () => {
+    const sidebar = document.querySelector('.sidebar');
+    const sidebarToggle = document.getElementById('sidebarToggle');
+    const sidebarOverlay = document.getElementById('sidebarOverlay');
+    const mainContent = document.querySelector('.main-content');
+    const toggleIcon = sidebarToggle.querySelector('i');
+
+    // Check if sidebar should be collapsed by default on mobile
+    const isMobile = window.innerWidth <= 768;
+    if (isMobile) {
+      sidebar.classList.add('collapsed');
+      mainContent.classList.add('expanded');
+      sidebarToggle.classList.add('collapsed');
+      sidebarToggle.style.transform = 'translateX(0)';
+    } else {
+      // On desktop, start with sidebar open and button in correct position
+      sidebarToggle.style.transform = 'translateX(280px)';
+    }
+
+    // Toggle sidebar function
+    function toggleSidebar() {
+      sidebar.classList.toggle('collapsed');
+      mainContent.classList.toggle('expanded');
+      sidebarToggle.classList.toggle('collapsed');
+      
+      // Update icon and position with smooth animation
+      if (sidebar.classList.contains('collapsed')) {
+        toggleIcon.className = 'bi bi-list';
+        sidebarToggle.style.transform = 'translateX(0)';
+      } else {
+        toggleIcon.className = 'bi bi-x-lg';
+        sidebarToggle.style.transform = 'translateX(280px)';
+      }
+
+      // Show/hide overlay on mobile
+      if (isMobile) {
+        sidebarOverlay.classList.toggle('show');
+      }
+    }
+
+    // Event listeners
+    sidebarToggle.addEventListener('click', toggleSidebar);
+    sidebarOverlay.addEventListener('click', toggleSidebar);
+
+    // Close sidebar when clicking on nav links (mobile)
+    const navLinks = document.querySelectorAll('.nav-link');
+    navLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        if (isMobile && !sidebar.classList.contains('collapsed')) {
+          toggleSidebar();
+        }
+      });
+    });
+
+    // Add active state to current nav link
+    const currentPage = window.location.pathname.split('/').pop() || 'available_results.html';
+    navLinks.forEach(link => {
+      if (link.getAttribute('href') === currentPage) {
+        link.classList.add('active');
+      } else {
+        link.classList.remove('active');
+      }
+    });
+
+    // Handle window resize
+    window.addEventListener('resize', () => {
+      const newIsMobile = window.innerWidth <= 768;
+      if (newIsMobile !== isMobile) {
+        location.reload(); // Reload page when switching between mobile/desktop
+      }
+    });
+
+    // Add filter event listeners
+    document.getElementById('treatmentFilter').addEventListener('change', filterResults);
+    document.getElementById('locationFilter').addEventListener('input', filterResults);
+    document.getElementById('ratingFilter').addEventListener('change', filterResults);
+    document.getElementById('availabilityFilter').addEventListener('change', filterResults);
+    document.getElementById('priceSlider').addEventListener('input', filterResults);
+
+    // Load clinics
+    loadClinics();
+  });
+</script>
+
+</body>
+</html>

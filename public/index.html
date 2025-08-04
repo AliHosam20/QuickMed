@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>QuickMed - Your Health, Our Priority</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+  <style>
+    body {
+      background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+      font-family: 'Segoe UI', sans-serif;
+      overflow-x: hidden;
+    }
+
+    .hero-section {
+      background: linear-gradient(135deg, #2c3e50, #34495e);
+      color: white;
+      padding: 100px 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-section::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+      animation: float 6s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-20px) rotate(180deg); }
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-title {
+      font-size: 3.5rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+      line-height: 1.2;
+    }
+
+    .hero-subtitle {
+      font-size: 1.3rem;
+      opacity: 0.9;
+      margin-bottom: 40px;
+      line-height: 1.6;
+    }
+
+    .btn-hero {
+      background: linear-gradient(45deg, #3498db, #2980b9);
+      border: none;
+      border-radius: 2rem;
+      padding: 15px 40px;
+      font-weight: 600;
+      font-size: 1.1rem;
+      color: white;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      margin: 10px;
+    }
+
+    .btn-hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: left 0.5s;
+    }
+
+    .btn-hero:hover::before {
+      left: 100%;
+    }
+
+    .btn-hero:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 15px 35px rgba(52, 152, 219, 0.3);
+      color: white;
+      text-decoration: none;
+    }
+
+    .btn-outline-hero {
+      background: transparent;
+      border: 2px solid white;
+      border-radius: 2rem;
+      padding: 15px 40px;
+      font-weight: 600;
+      font-size: 1.1rem;
+      color: white;
+      transition: all 0.3s ease;
+      margin: 10px;
+    }
+
+    .btn-outline-hero:hover {
+      background: white;
+      color: #3498db;
+      transform: translateY(-3px);
+      box-shadow: 0 15px 35px rgba(255, 255, 255, 0.2);
+      text-decoration: none;
+    }
+
+    .logo-section {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .main-logo {
+      height: 120px;
+      object-fit: contain;
+      margin-bottom: 20px;
+      filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.1));
+    }
+
+    .navbar {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+      padding: 15px 0;
+    }
+
+    .navbar-brand {
+      font-weight: 700;
+      font-size: 1.5rem;
+      color: #3498db;
+    }
+
+    .nav-link {
+      font-weight: 500;
+      color: #495057;
+      transition: color 0.3s ease;
+      margin: 0 10px;
+    }
+
+    .nav-link:hover {
+      color: #3498db;
+    }
+
+    .features-section {
+      padding: 80px 0;
+      background: white;
+    }
+
+    .feature-card {
+      background: white;
+      border-radius: 1.5rem;
+      padding: 40px 30px;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+      height: 100%;
+      border: 2px solid transparent;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+      border-color: #3498db;
+    }
+
+    .feature-icon {
+      font-size: 3rem;
+      color: #3498db;
+      margin-bottom: 20px;
+    }
+
+    .feature-title {
+      font-weight: 600;
+      color: #2c3e50;
+      margin-bottom: 15px;
+      font-size: 1.3rem;
+    }
+
+    .feature-description {
+      color: #6c757d;
+      line-height: 1.6;
+    }
+
+    .stats-section {
+      background: linear-gradient(135deg, #3498db, #2980b9);
+      color: white;
+      padding: 60px 0;
+    }
+
+    .stat-item {
+      text-align: center;
+      padding: 20px;
+    }
+
+    .stat-number {
+      font-size: 3rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .stat-label {
+      font-size: 1.1rem;
+      opacity: 0.9;
+    }
+
+    .cta-section {
+      background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+      padding: 80px 0;
+      text-align: center;
+    }
+
+    .cta-card {
+      background: white;
+      border-radius: 2rem;
+      padding: 60px 40px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .cta-title {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #2c3e50;
+      margin-bottom: 20px;
+    }
+
+    .cta-description {
+      font-size: 1.2rem;
+      color: #6c757d;
+      margin-bottom: 40px;
+      line-height: 1.6;
+    }
+
+    .footer {
+      background: #2c3e50;
+      color: white;
+      padding: 60px 0 30px;
+    }
+
+    .footer-section {
+      margin-bottom: 30px;
+    }
+
+    .footer-title {
+      font-weight: 600;
+      margin-bottom: 20px;
+      color: #3498db;
+    }
+
+    .footer-link {
+      color: #bdc3c7;
+      text-decoration: none;
+      transition: color 0.3s ease;
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    .footer-link:hover {
+      color: white;
+      text-decoration: none;
+    }
+
+    .social-links {
+      display: flex;
+      gap: 15px;
+      margin-top: 20px;
+    }
+
+    .social-link {
+      width: 40px;
+      height: 40px;
+      background: #3498db;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+
+    .social-link:hover {
+      background: #28a745;
+      transform: translateY(-3px);
+      color: white;
+      text-decoration: none;
+    }
+
+    .settings-btn {
+      position: fixed;
+      top: 30px;
+      right: 30px;
+      background: rgba(255, 255, 255, 0.9);
+      border: none;
+      border-radius: 1rem;
+      padding: 10px 20px;
+      color: #495057;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(10px);
+      z-index: 1000;
+    }
+
+    .settings-btn:hover {
+      background: white;
+      color: #3498db;
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      text-decoration: none;
+    }
+
+    .floating-shapes {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .shape {
+      position: absolute;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      animation: float-shape 6s ease-in-out infinite;
+    }
+
+    .shape:nth-child(1) {
+      width: 80px;
+      height: 80px;
+      top: 20%;
+      left: 10%;
+      animation-delay: 0s;
+    }
+
+    .shape:nth-child(2) {
+      width: 60px;
+      height: 60px;
+      top: 60%;
+      right: 20%;
+      animation-delay: 2s;
+    }
+
+    .shape:nth-child(3) {
+      width: 40px;
+      height: 40px;
+      top: 40%;
+      left: 80%;
+      animation-delay: 4s;
+    }
+
+    @keyframes float-shape {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-20px) rotate(180deg); }
+    }
+
+    @media (max-width: 768px) {
+      .hero-title {
+        font-size: 2.5rem;
+      }
+
+      .hero-subtitle {
+        font-size: 1.1rem;
+      }
+
+      .cta-title {
+        font-size: 2rem;
+      }
+
+      .btn-hero, .btn-outline-hero {
+        display: block;
+        width: 100%;
+        margin: 10px 0;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Settings Button -->
+<a href="settings.html" class="settings-btn">
+  <i class="bi bi-gear me-1"></i> Settings
+</a>
+
+<!-- Navigation -->
+<nav class="navbar navbar-expand-lg fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="#">
+      <i class="bi bi-heart-pulse-fill me-2" style="font-size: 1.5rem; color: #3498db;"></i>
+      QuickMed
+    </a>
+    
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="#features">Features</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#about">About</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#contact">Contact</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="login.html">Login</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="register.html">Register</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Hero Section -->
+<section class="hero-section">
+  <div class="floating-shapes">
+    <div class="shape"></div>
+    <div class="shape"></div>
+    <div class="shape"></div>
+  </div>
+  
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-lg-6">
+        <div class="hero-content">
+          <div class="logo-section">
+            <i class="bi bi-heart-pulse-fill" style="font-size: 8rem; color: #3498db; margin-bottom: 20px; filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.1));"></i>
+          </div>
+          
+          <h1 class="hero-title">Your Health, Our Priority</h1>
+          <p class="hero-subtitle">
+            Experience seamless healthcare management with QuickMed. Book appointments, 
+            track your medical records, and stay connected with healthcare providers 
+            all in one place.
+          </p>
+          
+          <div class="hero-buttons">
+            <a href="register.html" class="btn btn-hero">
+              <i class="bi bi-person-plus me-2"></i>Get Started
+            </a>
+            <a href="login.html" class="btn btn-outline-hero">
+              <i class="bi bi-box-arrow-in-right me-2"></i>Sign In
+            </a>
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-lg-6 text-center">
+        <div class="hero-image">
+          <i class="bi bi-heart-pulse" style="font-size: 15rem; opacity: 0.3;"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Features Section -->
+<section class="features-section" id="features">
+  <div class="container">
+    <div class="text-center mb-5">
+      <h2 class="display-4 fw-bold mb-3" style="color: #3498db;">Why Choose QuickMed?</h2>
+      <p class="lead text-muted">Discover the features that make healthcare management effortless</p>
+    </div>
+    
+    <div class="row g-4">
+      <div class="col-lg-4 col-md-6">
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="bi bi-calendar-check"></i>
+          </div>
+          <div class="feature-title">Easy Appointment Booking</div>
+          <div class="feature-description">
+            Book appointments with top healthcare providers in just a few clicks. 
+            Real-time availability and instant confirmations.
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-lg-4 col-md-6">
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="bi bi-file-medical"></i>
+          </div>
+          <div class="feature-title">Digital Health Records</div>
+          <div class="feature-description">
+            Keep all your medical information organized and accessible. 
+            Secure, encrypted, and always available when you need it.
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-lg-4 col-md-6">
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="bi bi-bell"></i>
+          </div>
+          <div class="feature-title">Smart Reminders</div>
+          <div class="feature-description">
+            Never miss an appointment or medication with intelligent notifications. 
+            Personalized reminders based on your schedule.
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-lg-4 col-md-6">
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="bi bi-shield-check"></i>
+          </div>
+          <div class="feature-title">Secure & Private</div>
+          <div class="feature-description">
+            Your health information is protected with industry-leading security. 
+            HIPAA compliant and encrypted data storage.
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-lg-4 col-md-6">
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="bi bi-headset"></i>
+          </div>
+          <div class="feature-title">24/7 Support</div>
+          <div class="feature-description">
+            Get help from our dedicated support team whenever you need it. 
+            Live chat, phone support, and comprehensive FAQ.
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-lg-4 col-md-6">
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="bi bi-phone"></i>
+          </div>
+          <div class="feature-title">Mobile Friendly</div>
+          <div class="feature-description">
+            Access your health information anywhere, anytime. 
+            Responsive design that works on all devices.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Stats Section -->
+<section class="stats-section">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-3 col-6">
+        <div class="stat-item">
+          <div class="stat-number">50K+</div>
+          <div class="stat-label">Happy Patients</div>
+        </div>
+      </div>
+      <div class="col-md-3 col-6">
+        <div class="stat-item">
+          <div class="stat-number">500+</div>
+          <div class="stat-label">Healthcare Providers</div>
+        </div>
+      </div>
+      <div class="col-md-3 col-6">
+        <div class="stat-item">
+          <div class="stat-number">99.9%</div>
+          <div class="stat-label">Uptime</div>
+        </div>
+      </div>
+      <div class="col-md-3 col-6">
+        <div class="stat-item">
+          <div class="stat-number">24/7</div>
+          <div class="stat-label">Support Available</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA Section -->
+<section class="cta-section">
+  <div class="container">
+    <div class="cta-card">
+      <h2 class="cta-title">Ready to Get Started?</h2>
+      <p class="cta-description">
+        Join thousands of patients who trust QuickMed for their healthcare management. 
+        Create your account today and experience the future of healthcare.
+      </p>
+      <div class="cta-buttons">
+        <a href="register.html" class="btn btn-hero">
+          <i class="bi bi-person-plus me-2"></i>Create Account
+        </a>
+        <a href="login.html" class="btn btn-outline-hero">
+          <i class="bi bi-box-arrow-in-right me-2"></i>Sign In
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-4">
+        <div class="footer-section">
+          <h5 class="footer-title">QuickMed</h5>
+          <p class="text-muted">
+            Your trusted partner in healthcare management. 
+            Making healthcare accessible, secure, and convenient for everyone.
+          </p>
+          <div class="social-links">
+            <a href="#" class="social-link"><i class="bi bi-facebook"></i></a>
+            <a href="#" class="social-link"><i class="bi bi-twitter"></i></a>
+            <a href="#" class="social-link"><i class="bi bi-linkedin"></i></a>
+            <a href="#" class="social-link"><i class="bi bi-instagram"></i></a>
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-lg-2 col-md-6">
+        <div class="footer-section">
+          <h6 class="footer-title">Features</h6>
+          <a href="#" class="footer-link">Appointment Booking</a>
+          <a href="#" class="footer-link">Health Records</a>
+          <a href="#" class="footer-link">Reminders</a>
+          <a href="#" class="footer-link">Telemedicine</a>
+        </div>
+      </div>
+      
+      <div class="col-lg-2 col-md-6">
+        <div class="footer-section">
+          <h6 class="footer-title">Company</h6>
+          <a href="#" class="footer-link">About Us</a>
+          <a href="#" class="footer-link">Careers</a>
+          <a href="#" class="footer-link">Press</a>
+          <a href="#" class="footer-link">Blog</a>
+        </div>
+      </div>
+      
+      <div class="col-lg-2 col-md-6">
+        <div class="footer-section">
+          <h6 class="footer-title">Support</h6>
+          <a href="support.html" class="footer-link">Help Center</a>
+          <a href="#" class="footer-link">Contact Us</a>
+          <a href="#" class="footer-link">Privacy Policy</a>
+          <a href="#" class="footer-link">Terms of Service</a>
+        </div>
+      </div>
+      
+      <div class="col-lg-2 col-md-6">
+        <div class="footer-section">
+          <h6 class="footer-title">Account</h6>
+          <a href="login.html" class="footer-link">Sign In</a>
+          <a href="register.html" class="footer-link">Register</a>
+          <a href="settings.html" class="footer-link">Settings</a>
+          <a href="#" class="footer-link">My Profile</a>
+        </div>
+      </div>
+    </div>
+    
+    <hr class="my-4" style="border-color: #34495e;">
+    
+    <div class="row align-items-center">
+      <div class="col-md-6">
+        <p class="mb-0 text-muted">&copy; 2024 QuickMed. All rights reserved.</p>
+      </div>
+      <div class="col-md-6 text-md-end">
+        <p class="mb-0 text-muted">Made with ❤️ for better healthcare</p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+  // Add smooth scrolling for navigation links
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+      e.preventDefault();
+      const target = document.querySelector(this.getAttribute('href'));
+      if (target) {
+        target.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
+      }
+    });
+  });
+
+  // Add navbar background on scroll
+  window.addEventListener('scroll', function() {
+    const navbar = document.querySelector('.navbar');
+    if (window.scrollY > 50) {
+      navbar.style.background = 'rgba(255, 255, 255, 0.98)';
+    } else {
+      navbar.style.background = 'rgba(255, 255, 255, 0.95)';
+    }
+  });
+
+  // Add animation on scroll for feature cards
+  const observerOptions = {
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px'
+  };
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.opacity = '1';
+        entry.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, observerOptions);
+
+  // Observe feature cards
+  document.querySelectorAll('.feature-card').forEach(card => {
+    card.style.opacity = '0';
+    card.style.transform = 'translateY(30px)';
+    card.style.transition = 'all 0.6s ease';
+    observer.observe(card);
+  });
+</script>
+
+</body>
+</html>
