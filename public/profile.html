@@ -645,7 +645,7 @@
       <div class="col-md-9">
         <div class="profile-info">
           <h2>John Doe</h2>
-          <p>Patient ID: #QM-2024-001</p>
+          <p>Patient ID: <span id="patientId">Loading...</span></p>
           <div class="profile-stats">
             <div class="stat-item">
               <span class="stat-number">32</span>
@@ -656,8 +656,8 @@
               <span class="stat-label">Height</span>
             </div>
             <div class="stat-item">
-              <span class="stat-number">70kg</span>
-              <span class="stat-label">Weight</span>
+                              <span class="stat-number">--</span>
+                <span class="stat-label">Weight</span>
             </div>
             <div class="stat-item">
               <span class="stat-number">A+</span>
@@ -696,7 +696,7 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label class="form-label">Date of Birth</label>
-                <input type="date" class="form-control" value="1992-05-15">
+                <input type="date" class="form-control" id="birthDate">
               </div>
             </div>
             <div class="col-md-6">
@@ -712,15 +712,15 @@
           </div>
           <div class="form-group">
             <label class="form-label">Email</label>
-            <input type="email" class="form-control" value="john.doe@email.com">
+                            <input type="email" class="form-control" placeholder="Enter your email">
           </div>
           <div class="form-group">
             <label class="form-label">Phone</label>
-            <input type="tel" class="form-control" value="+972-50-123-4567">
+                            <input type="tel" class="form-control" id="phoneNumber" placeholder="Enter phone number">
           </div>
           <div class="form-group">
             <label class="form-label">Address</label>
-            <textarea class="form-control" rows="3">123 Health Street, Tel Aviv, Israel</textarea>
+                            <textarea class="form-control" rows="3" placeholder="Enter your address"></textarea>
           </div>
           <button type="submit" class="btn btn-primary btn-modern">
             <i class="bi bi-check-circle me-2"></i>Save Changes
@@ -746,7 +746,7 @@
           </div>
           <div class="form-group">
             <label class="form-label">Phone</label>
-            <input type="tel" class="form-control" value="+972-50-987-6543">
+                            <input type="tel" class="form-control" id="emergencyPhone" placeholder="Enter emergency contact">
           </div>
           <div class="form-group">
             <label class="form-label">Additional Notes</label>
@@ -771,16 +771,13 @@
         <div class="mb-3">
           <label class="form-label">Allergies</label>
           <div>
-            <span class="allergy-tag">Penicillin</span>
-            <span class="allergy-tag">Peanuts</span>
-            <span class="allergy-tag">Latex</span>
+            <span class="allergy-tag" style="background: #95a5a6;">No known allergies</span>
           </div>
         </div>
         <div class="mb-3">
           <label class="form-label">Medical Conditions</label>
           <div>
-            <span class="allergy-tag" style="background: #f39c12;">Hypertension</span>
-            <span class="allergy-tag" style="background: #9b59b6;">Asthma</span>
+            <span class="allergy-tag" style="background: #95a5a6;">No known conditions</span>
           </div>
         </div>
         <div class="form-group">
@@ -800,16 +797,8 @@
           Current Medications
         </h5>
         <div class="medication-item">
-          <div class="medication-name">Lisinopril 10mg</div>
-          <div class="medication-details">Once daily, for hypertension</div>
-        </div>
-        <div class="medication-item">
-          <div class="medication-name">Ventolin Inhaler</div>
-          <div class="medication-details">As needed, for asthma</div>
-        </div>
-        <div class="medication-item">
-          <div class="medication-name">Vitamin D3 1000IU</div>
-          <div class="medication-details">Once daily, supplement</div>
+          <div class="medication-name">No medications</div>
+          <div class="medication-details">No medications prescribed</div>
         </div>
         <div class="form-group mt-3">
           <label class="form-label">Add New Medication</label>
@@ -829,19 +818,19 @@
       Recent Medical History
     </h5>
     <div class="medical-record">
-      <div class="record-date">March 15, 2024</div>
-      <div class="record-title">Annual Physical Examination</div>
-      <div class="record-description">Routine checkup, blood pressure: 120/80, weight: 70kg, all vitals normal.</div>
-    </div>
-    <div class="medical-record">
-      <div class="record-date">February 28, 2024</div>
-      <div class="record-title">Blood Test Results</div>
-      <div class="record-description">Complete blood count, cholesterol panel, and glucose levels all within normal range.</div>
-    </div>
-    <div class="medical-record">
-      <div class="record-date">January 10, 2024</div>
-      <div class="record-title">Dental Cleaning</div>
-      <div class="record-description">Regular dental cleaning and examination, no cavities found.</div>
+      <div class="record-date" id="recordDate1">No recent records</div>
+              <div class="record-title">No recent medical records</div>
+        <div class="record-description">No recent medical records available.</div>
+      </div>
+      <div class="medical-record">
+        <div class="record-date" id="recordDate2">No recent records</div>
+        <div class="record-title">No recent medical records</div>
+        <div class="record-description">No recent medical records available.</div>
+      </div>
+      <div class="medical-record">
+        <div class="record-date" id="recordDate3">No recent records</div>
+        <div class="record-title">No recent medical records</div>
+        <div class="record-description">No recent medical records available.</div>
     </div>
     <button type="button" class="btn btn-primary btn-modern">
       <i class="bi bi-eye me-2"></i>View Full History

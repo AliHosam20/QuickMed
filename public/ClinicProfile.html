@@ -685,13 +685,13 @@
   
   <!-- Clinic Header -->
   <div class="clinic-header">
-    <h1>Tel Aviv Medical Center</h1>
+    <h1>Medical Clinic</h1>
     <p class="lead">Comprehensive healthcare facility offering a wide range of medical services with state-of-the-art equipment and expert medical professionals.</p>
   </div>
 
   <!-- Clinic Image -->
-  <img src="https://via.placeholder.com/1200x400/3498db/ffffff?text=Tel+Aviv+Medical+Center" 
-       alt="Tel Aviv Medical Center" class="clinic-image">
+     <img src="https://via.placeholder.com/1200x400/3498db/ffffff?text=Medical+Clinic" 
+        alt="Medical Clinic" class="clinic-image">
 
   <div class="row">
     <!-- Clinic Information -->
@@ -703,7 +703,7 @@
           <i class="bi bi-geo-alt"></i>
           <div class="info-text">
             <div class="info-label">Address</div>
-            <div class="info-value">123 Medical Center Blvd, Tel Aviv, Israel</div>
+            <div class="info-value">Contact clinic for address</div>
           </div>
         </div>
         
@@ -711,7 +711,7 @@
           <i class="bi bi-clock"></i>
           <div class="info-text">
             <div class="info-label">Operating Hours</div>
-            <div class="info-value">Monday - Friday: 8:00 AM - 8:00 PM<br>Saturday: 9:00 AM - 3:00 PM<br>Sunday: Closed</div>
+            <div class="info-value">Contact clinic for hours</div>
           </div>
         </div>
         
@@ -719,7 +719,7 @@
           <i class="bi bi-telephone"></i>
           <div class="info-text">
             <div class="info-label">Phone</div>
-            <div class="info-value">+972-3-123-4567</div>
+            <div class="info-value">Contact clinic</div>
           </div>
         </div>
         
@@ -727,7 +727,7 @@
           <i class="bi bi-envelope"></i>
           <div class="info-text">
             <div class="info-label">Email</div>
-            <div class="info-value">info@telavivmedical.com</div>
+            <div class="info-value">Contact clinic</div>
           </div>
         </div>
         
@@ -735,7 +735,7 @@
           <i class="bi bi-globe"></i>
           <div class="info-text">
             <div class="info-label">Website</div>
-            <div class="info-value">www.telavivmedical.com</div>
+            <div class="info-value">Contact clinic</div>
           </div>
         </div>
       </div>
@@ -752,45 +752,18 @@
       <div class="clinic-info-card card-info">
         <h4 class="mb-4"><i class="bi bi-star me-2"></i>Patient Reviews</h4>
         <div class="rating-stars">
-          ★★★★★ <span style="color: #6c757d; font-size: 1rem;">4.5/5 (128 reviews)</span>
+          ★★★★★ <span style="color: #6c757d; font-size: 1rem;"><span id="clinicRating">0</span>/5 (<span id="reviewCount">0</span> reviews)</span>
         </div>
         
         <div class="review-card">
           <div class="review-header">
-            <div class="reviewer-avatar">S</div>
             <div class="reviewer-info">
-              <h6>Sarah Cohen</h6>
-              <small>★★★★★ 2 days ago</small>
+              <h6>No reviews yet</h6>
+              <small>Be the first to review this clinic</small>
             </div>
           </div>
           <div class="review-text">
-            "Excellent medical care and professional staff. The facility is modern and clean. Highly recommend for any medical needs."
-          </div>
-        </div>
-        
-        <div class="review-card">
-          <div class="review-header">
-            <div class="reviewer-avatar">M</div>
-            <div class="reviewer-info">
-              <h6>Michael Levy</h6>
-              <small>★★★★☆ 1 week ago</small>
-            </div>
-          </div>
-          <div class="review-text">
-            "Very good experience. The doctors are knowledgeable and caring. The waiting time was reasonable."
-          </div>
-        </div>
-        
-        <div class="review-card">
-          <div class="review-header">
-            <div class="reviewer-avatar">R</div>
-            <div class="reviewer-info">
-              <h6>Rachel Green</h6>
-              <small>★★★★★ 2 weeks ago</small>
-            </div>
-          </div>
-          <div class="review-text">
-            "Outstanding service! The medical team was thorough and explained everything clearly. The facility is top-notch."
+            "This clinic is new to our platform. Share your experience after your visit!"
           </div>
         </div>
       </div>
@@ -805,8 +778,8 @@
           <a href="available.html" class="btn btn-primary btn-modern">
             <i class="bi bi-calendar-plus me-2"></i>Book Appointment
           </a>
-          <a href="tel:+972-3-123-4567" class="btn btn-outline-primary btn-modern">
-            <i class="bi bi-telephone me-2"></i>Call Clinic
+          <a href="#" class="btn btn-outline-primary btn-modern">
+            <i class="bi bi-telephone me-2"></i>Contact Clinic
           </a>
           <a href="support.html" class="btn btn-outline-info btn-modern">
             <i class="bi bi-chat-dots me-2"></i>Get Support
@@ -822,7 +795,7 @@
           <i class="bi bi-people"></i>
           <div class="info-text">
             <div class="info-label">Patients Served</div>
-            <div class="info-value">15,000+</div>
+            <div class="info-value" id="patientsServed">0</div>
           </div>
         </div>
         
@@ -830,7 +803,7 @@
           <i class="bi bi-calendar-check"></i>
           <div class="info-text">
             <div class="info-label">Appointments Today</div>
-            <div class="info-value">45</div>
+            <div class="info-value" id="appointmentsToday">0</div>
           </div>
         </div>
         
@@ -838,7 +811,7 @@
           <i class="bi bi-clock-history"></i>
           <div class="info-text">
             <div class="info-label">Average Wait Time</div>
-            <div class="info-value">15 minutes</div>
+            <div class="info-value">Contact clinic</div>
           </div>
         </div>
         
@@ -846,7 +819,7 @@
           <i class="bi bi-award"></i>
           <div class="info-text">
             <div class="info-label">Years of Service</div>
-            <div class="info-value">25+ years</div>
+            <div class="info-value">Contact clinic</div>
           </div>
         </div>
       </div>
@@ -892,9 +865,9 @@
             </div>
             <h6 class="service-title">${service.name}</h6>
             <p class="service-description">${service.description}</p>
-            <div class="service-price" id="price-${service.name.replace(/\s+/g, '-')}">
-              Click to see price
-            </div>
+                         <div class="service-price" id="price-${service.name.replace(/\s+/g, '-')}">
+               Contact for pricing
+             </div>
           </div>
         `;
         container.appendChild(serviceCard);
@@ -941,17 +914,17 @@
       const priceData = await response.json();
       
       const priceElement = document.getElementById(`price-${serviceName.replace(/\s+/g, '-')}`);
-      if (priceElement) {
-        priceElement.textContent = priceData.price_range || '₪200-₪500';
-      }
-    } catch (error) {
-      console.error('Error loading service price:', error);
-      // Show default price
-      const priceElement = document.getElementById(`price-${serviceName.replace(/\s+/g, '-')}`);
-      if (priceElement) {
-        priceElement.textContent = '₪200-₪500';
-      }
-    }
+             if (priceElement) {
+         priceElement.textContent = priceData.price_range || 'Contact for pricing';
+       }
+     } catch (error) {
+       console.error('Error loading service price:', error);
+       // Show default price
+       const priceElement = document.getElementById(`price-${serviceName.replace(/\s+/g, '-')}`);
+       if (priceElement) {
+         priceElement.textContent = 'Contact for pricing';
+       }
+     }
   }
 
   // Sidebar toggle functionality
@@ -1029,7 +1002,42 @@
 
     // Load services
     loadServices();
+    
+    // Load real clinic statistics
+    loadClinicStats();
   });
+
+  // Function to load real clinic statistics
+  async function loadClinicStats() {
+    try {
+      // Load patients served count (appointments count)
+      const patientsResponse = await fetch('/api/appointments/count');
+      if (patientsResponse.ok) {
+        const patientsData = await patientsResponse.json();
+        document.getElementById('patientsServed').textContent = patientsData.count || 0;
+      }
+    } catch (error) {
+      console.log('No appointments count API endpoint, showing 0');
+      document.getElementById('patientsServed').textContent = '0';
+    }
+
+    try {
+      // Load today's appointments count
+      const todayResponse = await fetch('/api/appointments/today/count');
+      if (todayResponse.ok) {
+        const todayData = await todayResponse.json();
+        document.getElementById('appointmentsToday').textContent = todayData.count || 0;
+      }
+    } catch (error) {
+      console.log('No today appointments count API endpoint, showing 0');
+      document.getElementById('appointmentsToday').textContent = '0';
+    }
+
+    // Set default rating and review count to 0 for now
+    // In the future, these could be loaded from a reviews API endpoint
+    document.getElementById('clinicRating').textContent = '0';
+    document.getElementById('reviewCount').textContent = '0';
+  }
 </script>
 
 </body>

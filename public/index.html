@@ -564,20 +564,20 @@
     <div class="row">
       <div class="col-md-3 col-6">
         <div class="stat-item">
-          <div class="stat-number">50K+</div>
-          <div class="stat-label">Happy Patients</div>
+          <div class="stat-number" id="totalPatients">0</div>
+          <div class="stat-label">Registered Patients</div>
         </div>
       </div>
       <div class="col-md-3 col-6">
         <div class="stat-item">
-          <div class="stat-number">500+</div>
-          <div class="stat-label">Healthcare Providers</div>
+          <div class="stat-number" id="totalClinics">0</div>
+          <div class="stat-label">Healthcare Clinics</div>
         </div>
       </div>
       <div class="col-md-3 col-6">
         <div class="stat-item">
-          <div class="stat-number">99.9%</div>
-          <div class="stat-label">Uptime</div>
+          <div class="stat-number" id="totalAppointments">0</div>
+          <div class="stat-label">Appointments</div>
         </div>
       </div>
       <div class="col-md-3 col-6">
@@ -596,7 +596,7 @@
     <div class="cta-card">
       <h2 class="cta-title">Ready to Get Started?</h2>
       <p class="cta-description">
-        Join thousands of patients who trust QuickMed for their healthcare management. 
+        Join our growing community of patients who trust QuickMed for their healthcare management. 
         Create your account today and experience the future of healthcare.
       </p>
       <div class="cta-buttons">
@@ -734,6 +734,48 @@
     card.style.transition = 'all 0.6s ease';
     observer.observe(card);
   });
+
+  // Load real statistics from the server
+  async function loadHomepageStats() {
+    try {
+      // Load patients count
+      const patientsResponse = await fetch('/api/users/count');
+      if (patientsResponse.ok) {
+        const patientsData = await patientsResponse.json();
+        document.getElementById('totalPatients').textContent = patientsData.count || 0;
+      }
+    } catch (error) {
+      console.log('No users API endpoint, showing 0');
+      document.getElementById('totalPatients').textContent = '0';
+    }
+
+    try {
+      // Load clinics count
+      const clinicsResponse = await fetch('/api/clinics/count');
+      if (clinicsResponse.ok) {
+        const clinicsData = await clinicsResponse.json();
+        document.getElementById('totalClinics').textContent = clinicsData.count || 0;
+      }
+    } catch (error) {
+      console.log('No clinics count API endpoint, showing 0');
+      document.getElementById('totalClinics').textContent = '0';
+    }
+
+    try {
+      // Load appointments count
+      const appointmentsResponse = await fetch('/api/appointments/count');
+      if (appointmentsResponse.ok) {
+        const appointmentsData = await appointmentsResponse.json();
+        document.getElementById('totalAppointments').textContent = appointmentsData.count || 0;
+      }
+    } catch (error) {
+      console.log('No appointments count API endpoint, showing 0');
+      document.getElementById('totalAppointments').textContent = '0';
+    }
+  }
+
+  // Load statistics when page loads
+  document.addEventListener('DOMContentLoaded', loadHomepageStats);
 </script>
 
 </body>

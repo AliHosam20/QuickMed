@@ -497,6 +497,51 @@ app.get("/api/services/urgent", (req, res) => {
   });
 });
 
+// API לקבלת מספר המשתמשים
+app.get("/api/users/count", (req, res) => {
+  db.get("SELECT COUNT(*) as count FROM users", (err, result) => {
+    if (err) {
+      console.error("DB error counting users:", err);
+      return res.status(500).json({ message: "Internal server error" });
+    }
+    res.json({ count: result.count });
+  });
+});
+
+// API לקבלת מספר הקליניקות
+app.get("/api/clinics/count", (req, res) => {
+  db.get("SELECT COUNT(*) as count FROM clinics", (err, result) => {
+    if (err) {
+      console.error("DB error counting clinics:", err);
+      return res.status(500).json({ message: "Internal server error" });
+    }
+    res.json({ count: result.count });
+  });
+});
+
+// API לקבלת מספר התורים להיום
+app.get("/api/appointments/today/count", (req, res) => {
+  const today = new Date().toISOString().split('T')[0];
+  db.get("SELECT COUNT(*) as count FROM appointments WHERE appointment_date = ?", [today], (err, result) => {
+    if (err) {
+      console.error("DB error counting today's appointments:", err);
+      return res.status(500).json({ message: "Internal server error" });
+    }
+    res.json({ count: result.count });
+  });
+});
+
+// API לקבלת מספר התורים הכללי
+app.get("/api/appointments/count", (req, res) => {
+  db.get("SELECT COUNT(*) as count FROM appointments", (err, result) => {
+    if (err) {
+      console.error("DB error counting appointments:", err);
+      return res.status(500).json({ message: "Internal server error" });
+    }
+    res.json({ count: result.count });
+  });
+});
+
 // fallback לכל דף שלא נמצא
 app.use((req, res) => {
   res.sendFile(path.join(__dirname, "..", "public", "index.html"));

@@ -644,7 +644,7 @@
         <div class="stat-icon">
           <i class="bi bi-people"></i>
         </div>
-        <div class="stat-number">1,247</div>
+        <div class="stat-number" id="totalUsers">0</div>
         <div class="stat-label">Total Users</div>
       </div>
 
@@ -652,7 +652,7 @@
         <div class="stat-icon">
           <i class="bi bi-building"></i>
         </div>
-        <div class="stat-number">89</div>
+        <div class="stat-number" id="totalClinics">0</div>
         <div class="stat-label">Active Clinics</div>
       </div>
 
@@ -660,7 +660,7 @@
         <div class="stat-icon">
           <i class="bi bi-calendar-check"></i>
         </div>
-        <div class="stat-number">3,456</div>
+        <div class="stat-number" id="totalAppointments">0</div>
         <div class="stat-label">Appointments Today</div>
       </div>
 
@@ -668,7 +668,7 @@
         <div class="stat-icon">
           <i class="bi bi-graph-up"></i>
         </div>
-        <div class="stat-number">98.5%</div>
+        <div class="stat-number">100%</div>
         <div class="stat-label">System Uptime</div>
       </div>
     </div>
@@ -806,7 +806,49 @@
         location.reload(); // Reload page when switching between mobile/desktop
       }
     });
+
+    // Load real statistics
+    loadStatistics();
   });
+
+  // Function to load real statistics from the server
+  async function loadStatistics() {
+    try {
+      // Load users count
+      const usersResponse = await fetch('/api/users/count');
+      if (usersResponse.ok) {
+        const usersData = await usersResponse.json();
+        document.getElementById('totalUsers').textContent = usersData.count || 0;
+      }
+    } catch (error) {
+      console.log('No users API endpoint, showing 0');
+      document.getElementById('totalUsers').textContent = '0';
+    }
+
+    try {
+      // Load clinics count
+      const clinicsResponse = await fetch('/api/clinics/count');
+      if (clinicsResponse.ok) {
+        const clinicsData = await clinicsResponse.json();
+        document.getElementById('totalClinics').textContent = clinicsData.count || 0;
+      }
+    } catch (error) {
+      console.log('No clinics count API endpoint, showing 0');
+      document.getElementById('totalClinics').textContent = '0';
+    }
+
+    try {
+      // Load appointments count for today
+      const appointmentsResponse = await fetch('/api/appointments/today/count');
+      if (appointmentsResponse.ok) {
+        const appointmentsData = await appointmentsResponse.json();
+        document.getElementById('totalAppointments').textContent = appointmentsData.count || 0;
+      }
+    } catch (error) {
+      console.log('No appointments count API endpoint, showing 0');
+      document.getElementById('totalAppointments').textContent = '0';
+    }
+  }
 </script>
 
 </body>
