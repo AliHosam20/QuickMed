@@ -13,18 +13,18 @@ QuickMed is an advanced medical appointment management system that allows patien
 
 ## Weekly Progress Report
 
-### Week 1 (17/7/2024)
+### Week 1 (17/7/2025)
 **Status:** Did not start work
 **Notes:** I was unsure which topic to choose for the project
 
-### Week 2 (24/7/2024)
+### Week 2 (24/7/2025)
 **Status:** Started writing the idea
 **Work Completed:**
 - Defined the idea: fast medical appointment booking system
 - Project planning and architecture
 - Technology selection: Node.js, Express, SQLite, HTML/CSS/JavaScript
 
-### Week 3 (31/7/2024)
+### Week 3 (31/7/2025)
 **Status:** Basic project development
 **Work Completed:**
 - Created basic project structure
@@ -33,7 +33,7 @@ QuickMed is an advanced medical appointment management system that allows patien
 - Set up SQLite database
 - Created database schema (schema.sql)
 
-### Week 4 (7/8/2024)
+### Week 4 (7/8/2025)
 **Status:** User interface development
 **Work Completed:**
 - Created homepage (index.html)
@@ -42,7 +42,7 @@ QuickMed is an advanced medical appointment management system that allows patien
 - Basic CSS design with Bootstrap
 - Created user profile page (profile.html)
 
-### Week 5 (14/8/2024)
+### Week 5 (14/8/2025)
 **Status:** Advanced features development
 **Work Completed:**
 - Created admin page (Admin.html)
@@ -52,7 +52,7 @@ QuickMed is an advanced medical appointment management system that allows patien
 - Created support page (support.html)
 - Added notifications page (notifications.html)
 
-### Week 6 (21/8/2024)
+### Week 6 (21/8/2025)
 **Status:** System improvement and fake data removal
 **Work Completed:**
 - Identified problem: pages displayed fake data (15,000+ users, 50K+ patients)
@@ -64,7 +64,7 @@ QuickMed is an advanced medical appointment management system that allows patien
 - Updated all pages to display dynamic data instead of fake data
 - Replaced all hardcoded data with real values or appropriate defaults
 
-### Week 7 (28/8/2024 - End of September 2024)
+### Week 7 (28/8/2025 - End of September 2025)
 **Status:** Project completion and GitHub upload
 **Work Completed:**
 - Comprehensive scan of all files to identify additional fake data
@@ -156,6 +156,6 @@ QuickMed/
 
 ---
 **Developed by:** Hosam Ali + Shada Habiballah  
-**Creation Date:** July-August 2024  
-**Current Status:** In development until end of September 2024
+**Creation Date:** July-August 2025
+**Current Status:** In development until end of September 2025
 
