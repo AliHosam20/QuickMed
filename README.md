@@ -1,161 +1,161 @@
-# QuickMed - מערכת ניהול תורים רפואיים
+# QuickMed - Medical Appointment Management System
 
-## תיאור הפרויקט
-QuickMed היא מערכת מתקדמת לניהול תורים רפואיים המאפשרת למטופלים לקבוע תורים בקליניקות רפואיות בצורה מהירה ונוחה.
+## Project Description
+QuickMed is an advanced medical appointment management system that allows patients to book appointments at medical clinics quickly and conveniently.
 
-## תכונות עיקריות
-- 📅 קביעת תורים רפואיים
-- 🏥 ניהול קליניקות רפואיות
-- 👥 ניהול משתמשים ומטופלים
-- 📱 ממשק משתמש מודרני וידידותי
-- 🗄️ מסד נתונים SQLite
-- 🌐 שרת Node.js עם Express
+## Main Features
+- 📅 Medical appointment booking
+- 🏥 Medical clinic management
+- 👥 User and patient management
+- 📱 Modern and user-friendly interface
+- 🗄️ SQLite database
+- 🌐 Node.js server with Express
 
-## דוח התקדמות שבועי
+## Weekly Progress Report
 
-### שבוע ראשון (17/7/2024)
-**סטטוס:** לא התחלתי בעבודה
-**הערות:** הייתי לא בטוח איזה נושא לבחור לפרויקט
+### Week 1 (17/7/2024)
+**Status:** Did not start work
+**Notes:** I was unsure which topic to choose for the project
 
-### שבוע שני (24/7/2024)
-**סטטוס:** התחלתי לכתוב את הרעיון
-**עבודות שבוצעו:**
-- הגדרת הרעיון: מערכת קביעת תורים רפואיים מהירה
-- תכנון הפרויקט והארכיטקטורה
-- בחירת הטכנולוגיות: Node.js, Express, SQLite, HTML/CSS/JavaScript
+### Week 2 (24/7/2024)
+**Status:** Started writing the idea
+**Work Completed:**
+- Defined the idea: fast medical appointment booking system
+- Project planning and architecture
+- Technology selection: Node.js, Express, SQLite, HTML/CSS/JavaScript
 
-### שבוע שלישי (31/7/2024)
-**סטטוס:** פיתוח בסיס הפרויקט
-**עבודות שבוצעו:**
-- יצירת מבנה הפרויקט הבסיסי
-- הגדרת package.json עם התלויות הנדרשות
-- יצירת שרת Express בסיסי
-- הגדרת מסד נתונים SQLite
-- יצירת סכמת מסד הנתונים (schema.sql)
+### Week 3 (31/7/2024)
+**Status:** Basic project development
+**Work Completed:**
+- Created basic project structure
+- Defined package.json with required dependencies
+- Created basic Express server
+- Set up SQLite database
+- Created database schema (schema.sql)
 
-### שבוע רביעי (7/8/2024)
-**סטטוס:** פיתוח ממשק המשתמש
-**עבודות שבוצעו:**
-- יצירת עמוד הבית (index.html)
-- פיתוח עמוד ההרשמה (register.html)
-- פיתוח עמוד הכניסה (login.html)
-- עיצוב CSS בסיסי עם Bootstrap
-- יצירת עמוד הפרופיל (profile.html)
+### Week 4 (7/8/2024)
+**Status:** User interface development
+**Work Completed:**
+- Created homepage (index.html)
+- Developed registration page (register.html)
+- Developed login page (login.html)
+- Basic CSS design with Bootstrap
+- Created user profile page (profile.html)
 
-### שבוע חמישי (14/8/2024)
-**סטטוס:** פיתוח תכונות מתקדמות
-**עבודות שבוצעו:**
-- יצירת עמוד האדמין (Admin.html)
-- פיתוח עמוד הקליניקה (ClinicProfile.html)
-- יצירת עמוד התוצאות הזמינות (available_results.html)
-- פיתוח עמוד ההגדרות (settings.html)
-- יצירת עמוד התמיכה (support.html)
-- הוספת עמוד התראות (notifications.html)
+### Week 5 (14/8/2024)
+**Status:** Advanced features development
+**Work Completed:**
+- Created admin page (Admin.html)
+- Developed clinic page (ClinicProfile.html)
+- Created available results page (available_results.html)
+- Developed settings page (settings.html)
+- Created support page (support.html)
+- Added notifications page (notifications.html)
 
-### שבוע שישי (21/8/2024)
-**סטטוס:** שיפור המערכת והסרת נתונים מזויפים
-**עבודות שבוצעו:**
-- זיהוי בעיה: עמודים הציגו נתונים מזויפים (15,000+ משתמשים, 50K+ מטופלים)
-- יצירת API endpoints חדשים לספירת נתונים אמיתיים:
-  - `/api/users/count` - ספירת משתמשים
-  - `/api/clinics/count` - ספירת קליניקות
-  - `/api/appointments/today/count` - ספירת תורים להיום
-  - `/api/appointments/count` - ספירת תורים כללית
-- עדכון כל העמודים להצגת נתונים דינמיים במקום מזויפים
-- החלפת כל הנתונים הקבועים בערכים אמיתיים או ברירת מחדל מתאימה
+### Week 6 (21/8/2024)
+**Status:** System improvement and fake data removal
+**Work Completed:**
+- Identified problem: pages displayed fake data (15,000+ users, 50K+ patients)
+- Created new API endpoints for real data counting:
+  - `/api/users/count` - user count
+  - `/api/clinics/count` - clinic count
+  - `/api/appointments/today/count` - today's appointments count
+  - `/api/appointments/count` - total appointments count
+- Updated all pages to display dynamic data instead of fake data
+- Replaced all hardcoded data with real values or appropriate defaults
 
-### שבוע שביעי (28/8/2024)
-**סטטוס:** סיום הפרויקט והעלאה ל-GitHub
-**עבודות שבוצעו:**
-- סריקה מקיפה של כל הקבצים לאיתור נתונים מזויפים נוספים
-- עדכון סופי של כל העמודים:
-  - Admin.html - סטטיסטיקות דינמיות
-  - ClinicProfile.html - מידע קליניקה גנרי
-  - profile.html - פרופיל משתמש ריק
-  - available_results.html - תוצאות חיפוש גנריות
-  - index.html - סטטיסטיקות דינמיות בעמוד הבית
-  - support.html - פרטי תמיכה גנריים
-  - settings.html - הגדרות מעודכנות
-- יצירת script אתחול מסד נתונים (init-db.js)
-- בדיקת תקינות המערכת
-- העלאה סופית של כל השינויים ל-GitHub
+### Week 7 (28/8/2024 - End of September 2024)
+**Status:** Project completion and GitHub upload
+**Work Completed:**
+- Comprehensive scan of all files to identify additional fake data
+- Final update of all pages:
+  - Admin.html - dynamic statistics
+  - ClinicProfile.html - generic clinic information
+  - profile.html - empty user profile
+  - available_results.html - generic search results
+  - index.html - dynamic statistics on homepage
+  - support.html - generic support details
+  - settings.html - updated settings
+- Created database initialization script (init-db.js)
+- System validation testing
+- Final upload of all changes to GitHub
 
-## טכנולוגיות בשימוש
+## Technologies Used
 - **Backend:** Node.js, Express.js
 - **Database:** SQLite3
 - **Frontend:** HTML5, CSS3, JavaScript (ES6+)
 - **Styling:** Bootstrap 5, Custom CSS
 - **Version Control:** Git, GitHub
 
-## התקנה והפעלה
+## Installation and Setup
 
-### דרישות מקדימות
-- Node.js (גרסה 14 ומעלה)
+### Prerequisites
+- Node.js (version 14 and above)
 - npm
 
-### התקנה
+### Installation
 ```bash
-# שכפול הפרויקט
+# Clone the project
 git clone https://github.com/AliHosam20/QuickMed.git
 cd QuickMed
 
-# התקנת התלויות
+# Install dependencies
 npm install
 
-# יצירת מסד הנתונים
+# Create database
 node init-db.js
 
-# הפעלת השרת
+# Start server
 npm start
 ```
 
-### גישה למערכת
-המערכת תהיה זמינה בכתובת: `http://localhost:3000`
+### Access the System
+The system will be available at: `http://localhost:3000`
 
-## מבנה הפרויקט
+## Project Structure
 ```
 QuickMed/
-├── public/                 # קבצי Frontend
-│   ├── index.html         # עמוד הבית
-│   ├── Admin.html         # עמוד אדמין
-│   ├── ClinicProfile.html # פרופיל קליניקה
-│   ├── profile.html       # פרופיל משתמש
-│   ├── available_results.html # תוצאות חיפוש
-│   ├── settings.html      # הגדרות
-│   ├── support.html       # תמיכה
-│   └── ...               # עמודים נוספים
-├── server/                # קבצי Backend
-│   ├── app.js            # שרת Express
-│   └── database.js       # ניהול מסד נתונים
-├── schema.sql            # סכמת מסד הנתונים
-├── init-db.js            # script אתחול מסד נתונים
-└── package.json          # הגדרות הפרויקט
+├── public/                 # Frontend files
+│   ├── index.html         # Homepage
+│   ├── Admin.html         # Admin page
+│   ├── ClinicProfile.html # Clinic profile
+│   ├── profile.html       # User profile
+│   ├── available_results.html # Search results
+│   ├── settings.html      # Settings
+│   ├── support.html       # Support
+│   └── ...               # Additional pages
+├── server/                # Backend files
+│   ├── app.js            # Express server
+│   └── database.js       # Database management
+├── schema.sql            # Database schema
+├── init-db.js            # Database initialization script
+└── package.json          # Project configuration
 ```
 
-## תכונות עיקריות שהושלמו
-✅ מערכת הרשמה וכניסה למשתמשים  
-✅ ניהול פרופיל משתמש  
-✅ ניהול קליניקות רפואיות  
-✅ מערכת קביעת תורים  
-✅ ממשק אדמין לניהול המערכת  
-✅ מסד נתונים SQLite עם טבלאות מלאות  
-✅ API endpoints לנתונים דינמיים  
-✅ עיצוב מודרני וידידותי למשתמש  
-✅ תמיכה בעברית  
-✅ הסרת כל הנתונים המזויפים והחלפתם בערכים אמיתיים  
+## Main Features Completed
+✅ User registration and login system  
+✅ User profile management  
+✅ Medical clinic management  
+✅ Appointment booking system  
+✅ Admin interface for system management  
+✅ SQLite database with complete tables  
+✅ API endpoints for dynamic data  
+✅ Modern and user-friendly design  
+✅ Hebrew language support  
+✅ Removal of all fake data and replacement with real values  
 
-## הערות חשובות
-- כל הנתונים המוצגים במערכת מגיעים ממסד הנתונים האמיתי
-- אין יותר נתונים מזויפים או קבועים במערכת
-- המערכת מציגה 0 או "Contact clinic" כאשר אין נתונים זמינים
-- כל הסטטיסטיקות מתעדכנות בזמן אמת
+## Important Notes
+- All data displayed in the system comes from the real database
+- No more fake or hardcoded data in the system
+- The system displays 0 or "Contact clinic" when no data is available
+- All statistics update in real-time
 
-## קישורים
+## Links
 - **GitHub Repository:** https://github.com/AliHosam20/QuickMed
-- **Demo:** http://localhost:3000 (לאחר הפעלת השרת)
+- **Demo:** http://localhost:3000 (after starting the server)
 
 ---
-**פותח:** Ali Hosam  
-**תאריך יצירה:** יולי-אוגוסט 2024  
-**סטטוס:** הושלם בהצלחה ✅
+**Developed by:** Hosam Ali + Shada Habiballah  
+**Creation Date:** July-August 2024  
+**Current Status:** In development until end of September 2024
 
