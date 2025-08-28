@@ -1,82 +1,161 @@
-# QuickMed - Medical Appointment Booking System
+# QuickMed - מערכת ניהול תורים רפואיים
 
-A modern web application for booking medical appointments with healthcare providers.
+## תיאור הפרויקט
+QuickMed היא מערכת מתקדמת לניהול תורים רפואיים המאפשרת למטופלים לקבוע תורים בקליניקות רפואיות בצורה מהירה ונוחה.
 
-## Features
+## תכונות עיקריות
+- 📅 קביעת תורים רפואיים
+- 🏥 ניהול קליניקות רפואיות
+- 👥 ניהול משתמשים ומטופלים
+- 📱 ממשק משתמש מודרני וידידותי
+- 🗄️ מסד נתונים SQLite
+- 🌐 שרת Node.js עם Express
 
--  **Secure Authentication** - User registration and login system
--  **Appointment Booking** - Easy appointment scheduling with healthcare providers
--  **Clinic Management** - Browse and select from various medical clinics
--  **Service Categories** - Different medical services and treatments
--  **Responsive Design** - Works on desktop, tablet, and mobile devices
--  **Smart Notifications** - Appointment reminders and updates
--  **User Settings** - Customizable preferences and notifications
+## דוח התקדמות שבועי
 
-## Technology Stack
+### שבוע ראשון (17/7/2024)
+**סטטוס:** לא התחלתי בעבודה
+**הערות:** הייתי לא בטוח איזה נושא לבחור לפרויקט
 
-- **Frontend:** HTML5, CSS3, JavaScript, Bootstrap 5
+### שבוע שני (24/7/2024)
+**סטטוס:** התחלתי לכתוב את הרעיון
+**עבודות שבוצעו:**
+- הגדרת הרעיון: מערכת קביעת תורים רפואיים מהירה
+- תכנון הפרויקט והארכיטקטורה
+- בחירת הטכנולוגיות: Node.js, Express, SQLite, HTML/CSS/JavaScript
+
+### שבוע שלישי (31/7/2024)
+**סטטוס:** פיתוח בסיס הפרויקט
+**עבודות שבוצעו:**
+- יצירת מבנה הפרויקט הבסיסי
+- הגדרת package.json עם התלויות הנדרשות
+- יצירת שרת Express בסיסי
+- הגדרת מסד נתונים SQLite
+- יצירת סכמת מסד הנתונים (schema.sql)
+
+### שבוע רביעי (7/8/2024)
+**סטטוס:** פיתוח ממשק המשתמש
+**עבודות שבוצעו:**
+- יצירת עמוד הבית (index.html)
+- פיתוח עמוד ההרשמה (register.html)
+- פיתוח עמוד הכניסה (login.html)
+- עיצוב CSS בסיסי עם Bootstrap
+- יצירת עמוד הפרופיל (profile.html)
+
+### שבוע חמישי (14/8/2024)
+**סטטוס:** פיתוח תכונות מתקדמות
+**עבודות שבוצעו:**
+- יצירת עמוד האדמין (Admin.html)
+- פיתוח עמוד הקליניקה (ClinicProfile.html)
+- יצירת עמוד התוצאות הזמינות (available_results.html)
+- פיתוח עמוד ההגדרות (settings.html)
+- יצירת עמוד התמיכה (support.html)
+- הוספת עמוד התראות (notifications.html)
+
+### שבוע שישי (21/8/2024)
+**סטטוס:** שיפור המערכת והסרת נתונים מזויפים
+**עבודות שבוצעו:**
+- זיהוי בעיה: עמודים הציגו נתונים מזויפים (15,000+ משתמשים, 50K+ מטופלים)
+- יצירת API endpoints חדשים לספירת נתונים אמיתיים:
+  - `/api/users/count` - ספירת משתמשים
+  - `/api/clinics/count` - ספירת קליניקות
+  - `/api/appointments/today/count` - ספירת תורים להיום
+  - `/api/appointments/count` - ספירת תורים כללית
+- עדכון כל העמודים להצגת נתונים דינמיים במקום מזויפים
+- החלפת כל הנתונים הקבועים בערכים אמיתיים או ברירת מחדל מתאימה
+
+### שבוע שביעי (28/8/2024)
+**סטטוס:** סיום הפרויקט והעלאה ל-GitHub
+**עבודות שבוצעו:**
+- סריקה מקיפה של כל הקבצים לאיתור נתונים מזויפים נוספים
+- עדכון סופי של כל העמודים:
+  - Admin.html - סטטיסטיקות דינמיות
+  - ClinicProfile.html - מידע קליניקה גנרי
+  - profile.html - פרופיל משתמש ריק
+  - available_results.html - תוצאות חיפוש גנריות
+  - index.html - סטטיסטיקות דינמיות בעמוד הבית
+  - support.html - פרטי תמיכה גנריים
+  - settings.html - הגדרות מעודכנות
+- יצירת script אתחול מסד נתונים (init-db.js)
+- בדיקת תקינות המערכת
+- העלאה סופית של כל השינויים ל-GitHub
+
+## טכנולוגיות בשימוש
 - **Backend:** Node.js, Express.js
-- **Database:** SQLite
-- **Icons:** Bootstrap Icons
+- **Database:** SQLite3
+- **Frontend:** HTML5, CSS3, JavaScript (ES6+)
+- **Styling:** Bootstrap 5, Custom CSS
+- **Version Control:** Git, GitHub
 
-## Installation
+## התקנה והפעלה
 
-1. **Clone the repository:**
-   ```bash
-   git clone https://github.com/YOUR_USERNAME/QuickMed.git
-   cd QuickMed
-   ```
+### דרישות מקדימות
+- Node.js (גרסה 14 ומעלה)
+- npm
 
-2. **Install dependencies:**
-   ```bash
-   npm install
-   ```
+### התקנה
+```bash
+# שכפול הפרויקט
+git clone https://github.com/AliHosam20/QuickMed.git
+cd QuickMed
 
-3. **Initialize the database:**
-   ```bash
-   node init-db.js
-   ```
+# התקנת התלויות
+npm install
 
-4. **Start the server:**
-   ```bash
-   node server/app.js
-   ```
+# יצירת מסד הנתונים
+node init-db.js
 
-5. **Open your browser:**
-   Navigate to `http://localhost:3000`
+# הפעלת השרת
+npm start
+```
 
-## Project Structure
+### גישה למערכת
+המערכת תהיה זמינה בכתובת: `http://localhost:3000`
 
+## מבנה הפרויקט
 ```
 QuickMed/
-├── public/                 # Frontend files
-│   ├── index.html         # Homepage
-│   ├── login.html         # Login page
-│   ├── register.html      # Registration page
-│   ├── homepage.html      # Dashboard
-│   └── ...               # Other pages
-├── server/                # Backend files
-│   ├── app.js            # Main server file
-│   └── db.js             # Database connection
-├── schema.sql            # Database schema
-├── init-db.js           # Database initialization
-└── package.json         # Project dependencies
+├── public/                 # קבצי Frontend
+│   ├── index.html         # עמוד הבית
+│   ├── Admin.html         # עמוד אדמין
+│   ├── ClinicProfile.html # פרופיל קליניקה
+│   ├── profile.html       # פרופיל משתמש
+│   ├── available_results.html # תוצאות חיפוש
+│   ├── settings.html      # הגדרות
+│   ├── support.html       # תמיכה
+│   └── ...               # עמודים נוספים
+├── server/                # קבצי Backend
+│   ├── app.js            # שרת Express
+│   └── database.js       # ניהול מסד נתונים
+├── schema.sql            # סכמת מסד הנתונים
+├── init-db.js            # script אתחול מסד נתונים
+└── package.json          # הגדרות הפרויקט
 ```
 
-## API Endpoints
+## תכונות עיקריות שהושלמו
+✅ מערכת הרשמה וכניסה למשתמשים  
+✅ ניהול פרופיל משתמש  
+✅ ניהול קליניקות רפואיות  
+✅ מערכת קביעת תורים  
+✅ ממשק אדמין לניהול המערכת  
+✅ מסד נתונים SQLite עם טבלאות מלאות  
+✅ API endpoints לנתונים דינמיים  
+✅ עיצוב מודרני וידידותי למשתמש  
+✅ תמיכה בעברית  
+✅ הסרת כל הנתונים המזויפים והחלפתם בערכים אמיתיים  
 
-- `POST /api/register` - User registration
-- `POST /api/login` - User authentication
-- `GET /api/clinics` - Get all clinics
-- `GET /api/services` - Get all services
-- `GET /api/available-slots` - Get available appointment slots
-- `POST /api/appointments` - Book an appointment
+## הערות חשובות
+- כל הנתונים המוצגים במערכת מגיעים ממסד הנתונים האמיתי
+- אין יותר נתונים מזויפים או קבועים במערכת
+- המערכת מציגה 0 או "Contact clinic" כאשר אין נתונים זמינים
+- כל הסטטיסטיקות מתעדכנות בזמן אמת
 
-## Contributing
+## קישורים
+- **GitHub Repository:** https://github.com/AliHosam20/QuickMed
+- **Demo:** http://localhost:3000 (לאחר הפעלת השרת)
 
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+---
+**פותח:** Ali Hosam  
+**תאריך יצירה:** יולי-אוגוסט 2024  
+**סטטוס:** הושלם בהצלחה ✅
 
