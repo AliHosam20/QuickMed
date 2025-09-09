@@ -80,7 +80,7 @@ QuickMed is an advanced medical appointment management system that allows patien
 - System validation testing
 - Final upload of all changes to GitHub
 
-### Week 8 (December 2024) - Major UI/UX Improvements
+### Week 8 (December 2024 - January 2025) - Major UI/UX Improvements
 **Status:** Enhanced user experience and professional design
 **Work Completed:**
 - **Homepage Redesign:**
@@ -316,5 +316,5 @@ QuickMed/
 ---
 **Developed by:** Hosam Ali + Shada Habiballah  
 **Creation Date:** July-August 2025
-**Current Status:** In development until end of September 2025
+**Current Status:** In development until end of January 2025
 

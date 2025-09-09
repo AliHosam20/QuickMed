@@ -18,7 +18,7 @@
 
 ---
 
-## December 2024 - Major UI/UX Enhancement Update
+## December 2024 - January 2025 - Major UI/UX Enhancement Update
 
 ### 🎨 **Homepage Redesign:**
 - Replaced "Find Clinics" card with "My Appointments" card
