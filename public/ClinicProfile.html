@@ -3,7 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Clinic Profile - QuickMed</title>
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+  <title>Find Clinics - QuickMed v2.1</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
   <style>
@@ -332,13 +335,476 @@
     .clinic-info-card {
       background: white;
       border-radius: 1.5rem;
-      padding: 30px;
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+      padding: 2.5rem;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
       transition: all 0.3s ease;
       border: none;
       position: relative;
       overflow: hidden;
-      margin-bottom: 30px;
+      margin-bottom: 2rem;
+    }
+
+    .services-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+    }
+
+    .service-item {
+      background: #f8f9fa;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      text-align: center;
+      font-weight: 600;
+      color: #2c3e50;
+    }
+
+    .review-card {
+      background: #f8f9fa;
+      padding: 1.5rem;
+      border-radius: 0.5rem;
+      margin-bottom: 1rem;
+      border-left: 4px solid #3498db;
+    }
+
+    .review-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.5rem;
+    }
+
+    .reviewer-info h6 {
+      margin: 0;
+      color: #2c3e50;
+      font-weight: 600;
+    }
+
+    .reviewer-info small {
+      color: #6c757d;
+    }
+
+    .review-text {
+      color: #555;
+      line-height: 1.5;
+      font-style: italic;
+    }
+
+    .main-service-card {
+      background: white;
+      border-radius: 1.5rem;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+      border: 2px solid #e9ecef;
+      overflow: hidden;
+      margin-bottom: 2rem;
+    }
+
+    .main-service-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+      border-color: #3498db;
+    }
+
+    .main-service-content {
+      padding: 0;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .search-bar-container {
+      display: flex;
+      align-items: center;
+      padding: 2rem 3rem;
+      background: #f8f9fa;
+      border: 2px dashed #dee2e6;
+      border-radius: 1rem;
+      transition: all 0.3s ease;
+      min-height: 120px;
+    }
+
+    .search-bar-container:hover {
+      border-color: #3498db;
+      background: #e3f2fd;
+    }
+
+    .search-icon {
+      font-size: 2.5rem;
+      color: #6c757d;
+      margin-right: 2rem;
+      transition: color 0.3s ease;
+    }
+
+    .search-bar-container:hover .search-icon {
+      color: #3498db;
+    }
+
+    .search-text {
+      flex: 1;
+      text-align: left;
+    }
+
+    .search-text h2 {
+      color: #2c3e50;
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .search-text p {
+      color: #6c757d;
+      font-size: 1rem;
+      margin: 0;
+    }
+
+    .search-arrow {
+      font-size: 1.5rem;
+      color: #6c757d;
+      transition: all 0.3s ease;
+    }
+
+    .search-bar-container:hover .search-arrow {
+      color: #3498db;
+      transform: translateX(5px);
+    }
+
+    .main-service-card.expanded .search-arrow {
+      transform: rotate(180deg);
+    }
+
+    .service-options {
+      border-top: 1px solid #e9ecef;
+      background: #f8f9fa;
+    }
+
+    .service-option {
+      display: flex;
+      align-items: center;
+      padding: 2rem 2.5rem;
+      cursor: pointer;
+      transition: all 0.4s ease;
+      border-bottom: 1px solid #e9ecef;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .service-option:last-child {
+      border-bottom: none;
+    }
+
+    .service-option::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 4px;
+      background: linear-gradient(180deg, #3498db, #2ecc71);
+      transform: scaleY(0);
+      transition: transform 0.3s ease;
+    }
+
+    .service-option:hover::before {
+      transform: scaleY(1);
+    }
+
+    .service-option:hover {
+      background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+      transform: translateX(15px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    }
+
+    .service-option-icon {
+      font-size: 2.5rem;
+      color: #3498db;
+      margin-right: 1.5rem;
+      width: 60px;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #3498db, #2ecc71);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      filter: drop-shadow(0 2px 4px rgba(52, 152, 219, 0.3));
+    }
+
+    .service-option-text {
+      flex: 1;
+    }
+
+    .service-option-text h4 {
+      color: #2c3e50;
+      margin: 0 0 0.8rem 0;
+      font-weight: 700;
+      font-size: 1.3rem;
+      letter-spacing: -0.3px;
+    }
+
+    .service-option-text p {
+      color: #6c757d;
+      margin: 0;
+      font-size: 1rem;
+      line-height: 1.5;
+      font-weight: 500;
+    }
+
+    .service-option-arrow {
+      font-size: 1.2rem;
+      color: #6c757d;
+    }
+
+    .clinic-selection-card {
+      background: white;
+      border-radius: 1rem;
+      padding: 1.5rem;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+      transition: all 0.3s ease;
+      cursor: pointer;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      position: relative;
+      height: 100%;
+      min-height: 280px;
+    }
+
+    .clinic-selection-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+    }
+
+    .clinic-icon {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      color: #3498db;
+      text-align: center;
+    }
+
+    .clinic-selection-card h3 {
+      color: #2c3e50;
+      margin-bottom: 0.8rem;
+      font-weight: 700;
+      text-align: center;
+      font-size: 1.3rem;
+    }
+
+    .clinic-description {
+      color: #7f8c8d;
+      margin-bottom: 1rem;
+      font-size: 0.9rem;
+      text-align: center;
+      line-height: 1.4;
+    }
+
+    .clinic-details {
+      margin-bottom: 1rem;
+    }
+
+    .clinic-location,
+    .clinic-hours,
+    .clinic-phone {
+      color: #6c757d;
+      font-size: 0.8rem;
+      margin-bottom: 0.3rem;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .clinic-location i,
+    .clinic-hours i,
+    .clinic-phone i {
+      margin-right: 0.4rem;
+      font-size: 0.9rem;
+    }
+
+    .clinic-rating {
+      text-align: center;
+      margin-bottom: 0.5rem;
+    }
+
+    .stars {
+      color: #f39c12;
+      font-size: 0.9rem;
+      margin-bottom: 0.2rem;
+    }
+
+    .rating-text {
+      color: #6c757d;
+      font-size: 0.8rem;
+    }
+
+    .clinic-arrow {
+      position: absolute;
+      bottom: 1rem;
+      right: 1rem;
+      font-size: 1.2rem;
+      color: #3498db;
+      transition: transform 0.3s ease;
+    }
+
+    .clinic-selection-card:hover .clinic-arrow {
+      transform: translateX(3px);
+    }
+
+    .clinic-badge {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      background: linear-gradient(45deg, #3498db, #2980b9);
+      color: white;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      box-shadow: 0 2px 8px rgba(52, 152, 219, 0.3);
+      z-index: 10;
+    }
+
+    .dental-clinic .clinic-badge {
+      background: linear-gradient(45deg, #e74c3c, #c0392b);
+    }
+
+    .imaging-clinic .clinic-badge {
+      background: linear-gradient(45deg, #27ae60, #229954);
+    }
+
+    .general-clinic .clinic-badge {
+      background: linear-gradient(45deg, #9b59b6, #8e44ad);
+    }
+
+    .emergency-clinic .clinic-badge {
+      background: linear-gradient(45deg, #f39c12, #e67e22);
+    }
+
+    .cardiology-clinic .clinic-badge {
+      background: linear-gradient(45deg, #e91e63, #c2185b);
+    }
+
+    .orthopedic-clinic .clinic-badge {
+      background: linear-gradient(45deg, #795548, #5d4037);
+    }
+
+    .clinic-selection-header {
+      background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+      padding: 3rem 0;
+      margin-bottom: 2rem;
+    }
+
+    .divider-line {
+      width: 80px;
+      height: 4px;
+      background: linear-gradient(45deg, #3498db, #2980b9);
+      margin: 0 auto;
+      border-radius: 2px;
+    }
+
+    .clinic-profile-header {
+      background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+      padding: 2rem 0;
+      margin-bottom: 2rem;
+    }
+
+    .clinic-title-section h1 {
+      font-size: 2.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .clinic-image-container {
+      position: relative;
+      border-radius: 1rem;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      margin-bottom: 2rem;
+    }
+
+    .clinic-image {
+      width: 100%;
+      height: 300px;
+      object-fit: cover;
+      transition: transform 0.3s ease;
+    }
+
+    .clinic-image-container:hover .clinic-image {
+      transform: scale(1.05);
+    }
+
+    .clinic-image-overlay {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+    }
+
+    .clinic-rating-badge {
+      background: rgba(255, 255, 255, 0.95);
+      padding: 0.5rem 1rem;
+      border-radius: 25px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 600;
+      color: #2c3e50;
+    }
+
+    .clinic-rating-badge i {
+      color: #f39c12;
+      font-size: 1.1rem;
+    }
+
+    .action-btn {
+      transition: all 0.3s ease;
+      font-weight: 600;
+      border-radius: 0.75rem;
+    }
+
+    .action-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    }
+
+    .info-item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      padding: 1rem;
+      background: #f8f9fa;
+      border-radius: 0.75rem;
+      transition: all 0.3s ease;
+    }
+
+    .info-item:hover {
+      background: #e9ecef;
+      transform: translateX(5px);
+    }
+
+    .info-item i {
+      font-size: 1.5rem;
+      color: #3498db;
+      margin-right: 1rem;
+      width: 30px;
+      text-align: center;
+    }
+
+    .info-text {
+      flex: 1;
+    }
+
+    .info-label {
+      font-weight: 600;
+      color: #2c3e50;
+      margin-bottom: 0.25rem;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .info-value {
+      color: #6c757d;
+      font-size: 1rem;
     }
 
     .clinic-info-card::before {
@@ -613,7 +1079,7 @@
       <i class="bi bi-speedometer2"></i>
       <span class="nav-text">Dashboard</span>
     </a>
-    <a class="nav-link" href="available_results.html">
+    <a class="nav-link" href="available.html">
       <i class="bi bi-search"></i>
       <span class="nav-text">Find Clinics</span>
     </a>
@@ -647,6 +1113,13 @@
       <i class="bi bi-headset"></i>
       <span class="nav-text">Help & Support</span>
     </a>
+    <a class="nav-link" href="profile.html">
+      <i class="bi bi-person-circle"></i>
+      <span class="nav-text">My Profile</span>
+    </a>
+  </div>
+  
+  <div class="nav-item">
     <a class="nav-link" href="settings.html">
       <i class="bi bi-gear"></i>
       <span class="nav-text">Settings</span>
@@ -660,11 +1133,11 @@
         <i class="bi bi-person"></i>
       </div>
       <div class="user-details">
-        <h6>John Doe</h6>
+        <h6 id="sidebarUserName">User</h6>
         <p>Patient</p>
       </div>
     </div>
-    <a href="index.html" class="logout-btn">
+    <a href="#" class="logout-btn" id="logoutBtn">
       <i class="bi bi-box-arrow-right me-2"></i>
       Logout
     </a>
@@ -683,35 +1156,177 @@
 <!-- Main Content -->
 <div class="main-content">
   
-  <!-- Clinic Header -->
-  <div class="clinic-header">
-    <h1>Medical Clinic</h1>
-    <p class="lead">Comprehensive healthcare facility offering a wide range of medical services with state-of-the-art equipment and expert medical professionals.</p>
+  <!-- Service Selection Header -->
+  <div class="clinic-selection-header">
+    <div class="container">
+      <div class="row">
+        <div class="col-12 text-center">
+          <h1 class="display-4 fw-bold text-primary mb-3">Browse Our Medical Clinics</h1>
+          <p class="lead text-muted mb-4">Explore our network of professional medical clinics and discover the services they offer</p>
+          <div class="divider-line"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Service Selection Card -->
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-8 col-md-10">
+        <div class="main-service-card" id="mainServiceCard">
+          <div class="main-service-content">
+            <div class="search-bar-container">
+              <div class="search-icon">
+                <i class="bi bi-search"></i>
+              </div>
+              <div class="search-text">
+                <h2>Browse clinics by medical specialty</h2>
+                <p>Click here to explore our clinics organized by medical services</p>
+              </div>
+              <div class="search-arrow">
+                <i class="bi bi-chevron-down"></i>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Service Options (Hidden by default) -->
+          <div class="service-options" id="serviceOptions" style="display: none;">
+            <div class="service-option" data-service="dental">
+              <div class="service-option-icon">
+                <i class="bi bi-tooth"></i>
+              </div>
+              <div class="service-option-text">
+                <h4>Dental Care</h4>
+                <p>Teeth cleaning, fillings, root canal, braces</p>
+              </div>
+              <div class="service-option-arrow">
+                <i class="bi bi-chevron-right"></i>
+              </div>
+            </div>
+            
+            <div class="service-option" data-service="imaging">
+              <div class="service-option-icon">
+                <i class="bi bi-cpu"></i>
+              </div>
+              <div class="service-option-text">
+                <h4>Imaging & Tests</h4>
+                <p>MRI, X-Ray, CT scan, ultrasound</p>
+              </div>
+              <div class="service-option-arrow">
+                <i class="bi bi-chevron-right"></i>
+              </div>
+            </div>
+            
+            <div class="service-option" data-service="general">
+              <div class="service-option-icon">
+                <i class="bi bi-heart-pulse"></i>
+              </div>
+              <div class="service-option-text">
+                <h4>General Medicine</h4>
+                <p>Checkups, skin, eyes, ears, nose, throat</p>
+              </div>
+              <div class="service-option-arrow">
+                <i class="bi bi-chevron-right"></i>
+              </div>
+            </div>
+            
+            <div class="service-option" data-service="emergency">
+              <div class="service-option-icon">
+                <i class="bi bi-ambulance"></i>
+              </div>
+              <div class="service-option-text">
+                <h4>Emergency Care</h4>
+                <p>Urgent medical attention, trauma, accidents</p>
+              </div>
+              <div class="service-option-arrow">
+                <i class="bi bi-chevron-right"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Clinics for Selected Service (Hidden by default) -->
+  <div id="clinicsForService" class="container" style="display: none;">
+    <div class="row">
+      <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <div>
+            <h2 id="selectedServiceTitle" class="text-primary mb-2">Selected Service</h2>
+            <p class="text-muted mb-0">Choose from available clinics for this service</p>
+          </div>
+          <button class="btn btn-outline-primary" id="backToServicesBtn">
+            <i class="bi bi-arrow-left me-2"></i>Back to Services
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="row g-4" id="clinicsContainer">
+      <!-- Clinics will be loaded here based on service selection -->
+    </div>
+  </div>
+
+
+  <!-- Clinic Profile Section (Hidden by default) -->
+  <div id="clinicProfileSection" style="display: none;">
+    <div class="clinic-profile-header">
+      <div class="container">
+        <div class="row">
+          <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+              <div class="clinic-title-section">
+                <h1 id="clinicName" class="display-4 fw-bold text-primary mb-2">Smile Dental Center</h1>
+                <p class="lead text-muted mb-0" id="clinicDescription">Professional dental care with modern equipment and experienced dentists</p>
+              </div>
+              <a href="ClinicProfile.html" class="btn btn-outline-primary btn-lg">
+                <i class="bi bi-arrow-left me-2"></i>Back to Selection
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
   </div>
 
   <!-- Clinic Image -->
-     <img src="https://via.placeholder.com/1200x400/3498db/ffffff?text=Medical+Clinic" 
-        alt="Medical Clinic" class="clinic-image">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <div class="clinic-image-container">
+          <img id="clinicImage" src="https://via.placeholder.com/1200x400/3498db/ffffff?text=Dental+Clinic" 
+               alt="Dental Clinic" class="clinic-image">
+          <div class="clinic-image-overlay">
+            <div class="clinic-rating-badge">
+              <i class="bi bi-star-fill"></i>
+              <span id="clinicRatingBadge">4.9/5</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
+  <div class="container">
   <div class="row">
     <!-- Clinic Information -->
     <div class="col-lg-8">
       <div class="clinic-info-card card-primary">
-        <h4 class="mb-4"><i class="bi bi-info-circle me-2"></i>Clinic Information</h4>
+        <h4 class="mb-4"><i class="bi bi-info-circle me-2"></i>Contact Information</h4>
         
         <div class="info-item">
           <i class="bi bi-geo-alt"></i>
           <div class="info-text">
             <div class="info-label">Address</div>
-            <div class="info-value">Contact clinic for address</div>
+            <div class="info-value" id="clinicAddress">Tel Aviv, Dizengoff 123</div>
           </div>
         </div>
         
         <div class="info-item">
           <i class="bi bi-clock"></i>
           <div class="info-text">
-            <div class="info-label">Operating Hours</div>
-            <div class="info-value">Contact clinic for hours</div>
+            <div class="info-label">Hours</div>
+            <div class="info-value" id="clinicHours">Sun-Thu: 8AM-8PM, Fri: 8AM-2PM</div>
           </div>
         </div>
         
@@ -719,7 +1334,7 @@
           <i class="bi bi-telephone"></i>
           <div class="info-text">
             <div class="info-label">Phone</div>
-            <div class="info-value">Contact clinic</div>
+            <div class="info-value" id="clinicPhone">Contact Support</div>
           </div>
         </div>
         
@@ -727,43 +1342,52 @@
           <i class="bi bi-envelope"></i>
           <div class="info-text">
             <div class="info-label">Email</div>
-            <div class="info-value">Contact clinic</div>
-          </div>
-        </div>
-        
-        <div class="info-item">
-          <i class="bi bi-globe"></i>
-          <div class="info-text">
-            <div class="info-label">Website</div>
-            <div class="info-value">Contact clinic</div>
+            <div class="info-value" id="clinicEmail">info@smiledental.co.il</div>
           </div>
         </div>
       </div>
 
       <!-- Services Section -->
       <div class="clinic-info-card card-success">
-        <h4 class="mb-4"><i class="bi bi-stethoscope me-2"></i>Available Services</h4>
-        <div class="row" id="servicesContainer">
-          <!-- Services will be loaded here -->
+        <h4 class="mb-4"><i class="bi bi-stethoscope me-2"></i>Services</h4>
+        <div class="services-list" id="clinicServices">
+          <div class="service-item">Teeth Cleaning</div>
+          <div class="service-item">Fillings</div>
+          <div class="service-item">Root Canal</div>
+          <div class="service-item">Braces</div>
+          <div class="service-item">Whitening</div>
+          <div class="service-item">Crowns</div>
         </div>
       </div>
 
       <!-- Reviews Section -->
       <div class="clinic-info-card card-info">
-        <h4 class="mb-4"><i class="bi bi-star me-2"></i>Patient Reviews</h4>
+        <h4 class="mb-4"><i class="bi bi-star me-2"></i>Reviews</h4>
         <div class="rating-stars">
-          ★★★★★ <span style="color: #6c757d; font-size: 1rem;"><span id="clinicRating">0</span>/5 (<span id="reviewCount">0</span> reviews)</span>
+          ★★★★★ <span style="color: #6c757d; font-size: 1rem;" id="clinicRating">4.9/5 (127 reviews)</span>
         </div>
         
         <div class="review-card">
           <div class="review-header">
             <div class="reviewer-info">
-              <h6>No reviews yet</h6>
-              <small>Be the first to review this clinic</small>
+              <h6>David L.</h6>
+              <small>3 days ago</small>
             </div>
           </div>
           <div class="review-text">
-            "This clinic is new to our platform. Share your experience after your visit!"
+            "Excellent dental care! The staff is very professional and the clinic is modern and clean. Highly recommended!"
+          </div>
+        </div>
+        
+        <div class="review-card">
+          <div class="review-header">
+            <div class="reviewer-info">
+              <h6>Rachel K.</h6>
+              <small>1 week ago</small>
+            </div>
+          </div>
+          <div class="review-text">
+            "Had my teeth cleaning here. Very gentle and thorough. The dentist explained everything clearly."
           </div>
         </div>
       </div>
@@ -775,61 +1399,734 @@
       <div class="clinic-info-card card-warning">
         <h5 class="mb-3"><i class="bi bi-lightning me-2"></i>Quick Actions</h5>
         <div class="d-grid gap-3">
-          <a href="available.html" class="btn btn-primary btn-modern">
+          <a href="book-appointment.html" class="btn btn-primary btn-lg action-btn">
             <i class="bi bi-calendar-plus me-2"></i>Book Appointment
           </a>
-          <a href="#" class="btn btn-outline-primary btn-modern">
-            <i class="bi bi-telephone me-2"></i>Contact Clinic
-          </a>
-          <a href="support.html" class="btn btn-outline-info btn-modern">
+          <a href="support.html" class="btn btn-outline-primary btn-lg action-btn">
             <i class="bi bi-chat-dots me-2"></i>Get Support
           </a>
+          <button onclick="showPhoneModal()" class="btn btn-success btn-lg action-btn">
+            <i class="bi bi-telephone me-2"></i>Call Now
+          </button>
         </div>
       </div>
 
-      <!-- Clinic Stats -->
-      <div class="clinic-info-card card-purple">
-        <h5 class="mb-3"><i class="bi bi-graph-up me-2"></i>Clinic Statistics</h5>
-        
-        <div class="info-item">
-          <i class="bi bi-people"></i>
-          <div class="info-text">
-            <div class="info-label">Patients Served</div>
-            <div class="info-value" id="patientsServed">0</div>
           </div>
         </div>
-        
-        <div class="info-item">
-          <i class="bi bi-calendar-check"></i>
-          <div class="info-text">
-            <div class="info-label">Appointments Today</div>
-            <div class="info-value" id="appointmentsToday">0</div>
-          </div>
-        </div>
-        
-        <div class="info-item">
-          <i class="bi bi-clock-history"></i>
-          <div class="info-text">
-            <div class="info-label">Average Wait Time</div>
-            <div class="info-value">Contact clinic</div>
-          </div>
-        </div>
-        
-        <div class="info-item">
-          <i class="bi bi-award"></i>
-          <div class="info-text">
-            <div class="info-label">Years of Service</div>
-            <div class="info-value">Contact clinic</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+  </div> <!-- End of container -->
+  </div> <!-- End of clinicProfileSection -->
 
-</div>
-
+        </div>
+        
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
+  // Load user name from localStorage
+  function loadUserName() {
+    const user = localStorage.getItem('user');
+    if (user) {
+      try {
+        const userData = JSON.parse(user);
+        const userName = userData.username || userData.email || 'User';
+        
+        // Update sidebar user name
+        const sidebarUserName = document.getElementById('sidebarUserName');
+        if (sidebarUserName) {
+          sidebarUserName.textContent = userName;
+        }
+      } catch (error) {
+        console.error('Error parsing user data:', error);
+      }
+    }
+  }
+
+  // Logout function
+  function logout() {
+    // Clear user data from localStorage
+    localStorage.removeItem('user');
+    localStorage.removeItem('token');
+    
+    // Redirect to login page
+    window.location.href = 'login.html';
+  }
+
+  // Load user name when page loads
+  document.addEventListener('DOMContentLoaded', function() {
+    loadUserName();
+    
+    // Add logout event listener
+    const logoutBtn = document.getElementById('logoutBtn');
+    if (logoutBtn) {
+      logoutBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        logout();
+      });
+    }
+  });
+
+  // Clinic data - All 12 clinics with full profiles
+  const clinicData = {
+    dental: {
+      name: "Smile Dental Center",
+      description: "Professional dental care with modern equipment and experienced dentists",
+      image: "https://via.placeholder.com/1200x400/3498db/ffffff?text=Smile+Dental+Center",
+      address: "Tel Aviv, Dizengoff 123",
+      hours: "Sun-Thu: 8AM-8PM, Fri: 8AM-2PM",
+      phone: "Contact Support",
+      email: "info@smiledental.co.il",
+      services: ["Teeth Cleaning", "Fillings", "Root Canal", "Braces", "Whitening", "Crowns"],
+      rating: "4.9/5 (127 reviews)",
+      reviews: [
+        { name: "David L.", date: "3 days ago", text: "Excellent dental care! The staff is very professional and the clinic is modern and clean. Highly recommended!" },
+        { name: "Rachel K.", date: "1 week ago", text: "Had my teeth cleaning here. Very gentle and thorough. The dentist explained everything clearly." }
+      ]
+    },
+    imaging: {
+      name: "Advanced MRI Center",
+      description: "State-of-the-art imaging services with cutting-edge technology",
+      image: "https://via.placeholder.com/1200x400/27ae60/ffffff?text=Advanced+MRI+Center",
+      address: "Haifa, Rambam Medical Center",
+      hours: "Sun-Thu: 7AM-10PM, Fri: 7AM-2PM",
+      phone: "Contact Support",
+      email: "info@advancedmri.co.il",
+      services: ["Brain MRI", "Spine MRI", "Joint MRI", "Cardiac MRI", "CT Scan", "Ultrasound"],
+      rating: "4.8/5 (89 reviews)",
+      reviews: [
+        { name: "Michael R.", date: "2 days ago", text: "Very professional staff and modern equipment. The MRI was quick and comfortable." },
+        { name: "Sarah T.", date: "5 days ago", text: "Excellent service! The technician was very reassuring and explained everything clearly." }
+      ]
+    },
+    general: {
+      name: "Family Health Center",
+      description: "Comprehensive healthcare services for the whole family",
+      image: "https://via.placeholder.com/1200x400/e74c3c/ffffff?text=Family+Health+Center",
+      address: "Jerusalem, Malha Mall",
+      hours: "Sun-Thu: 8AM-7PM, Fri: 8AM-1PM",
+      phone: "Contact Support",
+      email: "info@familyhealth.co.il",
+      services: ["General Checkup", "Dermatology", "Ophthalmology", "ENT", "Cardiology", "Pediatrics"],
+      rating: "4.7/5 (156 reviews)",
+      reviews: [
+        { name: "Anna M.", date: "1 day ago", text: "Great family clinic! The doctors are very caring and take time to explain everything." },
+        { name: "John S.", date: "4 days ago", text: "Excellent service for the whole family. Very clean and modern facility." }
+      ]
+    },
+    emergency: {
+      name: "24/7 Emergency Clinic",
+      description: "Round-the-clock emergency medical care with experienced trauma specialists",
+      image: "https://via.placeholder.com/1200x400/f39c12/ffffff?text=24%2F7+Emergency+Clinic",
+      address: "Eilat, Yoseftal Hospital",
+      hours: "24/7 Emergency Service",
+      phone: "Contact Support",
+      email: "emergency@yoseftal.co.il",
+      services: ["Emergency Care", "Trauma", "Accidents", "Urgent Surgery", "Ambulance", "Intensive Care"],
+      rating: "4.6/5 (203 reviews)",
+      reviews: [
+        { name: "Emergency Patient", date: "6 hours ago", text: "Quick response and excellent care during my emergency. The staff was very professional." },
+        { name: "Family Member", date: "1 day ago", text: "Thank you for the excellent emergency care. The doctors were very skilled and caring." }
+      ]
+    },
+    cardiology: {
+      name: "Heart Care Center",
+      description: "Specialized cardiac care with advanced diagnostic equipment and experienced cardiologists",
+      image: "https://via.placeholder.com/1200x400/e91e63/ffffff?text=Heart+Care+Center",
+      address: "Ramat Gan, Sheba Medical Center",
+      hours: "Sun-Thu: 7AM-6PM, Fri: 7AM-1PM",
+      phone: "Contact Support",
+      email: "cardiology@sheba.co.il",
+      services: ["Echocardiogram", "Stress Test", "Cardiac Catheterization", "Pacemaker", "Heart Surgery", "Rehabilitation"],
+      rating: "4.8/5 (94 reviews)",
+      reviews: [
+        { name: "Sarah M.", date: "2 days ago", text: "Excellent cardiac care! The cardiologist was very thorough and explained everything clearly." },
+        { name: "David R.", date: "1 week ago", text: "Professional staff and state-of-the-art equipment. Highly recommended for heart issues." }
+      ]
+    },
+    orthopedic: {
+      name: "Orthopedic Center",
+      description: "Expert orthopedic care for bones, joints, and sports injuries with specialized surgeons",
+      image: "https://via.placeholder.com/1200x400/795548/ffffff?text=Orthopedic+Center",
+      address: "Petah Tikva, Schneider Children's",
+      hours: "Sun-Thu: 8AM-5PM, Fri: 8AM-1PM",
+      phone: "Contact Support",
+      email: "orthopedics@schneider.co.il",
+      services: ["Joint Replacement", "Sports Medicine", "Fracture Care", "Spine Surgery", "Physical Therapy", "Arthroscopy"],
+      rating: "4.7/5 (78 reviews)",
+      reviews: [
+        { name: "Michael K.", date: "3 days ago", text: "Great orthopedic care! The surgeon was very skilled and the recovery was smooth." },
+        { name: "Lisa T.", date: "5 days ago", text: "Professional team and excellent facilities. My knee surgery went perfectly." }
+      ]
+    },
+    // Additional clinics to reach 12 total
+    "perfect-smile": {
+      name: "Perfect Smile Clinic",
+      description: "Advanced dental treatments with cosmetic and restorative procedures",
+      image: "https://via.placeholder.com/1200x400/9b59b6/ffffff?text=Perfect+Smile+Clinic",
+      address: "Jerusalem, King George 45",
+      hours: "Sun-Thu: 9AM-7PM, Fri: 9AM-1PM",
+      phone: "Contact Support",
+      email: "info@perfectsmile.co.il",
+      services: ["Teeth Cleaning", "Fillings", "Crowns", "Implants", "Orthodontics", "Cosmetic Dentistry"],
+      rating: "4.8/5 (95 reviews)",
+      reviews: [
+        { name: "Miriam S.", date: "4 days ago", text: "Amazing cosmetic work! My smile looks perfect now. The dentist was very skilled and patient." },
+        { name: "Yossi M.", date: "1 week ago", text: "Great experience with my implant. Professional staff and modern equipment." }
+      ]
+    },
+    "dental-care-plus": {
+      name: "Dental Care Plus",
+      description: "Comprehensive dental services with family-friendly approach",
+      image: "https://via.placeholder.com/1200x400/16a085/ffffff?text=Dental+Care+Plus",
+      address: "Haifa, Herzl 78",
+      hours: "Sun-Thu: 8AM-6PM, Fri: 8AM-2PM",
+      phone: "Contact Support",
+      email: "info@dentalcareplus.co.il",
+      services: ["Teeth Cleaning", "Fillings", "Root Canal", "Dentures", "Pediatric Dentistry", "Emergency Care"],
+      rating: "4.6/5 (112 reviews)",
+      reviews: [
+        { name: "Ruth K.", date: "2 days ago", text: "Perfect for families! My kids love coming here. The pediatric dentist is wonderful." },
+        { name: "Avi L.", date: "5 days ago", text: "Excellent denture work. Very comfortable and natural looking." }
+      ]
+    },
+    "diagnostic-imaging-plus": {
+      name: "Diagnostic Imaging Plus",
+      description: "Comprehensive imaging services with advanced diagnostic capabilities",
+      image: "https://via.placeholder.com/1200x400/8e44ad/ffffff?text=Diagnostic+Imaging+Plus",
+      address: "Jerusalem, Jaffa 67",
+      hours: "Sun-Thu: 7AM-9PM, Fri: 7AM-2PM",
+      phone: "Contact Support",
+      email: "info@diagnosticimaging.co.il",
+      services: ["MRI", "CT Scan", "Ultrasound", "X-Ray", "Mammography", "Nuclear Medicine"],
+      rating: "4.7/5 (134 reviews)",
+      reviews: [
+        { name: "Tamar R.", date: "3 days ago", text: "Very thorough mammography screening. The technician was professional and reassuring." },
+        { name: "Moshe D.", date: "1 week ago", text: "Quick and efficient CT scan. Results were ready the same day." }
+      ]
+    },
+    "medical-imaging-center": {
+      name: "Medical Imaging Center",
+      description: "State-of-the-art medical imaging with cutting-edge technology",
+      image: "https://via.placeholder.com/1200x400/2c3e50/ffffff?text=Medical+Imaging+Center",
+      address: "Haifa, Balfour 22",
+      hours: "Sun-Thu: 8AM-8PM, Fri: 8AM-1PM",
+      phone: "Contact Support",
+      email: "info@medicalimaging.co.il",
+      services: ["MRI", "CT Scan", "Ultrasound", "PET Scan", "Nuclear Medicine", "Interventional Radiology"],
+      rating: "4.9/5 (87 reviews)",
+      reviews: [
+        { name: "Elena V.", date: "1 day ago", text: "Outstanding PET scan service. The staff was very knowledgeable and caring." },
+        { name: "Jacob H.", date: "4 days ago", text: "Excellent MRI experience. The machine was quiet and the staff was very professional." }
+      ]
+    },
+    "health-plus-clinic": {
+      name: "Health Plus Clinic",
+      description: "Multi-specialty medical center with comprehensive healthcare services",
+      image: "https://via.placeholder.com/1200x400/27ae60/ffffff?text=Health+Plus+Clinic",
+      address: "Jerusalem, Agron 34",
+      hours: "Sun-Thu: 8AM-6PM, Fri: 8AM-1PM",
+      phone: "Contact Support",
+      email: "info@healthplus.co.il",
+      services: ["General Medicine", "Dermatology", "Gynecology", "Pediatrics", "Internal Medicine", "Preventive Care"],
+      rating: "4.8/5 (156 reviews)",
+      reviews: [
+        { name: "Leah G.", date: "2 days ago", text: "Excellent gynecology care. The doctor was very thorough and made me feel comfortable." },
+        { name: "Daniel S.", date: "1 week ago", text: "Great dermatology treatment. My skin condition improved significantly." }
+      ]
+    },
+    "wellness-medical-center": {
+      name: "Wellness Medical Center",
+      description: "Holistic approach to healthcare with focus on prevention and wellness",
+      image: "https://via.placeholder.com/1200x400/1abc9c/ffffff?text=Wellness+Medical+Center",
+      address: "Haifa, Allenby 56",
+      hours: "Sun-Thu: 7AM-7PM, Fri: 7AM-2PM",
+      phone: "Contact Support",
+      email: "info@wellnessmedical.co.il",
+      services: ["General Medicine", "Internal Medicine", "Endocrinology", "Gastroenterology", "Nutrition", "Wellness Programs"],
+      rating: "4.7/5 (98 reviews)",
+      reviews: [
+        { name: "Rachel M.", date: "3 days ago", text: "Excellent endocrinology care. The doctor helped me manage my diabetes effectively." },
+        { name: "Ariel K.", date: "5 days ago", text: "Great gastroenterology service. Very thorough examination and clear explanations." }
+      ]
+    }
+  };
+
+  // Function to load clinic data
+  function loadClinicData(clinicType) {
+    const clinic = clinicData[clinicType] || clinicData.dental;
+    
+    document.getElementById('clinicName').textContent = clinic.name;
+    document.getElementById('clinicDescription').textContent = clinic.description;
+    document.getElementById('clinicImage').src = clinic.image;
+    document.getElementById('clinicImage').alt = clinic.name;
+    document.getElementById('clinicAddress').textContent = clinic.address;
+    document.getElementById('clinicHours').textContent = clinic.hours;
+    document.getElementById('clinicPhone').textContent = clinic.phone;
+    document.getElementById('clinicEmail').textContent = clinic.email;
+    document.getElementById('clinicRating').textContent = clinic.rating;
+    document.getElementById('clinicRatingBadge').textContent = clinic.rating.split(' ')[0];
+    
+    // Update services
+    const servicesContainer = document.getElementById('clinicServices');
+    servicesContainer.innerHTML = clinic.services.map(service => 
+      `<div class="service-item">${service}</div>`
+    ).join('');
+    
+    // Update reviews
+    const reviewsContainer = document.querySelector('.clinic-info-card.card-info');
+    const reviewsHTML = clinic.reviews.map(review => `
+      <div class="review-card">
+        <div class="review-header">
+          <div class="reviewer-info">
+            <h6>${review.name}</h6>
+            <small>${review.date}</small>
+          </div>
+        </div>
+        <div class="review-text">${review.text}</div>
+      </div>
+    `).join('');
+
+    reviewsContainer.innerHTML = `
+      <h4 class="mb-4"><i class="bi bi-star me-2"></i>Reviews</h4>
+      <div class="rating-stars">
+        ★★★★★ <span style="color: #6c757d; font-size: 1rem;">${clinic.rating}</span>
+</div>
+      ${reviewsHTML}
+    `;
+  }
+
+  // Treatment data with clinics (same as available.html)
+  const treatmentData = {
+    dental: {
+      title: "Dental Care Clinics",
+      clinics: [
+        {
+          name: "Smile Dental Center",
+          location: "Tel Aviv, Dizengoff 123",
+          phone: "Contact Support",
+          services: ["Teeth Cleaning", "Fillings", "Root Canal", "Braces", "Whitening"],
+          prices: [
+            { service: "Teeth Cleaning", price: "₪150" },
+            { service: "Filling", price: "₪300" },
+            { service: "Root Canal", price: "₪800" },
+            { service: "Braces Consultation", price: "₪200" }
+          ]
+        },
+        {
+          name: "Perfect Smile Clinic",
+          location: "Jerusalem, King George 45",
+          phone: "Contact Support",
+          services: ["Teeth Cleaning", "Fillings", "Crowns", "Implants", "Orthodontics"],
+          prices: [
+            { service: "Teeth Cleaning", price: "₪180" },
+            { service: "Filling", price: "₪350" },
+            { service: "Crown", price: "₪1,200" },
+            { service: "Implant", price: "₪3,500" }
+          ]
+        },
+        {
+          name: "Dental Care Plus",
+          location: "Haifa, Herzl 78",
+          phone: "Contact Support",
+          services: ["Teeth Cleaning", "Fillings", "Root Canal", "Dentures"],
+          prices: [
+            { service: "Teeth Cleaning", price: "₪160" },
+            { service: "Filling", price: "₪280" },
+            { service: "Root Canal", price: "₪750" },
+            { service: "Dentures", price: "₪2,000" }
+          ]
+        }
+      ]
+    },
+    imaging: {
+      title: "Imaging & Diagnostic Centers",
+      clinics: [
+        {
+          name: "Advanced MRI Center",
+          location: "Tel Aviv, Rothschild 15",
+          phone: "03-456-7890",
+          services: ["Brain MRI", "Spine MRI", "Joint MRI", "Cardiac MRI", "CT Scan"],
+          prices: [
+            { service: "Brain MRI", price: "₪1,200" },
+            { service: "Spine MRI", price: "₪1,500" },
+            { service: "Joint MRI", price: "₪1,000" },
+            { service: "CT Scan", price: "₪800" }
+          ]
+        },
+        {
+          name: "Diagnostic Imaging Plus",
+          location: "Jerusalem, Jaffa 67",
+          phone: "Contact Support",
+          services: ["MRI", "CT Scan", "Ultrasound", "X-Ray", "Mammography"],
+          prices: [
+            { service: "MRI", price: "₪1,100" },
+            { service: "CT Scan", price: "₪750" },
+            { service: "Ultrasound", price: "₪300" },
+            { service: "X-Ray", price: "₪120" }
+          ]
+        },
+        {
+          name: "Medical Imaging Center",
+          location: "Haifa, Balfour 22",
+          phone: "Contact Support",
+          services: ["MRI", "CT Scan", "Ultrasound", "PET Scan"],
+          prices: [
+            { service: "MRI", price: "₪1,300" },
+            { service: "CT Scan", price: "₪850" },
+            { service: "Ultrasound", price: "₪280" },
+            { service: "PET Scan", price: "₪2,500" }
+          ]
+        }
+      ]
+    },
+    general: {
+      title: "General Medicine Clinics",
+      clinics: [
+        {
+          name: "Family Health Center",
+          location: "Tel Aviv, Ben Yehuda 89",
+          phone: "03-222-3333",
+          services: ["General Checkup", "Dermatology", "Ophthalmology", "ENT", "Cardiology"],
+          prices: [
+            { service: "General Checkup", price: "₪200" },
+            { service: "Skin Consultation", price: "₪250" },
+            { service: "Eye Exam", price: "₪180" },
+            { service: "ENT Consultation", price: "₪220" }
+          ]
+        },
+        {
+          name: "Health Plus Clinic",
+          location: "Jerusalem, Agron 34",
+          phone: "Contact Support",
+          services: ["General Medicine", "Dermatology", "Gynecology", "Pediatrics"],
+          prices: [
+            { service: "General Checkup", price: "₪180" },
+            { service: "Skin Treatment", price: "₪300" },
+            { service: "Gynecology Exam", price: "₪250" },
+            { service: "Pediatric Checkup", price: "₪150" }
+          ]
+        },
+        {
+          name: "Wellness Medical Center",
+          location: "Haifa, Allenby 56",
+          phone: "Contact Support",
+          services: ["General Medicine", "Internal Medicine", "Endocrinology", "Gastroenterology"],
+          prices: [
+            { service: "General Checkup", price: "₪220" },
+            { service: "Internal Medicine", price: "₪300" },
+            { service: "Endocrinology", price: "₪350" },
+            { service: "Gastroenterology", price: "₪400" }
+          ]
+        }
+      ]
+    },
+    emergency: {
+      title: "Emergency Care Centers",
+      clinics: [
+        {
+          name: "24/7 Emergency Clinic",
+          location: "Tel Aviv, Dizengoff 200",
+          phone: "Contact Support",
+          services: ["Emergency Care", "Trauma", "Accidents", "Urgent Surgery", "Ambulance"],
+          prices: [
+            { service: "Emergency Visit", price: "₪500" },
+            { service: "Trauma Care", price: "₪800" },
+            { service: "Urgent Surgery", price: "₪2,000" },
+            { service: "Ambulance", price: "₪300" }
+          ]
+        },
+        {
+          name: "Rapid Response Center",
+          location: "Jerusalem, Jaffa Gate 12",
+          phone: "Contact Support",
+          services: ["Emergency Care", "Cardiac Emergency", "Stroke Care", "Trauma"],
+          prices: [
+            { service: "Emergency Visit", price: "₪450" },
+            { service: "Cardiac Emergency", price: "₪1,200" },
+            { service: "Stroke Care", price: "₪1,500" },
+            { service: "Trauma Care", price: "₪900" }
+          ]
+        },
+        {
+          name: "Critical Care Center",
+          location: "Haifa, Carmel Center 88",
+          phone: "Contact Support",
+          services: ["Emergency Care", "Intensive Care", "Surgery", "Recovery"],
+          prices: [
+            { service: "Emergency Visit", price: "₪480" },
+            { service: "Intensive Care", price: "₪1,800" },
+            { service: "Emergency Surgery", price: "₪2,500" },
+            { service: "Recovery Room", price: "₪400" }
+          ]
+        }
+      ]
+    }
+  };
+
+  // Function to show service selection
+  function showServiceSelection() {
+    document.getElementById('mainServiceCard').style.display = 'block';
+    document.getElementById('clinicsForService').style.display = 'none';
+    document.getElementById('clinicSelection').style.display = 'none';
+    document.getElementById('clinicProfileSection').style.display = 'none';
+  }
+
+  // Function to toggle service options
+  function toggleServiceOptions() {
+    const mainCard = document.getElementById('mainServiceCard');
+    const serviceOptions = document.getElementById('serviceOptions');
+    
+    if (serviceOptions.style.display === 'none' || serviceOptions.style.display === '') {
+      serviceOptions.style.display = 'block';
+      mainCard.classList.add('expanded');
+    } else {
+      serviceOptions.style.display = 'none';
+      mainCard.classList.remove('expanded');
+    }
+  }
+
+  // Function to select service and show clinics
+  function selectService(serviceType) {
+    console.log('Selected service:', serviceType);
+    
+    // Hide main service card, show clinics
+    document.getElementById('mainServiceCard').style.display = 'none';
+    document.getElementById('clinicsForService').style.display = 'block';
+    
+    // Update title
+    const selectedServiceTitle = document.getElementById('selectedServiceTitle');
+    if (selectedServiceTitle) {
+      selectedServiceTitle.textContent = treatmentData[serviceType].title;
+    }
+    
+    // Clear previous clinics
+    const clinicsContainer = document.getElementById('clinicsContainer');
+    if (clinicsContainer) {
+      clinicsContainer.innerHTML = '';
+      
+      // Add clinics for selected service
+      treatmentData[serviceType].clinics.forEach((clinic, index) => {
+        const clinicCard = createClinicCard(clinic, serviceType);
+        clinicsContainer.appendChild(clinicCard);
+      });
+    }
+  }
+
+  // Function to create clinic card
+  function createClinicCard(clinic, serviceType) {
+    const col = document.createElement('div');
+    col.className = 'col-lg-6 col-md-6';
+    
+    col.innerHTML = `
+      <div class="clinic-selection-card" data-clinic-name="${clinic.name}" data-service-type="${serviceType}">
+        <div class="clinic-badge">${serviceType.charAt(0).toUpperCase() + serviceType.slice(1)}</div>
+        <div class="clinic-icon">
+          <i class="bi bi-building"></i>
+        </div>
+        <h3>${clinic.name}</h3>
+        <p class="clinic-description">Professional ${serviceType} services with experienced doctors</p>
+        <div class="clinic-details">
+          <div class="clinic-location">
+            <i class="bi bi-geo-alt-fill"></i>
+            <span>${clinic.location}</span>
+          </div>
+          <div class="clinic-phone">
+            <i class="bi bi-telephone-fill"></i>
+            <span>${clinic.phone}</span>
+          </div>
+        </div>
+        <div class="clinic-arrow">
+          <i class="bi bi-arrow-right-circle-fill"></i>
+        </div>
+      </div>
+    `;
+    
+    // Add click event listener
+    const clinicCard = col.querySelector('.clinic-selection-card');
+    clinicCard.addEventListener('click', function() {
+      const clinicName = this.getAttribute('data-clinic-name');
+      const serviceType = this.getAttribute('data-service-type');
+      viewClinicProfile(clinicName, serviceType);
+    });
+    
+    return col;
+  }
+
+  // Function to view clinic profile
+  function viewClinicProfile(clinicName, serviceType) {
+    // Store clinic data in localStorage for the profile page
+    const clinicData = findClinicByName(clinicName, serviceType);
+    if (clinicData) {
+      localStorage.setItem('selectedClinic', JSON.stringify({
+        name: clinicData.name,
+        location: clinicData.location,
+        phone: clinicData.phone,
+        services: clinicData.services,
+        prices: clinicData.prices,
+        type: serviceType
+      }));
+      
+      // Navigate to clinic profile
+      window.location.href = 'ClinicProfile.html';
+    }
+  }
+
+  // Function to find clinic by name and type
+  function findClinicByName(clinicName, serviceType) {
+    if (treatmentData[serviceType] && treatmentData[serviceType].clinics) {
+      return treatmentData[serviceType].clinics.find(clinic => clinic.name === clinicName);
+    }
+    return null;
+  }
+
+  // Load clinic data based on URL parameter or show selection
+  document.addEventListener('DOMContentLoaded', function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const clinicName = urlParams.get('clinic');
+    const clinicType = urlParams.get('type');
+    
+    // Check if we have clinic data in localStorage (from available.html)
+    const storedClinicData = localStorage.getItem('selectedClinic');
+    
+    if (storedClinicData) {
+      // Load specific clinic from available.html
+      loadSpecificClinic();
+    } else if (clinicName) {
+      // Load specific clinic from URL parameters
+      loadSpecificClinic(clinicName);
+    } else if (clinicType) {
+      // Show specific clinic profile
+      document.getElementById('serviceTypeSelection').style.display = 'none';
+      document.getElementById('clinicsForService').style.display = 'none';
+      document.getElementById('clinicSelection').style.display = 'none';
+      document.getElementById('clinicProfileSection').style.display = 'block';
+      loadClinicData(clinicType);
+    } else {
+      // Show main service card
+      const mainServiceCard = document.getElementById('mainServiceCard');
+      const clinicsForService = document.getElementById('clinicsForService');
+      const clinicProfileSection = document.getElementById('clinicProfileSection');
+      
+      if (mainServiceCard) mainServiceCard.style.display = 'block';
+      if (clinicsForService) clinicsForService.style.display = 'none';
+      if (clinicProfileSection) clinicProfileSection.style.display = 'none';
+      
+      // Add click listener to main service card
+      const mainCard = document.getElementById('mainServiceCard');
+      const searchBarContainer = mainCard.querySelector('.search-bar-container');
+      searchBarContainer.addEventListener('click', toggleServiceOptions);
+      
+      // Add click listeners to service options
+      const serviceOptions = document.querySelectorAll('.service-option');
+      serviceOptions.forEach(option => {
+        option.addEventListener('click', function() {
+          const serviceType = this.getAttribute('data-service');
+          selectService(serviceType);
+        });
+      });
+      
+      // Add click listener to back button
+      const backBtn = document.getElementById('backToServicesBtn');
+      if (backBtn) {
+        backBtn.addEventListener('click', showServiceSelection);
+      }
+    }
+  });
+
+  // Function to load specific clinic from available.html
+  function loadSpecificClinic(clinicName = null) {
+    const clinicData = JSON.parse(localStorage.getItem('selectedClinic'));
+    
+    if (clinicData) {
+      // Hide all other sections, show profile
+      const mainServiceCard = document.getElementById('mainServiceCard');
+      const clinicsForService = document.getElementById('clinicsForService');
+      const clinicProfileSection = document.getElementById('clinicProfileSection');
+      
+      if (mainServiceCard) mainServiceCard.style.display = 'none';
+      if (clinicsForService) clinicsForService.style.display = 'none';
+      if (clinicProfileSection) clinicProfileSection.style.display = 'block';
+      
+      // Update clinic profile with specific data
+      const clinicName = document.getElementById('clinicName');
+      const clinicDescription = document.getElementById('clinicDescription');
+      const clinicImage = document.getElementById('clinicImage');
+      const clinicAddress = document.getElementById('clinicAddress');
+      const clinicPhone = document.getElementById('clinicPhone');
+      const clinicEmail = document.getElementById('clinicEmail');
+      const clinicRating = document.getElementById('clinicRating');
+      const clinicRatingBadge = document.getElementById('clinicRatingBadge');
+      
+      if (clinicName) clinicName.textContent = clinicData.name;
+      if (clinicDescription) clinicDescription.textContent = `Professional ${clinicData.type} services with experienced doctors`;
+      if (clinicImage) {
+        clinicImage.src = `https://via.placeholder.com/1200x400/3498db/ffffff?text=${encodeURIComponent(clinicData.name)}`;
+        clinicImage.alt = clinicData.name;
+      }
+      if (clinicAddress) clinicAddress.textContent = clinicData.location;
+      if (clinicPhone) clinicPhone.textContent = clinicData.phone;
+      if (clinicEmail) clinicEmail.textContent = `info@${clinicData.name.toLowerCase().replace(/\s+/g, '')}.co.il`;
+      if (clinicRating) clinicRating.textContent = "4.8/5 (127 reviews)";
+      if (clinicRatingBadge) clinicRatingBadge.textContent = "4.8/5";
+      
+      // Update services
+      const servicesContainer = document.getElementById('clinicServices');
+      if (servicesContainer) {
+        servicesContainer.innerHTML = clinicData.services.map(service => 
+          `<div class="service-item">${service}</div>`
+        ).join('');
+      }
+      
+      // Update reviews with clinic-specific data
+      const reviewsContainer = document.querySelector('.clinic-info-card.card-info');
+      if (reviewsContainer) {
+        reviewsContainer.innerHTML = `
+          <h4 class="mb-4"><i class="bi bi-star me-2"></i>Reviews</h4>
+          <div class="rating-stars">
+            ★★★★★ <span style="color: #6c757d; font-size: 1rem;">4.8/5 (127 reviews)</span>
+          </div>
+          <div class="review-card">
+            <div class="review-header">
+              <div class="reviewer-info">
+                <h6>Sarah M.</h6>
+                <small>2 days ago</small>
+              </div>
+            </div>
+            <div class="review-text">
+              "Excellent service at ${clinicData.name}! The staff was very professional and the facilities were modern and clean."
+            </div>
+          </div>
+          <div class="review-card">
+            <div class="review-header">
+              <div class="reviewer-info">
+                <h6>David L.</h6>
+                <small>1 week ago</small>
+              </div>
+            </div>
+            <div class="review-text">
+              "Great experience! The doctors were very knowledgeable and took time to explain everything clearly."
+            </div>
+          </div>
+        `;
+      }
+      
+      // Update booking button to pass clinic data
+      const bookBtn = document.querySelector('.btn-primary.action-btn');
+      if (bookBtn) {
+        bookBtn.href = `book-appointment.html?clinic=${encodeURIComponent(clinicData.name)}&type=${clinicData.type}`;
+      }
+      
+      // Clear localStorage after loading to prevent issues
+      localStorage.removeItem('selectedClinic');
+    } else {
+      // Fallback to main service card
+      const mainServiceCard = document.getElementById('mainServiceCard');
+      const clinicsForService = document.getElementById('clinicsForService');
+      const clinicProfileSection = document.getElementById('clinicProfileSection');
+      
+      if (mainServiceCard) mainServiceCard.style.display = 'block';
+      if (clinicsForService) clinicsForService.style.display = 'none';
+      if (clinicProfileSection) clinicProfileSection.style.display = 'none';
+    }
+  }
+
   // Simulate loading spinner
   window.addEventListener('load', () => {
     const spinner = document.getElementById('loadingSpinner');
@@ -859,7 +2156,7 @@
         const serviceCard = document.createElement('div');
         serviceCard.className = 'col-md-6 mb-3';
         serviceCard.innerHTML = `
-          <div class="service-card" onclick="getServicePrice('${service.name}')">
+          <div class="service-card service-price-btn" data-service-name="${service.name}">
             <div class="service-icon">
               <i class="bi bi-heart-pulse"></i>
             </div>
@@ -1014,11 +2311,13 @@
       const patientsResponse = await fetch('/api/appointments/count');
       if (patientsResponse.ok) {
         const patientsData = await patientsResponse.json();
-        document.getElementById('patientsServed').textContent = patientsData.count || 0;
+        const patientsServed = document.getElementById('patientsServed');
+        if (patientsServed) patientsServed.textContent = patientsData.count || 0;
       }
     } catch (error) {
       console.log('No appointments count API endpoint, showing 0');
-      document.getElementById('patientsServed').textContent = '0';
+      const patientsServed = document.getElementById('patientsServed');
+      if (patientsServed) patientsServed.textContent = '0';
     }
 
     try {
@@ -1026,20 +2325,64 @@
       const todayResponse = await fetch('/api/appointments/today/count');
       if (todayResponse.ok) {
         const todayData = await todayResponse.json();
-        document.getElementById('appointmentsToday').textContent = todayData.count || 0;
+        const appointmentsToday = document.getElementById('appointmentsToday');
+        if (appointmentsToday) appointmentsToday.textContent = todayData.count || 0;
       }
     } catch (error) {
       console.log('No today appointments count API endpoint, showing 0');
-      document.getElementById('appointmentsToday').textContent = '0';
+      const appointmentsToday = document.getElementById('appointmentsToday');
+      if (appointmentsToday) appointmentsToday.textContent = '0';
     }
 
     // Set default rating and review count to 0 for now
     // In the future, these could be loaded from a reviews API endpoint
-    document.getElementById('clinicRating').textContent = '0';
-    document.getElementById('reviewCount').textContent = '0';
+    const clinicRating = document.getElementById('clinicRating');
+    const reviewCount = document.getElementById('reviewCount');
+    if (clinicRating) clinicRating.textContent = '0';
+    if (reviewCount) reviewCount.textContent = '0';
   }
 </script>
 
-</body>
+  <!-- Phone Service Modal -->
+  <div id="phoneModal" class="modal fade" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header bg-danger text-white">
+          <h5 class="modal-title">
+            <i class="bi bi-telephone-x me-2"></i>Phone Service Unavailable
+          </h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body text-center">
+          <div class="mb-3">
+            <i class="bi bi-exclamation-triangle text-warning" style="font-size: 3rem;"></i>
+          </div>
+          <p class="mb-3">We apologize, but our phone service is currently unavailable. We're working hard to bring you the best possible experience.</p>
+          <div class="alert alert-info">
+            <strong>Alternative Options:</strong><br>
+            • Book appointments online<br>
+            • Use live chat support<br>
+            • Send us an email
+          </div>
+        </div>
+        <div class="modal-footer">
+          <a href="book-appointment.html" class="btn btn-primary">
+            <i class="bi bi-calendar-plus me-2"></i>Book Appointment
+          </a>
+          <a href="support.html" class="btn btn-outline-primary">
+            <i class="bi bi-headset me-2"></i>Get Support
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function showPhoneModal() {
+      const modal = new bootstrap.Modal(document.getElementById('phoneModal'));
+      modal.show();
+    }
+  </script>
+  </body>
 </html>
 

@@ -613,7 +613,7 @@
         <p>Administrator</p>
       </div>
     </div>
-    <a href="index.html" class="logout-btn">
+    <a href="#" class="logout-btn" id="logoutBtn">
       <i class="bi bi-box-arrow-right me-2"></i>
       Logout
     </a>
@@ -849,6 +849,28 @@
       document.getElementById('totalAppointments').textContent = '0';
     }
   }
+
+  // Logout function
+  function logout() {
+    // Clear any admin data from localStorage
+    localStorage.removeItem('user');
+    localStorage.removeItem('token');
+    localStorage.removeItem('admin');
+    
+    // Redirect to login page
+    window.location.href = 'login.html';
+  }
+
+  // Add logout event listener
+  document.addEventListener('DOMContentLoaded', function() {
+    const logoutBtn = document.getElementById('logoutBtn');
+    if (logoutBtn) {
+      logoutBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        logout();
+      });
+    }
+  });
 </script>
 
 </body>

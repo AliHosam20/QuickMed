@@ -3,28 +3,98 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 const path = require("path");
 const db = require("./db");
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const rateLimit = require("express-rate-limit");
+const helmet = require("helmet");
+const { body, validationResult } = require("express-validator");
 
 const app = express();
 const PORT = 3000;
+const JWT_SECRET = process.env.JWT_SECRET || 'your-super-secret-jwt-key-change-in-production';
 
-// Middleware
-app.use(cors());
-app.use(bodyParser.json());
+// Security Middleware
+app.use(helmet({
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      styleSrc: ["'self'", "'unsafe-inline'", "https://cdn.jsdelivr.net"],
+      scriptSrc: ["'self'", "'unsafe-inline'", "https://cdn.jsdelivr.net"],
+      connectSrc: ["'self'", "https://cdn.jsdelivr.net"],
+      imgSrc: ["'self'", "data:", "https:"],
+      fontSrc: ["'self'", "https://cdn.jsdelivr.net"]
+    }
+  }
+}));
+app.use(cors({
+  origin: process.env.NODE_ENV === 'production' ? ['https://yourdomain.com'] : true,
+  credentials: true
+}));
+
+// Rate limiting
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // limit each IP to 100 requests per windowMs
+  message: 'Too many requests from this IP, please try again later.',
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 50, // limit each IP to 50 login attempts per windowMs
+  message: 'Too many login attempts, please try again later.',
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+app.use(limiter);
+app.use('/api/login', authLimiter);
+app.use('/api/register', authLimiter);
+
+// Body parsing
+app.use(bodyParser.json({ limit: '10mb' }));
 app.use(express.static(path.join(__dirname, "..", "public")));
+
+// JWT Middleware
+const authenticateToken = (req, res, next) => {
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1];
+
+  if (!token) {
+    return res.status(401).json({ message: 'Access token required' });
+  }
+
+  jwt.verify(token, JWT_SECRET, (err, user) => {
+    if (err) {
+      return res.status(403).json({ message: 'Invalid or expired token' });
+    }
+    req.user = user;
+    next();
+  });
+};
 
 // מסלול לדף הראשי
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "..", "public", "index.html"));
 });
 
-// מסלול הרשמה
-app.post("/api/register", (req, res) => {
-  const { username, email, password } = req.body;
-  
-  // בדיקה שהשדות לא ריקים
-  if (!username || !email || !password) {
-    return res.status(400).json({ message: "All fields are required" });
+// מסלול הרשמה עם אבטחה מתקדמת
+app.post("/api/register", [
+  body('username').isLength({ min: 2, max: 50 }).trim().escape(),
+  body('email').isEmail().normalizeEmail(),
+  body('password').isLength({ min: 6 })
+], (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    console.log('Registration validation errors:', errors.array());
+    return res.status(400).json({ 
+      message: "Validation failed", 
+      errors: errors.array() 
+    });
   }
+
+  const { username, email, password } = req.body;
   
   // בדיקה שהאימייל לא קיים כבר
   db.get("SELECT * FROM users WHERE email = ?", [email], (err, existingUser) => {
@@ -37,42 +107,99 @@ app.post("/api/register", (req, res) => {
       return res.status(409).json({ message: "Email already exists" });
     }
     
-    // הוספת משתמש חדש
-    db.run(
-      "INSERT INTO users (username, email, password) VALUES (?, ?, ?)",
-      [username, email, password],
-      function(err) {
-        if (err) {
-          console.error("DB error creating user:", err);
-          return res.status(500).json({ message: "Internal server error" });
-        }
-        
-        res.status(201).json({ 
-          message: "Registration successful", 
-          user: { id: this.lastID, username, email } 
-        });
+    // הצפנת הסיסמה
+    const saltRounds = 12;
+    bcrypt.hash(password, saltRounds, (err, hashedPassword) => {
+      if (err) {
+        console.error("Error hashing password:", err);
+        return res.status(500).json({ message: "Internal server error" });
       }
-    );
+      
+      // הוספת משתמש חדש עם סיסמה מוצפנת
+      db.run(
+        "INSERT INTO users (username, email, password) VALUES (?, ?, ?)",
+        [username, email, hashedPassword],
+        function(err) {
+          if (err) {
+            console.error("DB error creating user:", err);
+            return res.status(500).json({ message: "Internal server error" });
+          }
+          
+          // יצירת JWT token
+          const token = jwt.sign(
+            { id: this.lastID, email: email },
+            JWT_SECRET,
+            { expiresIn: '24h' }
+          );
+          
+          res.status(201).json({ 
+            message: "Registration successful", 
+            user: { id: this.lastID, username, email },
+            token: token
+          });
+        }
+      );
+    });
   });
 });
 
-// מסלול התחברות
-app.post("/api/login", (req, res) => {
+// מסלול התחברות עם אבטחה מתקדמת
+app.post("/api/login", [
+  body('username').isEmail().normalizeEmail(),
+  body('password').isLength({ min: 1 })
+], (req, res) => {
+  console.log('Login request received:', req.body);
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    console.log('Validation errors:', errors.array());
+    return res.status(400).json({ 
+      message: "Validation failed", 
+      errors: errors.array() 
+    });
+  }
+
   const { username, password } = req.body;
-  // username is actually email from the frontend
+  const email = username; // username is actually email from the frontend
+  
+  console.log('Login attempt:', { email, passwordLength: password ? password.length : 0 });
+  
   db.get(
-    "SELECT * FROM users WHERE email = ? AND password = ?",
-    [username, password],
+    "SELECT * FROM users WHERE email = ?",
+    [email],
     (err, user) => {
       if (err) {
         console.error("DB error during login:", err);
         return res.status(500).json({ message: "Internal server error" });
       }
-      if (user) {
-        res.status(200).json({ message: "Login successful", user: { id: user.id, email: user.email } });
-      } else {
-        res.status(401).json({ message: "Invalid credentials" });
+      
+      if (!user) {
+        return res.status(401).json({ message: "Invalid credentials" });
       }
+      
+      // בדיקת הסיסמה המוצפנת
+      bcrypt.compare(password, user.password, (err, isMatch) => {
+        if (err) {
+          console.error("Error comparing passwords:", err);
+          return res.status(500).json({ message: "Internal server error" });
+        }
+        
+        if (!isMatch) {
+          return res.status(401).json({ message: "Invalid credentials" });
+        }
+        
+        // יצירת JWT token
+        const token = jwt.sign(
+          { id: user.id, email: user.email },
+          JWT_SECRET,
+          { expiresIn: '24h' }
+        );
+        
+        res.status(200).json({ 
+          message: "Login successful", 
+          user: { id: user.id, username: user.username, email: user.email },
+          token: token
+        });
+      });
     }
   );
 });
@@ -542,10 +669,175 @@ app.get("/api/appointments/count", (req, res) => {
   });
 });
 
+// מסלול מוגן לדוגמה - דורש אימות
+app.get("/api/profile", authenticateToken, (req, res) => {
+  const userId = req.user.id;
+  
+  db.get("SELECT id, username, email FROM users WHERE id = ?", [userId], (err, user) => {
+    if (err) {
+      console.error("DB error fetching user profile:", err);
+      return res.status(500).json({ message: "Internal server error" });
+    }
+    
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    
+    res.json({ user });
+  });
+});
+
+// מסלול לרענון token
+app.post("/api/refresh-token", authenticateToken, (req, res) => {
+  const newToken = jwt.sign(
+    { id: req.user.id, email: req.user.email },
+    JWT_SECRET,
+    { expiresIn: '24h' }
+  );
+  
+  res.json({ token: newToken });
+});
+
+// Appointments API endpoints
+// Get user appointments
+app.get('/api/appointments', authenticateToken, (req, res) => {
+  const userId = req.user.id;
+  
+  db.all(
+    'SELECT * FROM appointments WHERE user_id = ? ORDER BY appointment_date DESC, appointment_time DESC',
+    [userId],
+    (err, rows) => {
+      if (err) {
+        return res.status(500).json({ error: 'Database error' });
+      }
+      res.json(rows);
+    }
+  );
+});
+
+// Create new appointment
+app.post('/api/appointments', authenticateToken, [
+  body('clinic_name').notEmpty().trim(),
+  body('clinic_type').notEmpty().trim(),
+  body('service').notEmpty().trim(),
+  body('appointment_date').isISO8601(),
+  body('appointment_time').matches(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/),
+  body('notes').optional().trim()
+], (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
+  const { clinic_name, clinic_type, service, appointment_date, appointment_time, notes } = req.body;
+  const userId = req.user.id;
+
+  // Check if appointment time is available
+  db.get(
+    'SELECT id FROM appointments WHERE clinic_name = ? AND appointment_date = ? AND appointment_time = ? AND status != "cancelled"',
+    [clinic_name, appointment_date, appointment_time],
+    (err, row) => {
+      if (err) {
+        return res.status(500).json({ error: 'Database error' });
+      }
+      
+      if (row) {
+        return res.status(400).json({ error: 'This time slot is already booked' });
+      }
+
+      // Create appointment
+      db.run(
+        'INSERT INTO appointments (user_id, clinic_name, clinic_type, service, appointment_date, appointment_time, notes) VALUES (?, ?, ?, ?, ?, ?, ?)',
+        [userId, clinic_name, clinic_type, service, appointment_date, appointment_time, notes || ''],
+        function(err) {
+          if (err) {
+            console.error('Database error creating appointment:', err);
+            return res.status(500).json({ error: 'Failed to create appointment' });
+          }
+          
+          res.json({
+            id: this.lastID,
+            message: 'Appointment created successfully'
+          });
+        }
+      );
+    }
+  );
+});
+
+// Update appointment status
+app.put('/api/appointments/:id', authenticateToken, [
+  body('status').isIn(['scheduled', 'completed', 'cancelled', 'rescheduled'])
+], (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
+  const { id } = req.params;
+  const { status } = req.body;
+  const userId = req.user.id;
+
+  db.run(
+    'UPDATE appointments SET status = ? WHERE id = ? AND user_id = ?',
+    [status, id, userId],
+    function(err) {
+      if (err) {
+        return res.status(500).json({ error: 'Database error' });
+      }
+      
+      if (this.changes === 0) {
+        return res.status(404).json({ error: 'Appointment not found' });
+      }
+      
+      res.json({ message: 'Appointment updated successfully' });
+    }
+  );
+});
+
+// Delete appointment
+app.delete('/api/appointments/:id', authenticateToken, (req, res) => {
+  const { id } = req.params;
+  const userId = req.user.id;
+
+  db.run(
+    'DELETE FROM appointments WHERE id = ? AND user_id = ?',
+    [id, userId],
+    function(err) {
+      if (err) {
+        return res.status(500).json({ error: 'Database error' });
+      }
+      
+      if (this.changes === 0) {
+        return res.status(404).json({ error: 'Appointment not found' });
+      }
+      
+      res.json({ message: 'Appointment deleted successfully' });
+    }
+  );
+});
+
 // fallback לכל דף שלא נמצא
 app.use((req, res) => {
   res.sendFile(path.join(__dirname, "..", "public", "index.html"));
 });
+
+// Create appointments table
+db.run(`
+  CREATE TABLE IF NOT EXISTS appointments (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER NOT NULL,
+    clinic_name TEXT NOT NULL,
+    clinic_type TEXT NOT NULL,
+    service TEXT NOT NULL,
+    appointment_date TEXT NOT NULL,
+    appointment_time TEXT NOT NULL,
+    status TEXT DEFAULT 'scheduled',
+    notes TEXT,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users (id)
+  )
+`);
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);

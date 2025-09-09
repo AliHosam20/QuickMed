@@ -185,56 +185,7 @@
       font-weight: 500;
     }
 
-    .social-login {
-      display: flex;
-      gap: 15px;
-      margin-bottom: 30px;
-    }
 
-    .btn-social {
-      flex: 1;
-      border: 2px solid #e9ecef;
-      border-radius: 1rem;
-      padding: 12px;
-      background: white;
-      color: #495057;
-      transition: all 0.3s ease;
-      text-decoration: none;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 500;
-    }
-
-    .btn-social:hover {
-      border-color: #3498db;
-      color: #3498db;
-      transform: translateY(-2px);
-      box-shadow: 0 5px 15px rgba(52, 152, 219, 0.1);
-      text-decoration: none;
-    }
-
-    .btn-social i {
-      margin-right: 8px;
-      font-size: 1.2rem;
-    }
-
-    .forgot-password {
-      text-align: center;
-      margin-top: 20px;
-    }
-
-    .forgot-password a {
-      color: #3498db;
-      text-decoration: none;
-      font-weight: 500;
-      transition: color 0.3s ease;
-    }
-
-    .forgot-password a:hover {
-      color: #2980b9;
-      text-decoration: underline;
-    }
 
     .register-link {
       text-align: center;
@@ -277,27 +228,6 @@
       text-decoration: none;
     }
 
-    .settings-btn {
-      position: absolute;
-      top: 30px;
-      right: 30px;
-      background: rgba(255, 255, 255, 0.9);
-      border: none;
-      border-radius: 1rem;
-      padding: 10px 20px;
-      color: #495057;
-      text-decoration: none;
-      transition: all 0.3s ease;
-      backdrop-filter: blur(10px);
-    }
-
-    .settings-btn:hover {
-      background: white;
-      color: #3498db;
-      transform: translateY(-2px);
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-      text-decoration: none;
-    }
 
     .features-section {
       background: linear-gradient(135deg, #f8f9fa, #e9ecef);
@@ -339,9 +269,6 @@
         padding: 30px 20px;
       }
 
-      .social-login {
-        flex-direction: column;
-      }
     }
   </style>
 </head>
@@ -354,10 +281,6 @@
     <i class="bi bi-arrow-left me-1"></i> Back to Home
   </a>
 
-  <!-- Settings Button -->
-  <a href="settings.html" class="settings-btn">
-    <i class="bi bi-gear me-1"></i> Settings
-  </a>
 
   <div class="login-card">
     
@@ -408,27 +331,6 @@
             </button>
           </form>
 
-          <div class="divider">
-            <span>or continue with</span>
-          </div>
-
-          <div class="social-login">
-            <a href="#" class="btn-social">
-              <i class="bi bi-google"></i>Google
-            </a>
-            <a href="#" class="btn-social">
-              <i class="bi bi-facebook"></i>Facebook
-            </a>
-            <a href="#" class="btn-social">
-              <i class="bi bi-apple"></i>Apple
-            </a>
-          </div>
-
-          <div class="forgot-password">
-            <a href="#" onclick="forgotPassword()">
-              <i class="bi bi-question-circle me-1"></i>Forgot your password?
-            </a>
-          </div>
 
           <div class="register-link">
             <p>Don't have an account? <a href="register.html">Sign up here</a></p>
@@ -483,8 +385,18 @@
   document.getElementById('loginForm').addEventListener('submit', function(e) {
     e.preventDefault();
     
+    console.log('Form submitted!');
+    
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
+    
+    console.log('Email:', email);
+    console.log('Password length:', password.length);
+    
+    if (!email || !password) {
+      alert('Please fill in all fields');
+      return;
+    }
     
     // Add loading animation
     const btn = document.querySelector('.btn-login');
@@ -493,6 +405,7 @@
     btn.disabled = true;
     
     // Send login request to server
+    console.log('Sending request to server...');
     fetch('/api/login', {
       method: 'POST',
       headers: {
@@ -503,7 +416,14 @@
         password: password
       })
     })
-    .then(response => response.json())
+    .then(response => {
+      if (!response.ok) {
+        return response.json().then(data => {
+          throw new Error(data.message || `HTTP error! status: ${response.status}`);
+        });
+      }
+      return response.json();
+    })
     .then(data => {
       if (data.message === 'Login successful') {
         // Show success notification
@@ -518,8 +438,9 @@
         
         document.body.appendChild(notification);
         
-        // Store user info in localStorage
+        // Store user info and token in localStorage
         localStorage.setItem('user', JSON.stringify(data.user));
+        localStorage.setItem('token', data.token);
         
         // Redirect to dashboard after 2 seconds
         setTimeout(() => {
@@ -530,6 +451,8 @@
       }
     })
     .catch(error => {
+      console.error('Login error:', error);
+      
       // Show error notification
       const notification = document.createElement('div');
       notification.className = 'alert alert-danger alert-dismissible fade show position-fixed';
@@ -548,26 +471,6 @@
     });
   });
 
-  function forgotPassword() {
-    // Show forgot password notification
-    const notification = document.createElement('div');
-    notification.className = 'alert alert-info alert-dismissible fade show position-fixed';
-    notification.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
-    notification.innerHTML = `
-      <i class="bi bi-envelope me-2"></i>
-      <strong>Password Reset</strong> Check your email for reset instructions.
-      <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-    `;
-    
-    document.body.appendChild(notification);
-    
-    // Auto remove after 5 seconds
-    setTimeout(() => {
-      if (notification.parentNode) {
-        notification.remove();
-      }
-    }, 5000);
-  }
 
   // Add some interactive animations
   document.addEventListener('DOMContentLoaded', () => {

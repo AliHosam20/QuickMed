@@ -3,10 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
-  <meta http-equiv="Pragma" content="no-cache" />
-  <meta http-equiv="Expires" content="0" />
-  <title>QuickMed Dashboard v2.1</title>
+  <title>QuickMed - Patient Dashboard</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
   <style>
@@ -107,36 +104,9 @@
       border-radius: 15px;
     }
 
-    .sidebar-logo {
-      height: 50px;
-      margin-bottom: 15px;
-      filter: brightness(0) invert(1);
-      opacity: 0.9;
-      transition: all 0.3s ease;
-    }
-
-    .sidebar-logo:hover {
-      opacity: 1;
-      transform: scale(1.05);
-    }
-
     .sidebar-logo-container {
       text-align: center;
       margin-bottom: 10px;
-    }
-
-    .main-logo-container {
-      text-align: center;
-      padding: 20px 0;
-    }
-
-    .main-logo-container i {
-      transition: all 0.3s ease;
-    }
-
-    .main-logo-container:hover i {
-      transform: scale(1.1);
-      color: #2980b9;
     }
 
     .sidebar-title {
@@ -253,10 +223,6 @@
       color: #bdc3c7;
     }
 
-    .user-details h6:hover {
-      color: #3498db !important;
-    }
-
     .logout-btn {
       width: 100%;
       padding: 10px;
@@ -288,52 +254,19 @@
       margin-left: 0;
     }
 
-    .logo-bar {
-      background: linear-gradient(135deg, #ffffff, #f8f9fa);
-      padding: 30px 0;
-      text-align: center;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-      margin: -40px -20px 40px -20px;
-      border-bottom: 3px solid #3498db;
-      position: relative;
-    }
-
-    .logo-bar::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 3px;
-      background: linear-gradient(90deg, #3498db, #2980b9, #3498db);
-    }
-
-    .main-logo {
-      height: 80px;
-      object-fit: contain;
-      filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
-      transition: transform 0.3s ease;
-      opacity: 0.8;
-    }
-
-    .main-logo:hover {
-      transform: scale(1.05);
-      opacity: 1;
-    }
-
-    .hero {
+    /* Dashboard Specific Styles */
+    .dashboard-header {
       background: linear-gradient(135deg, #3498db, #2980b9);
       color: white;
-      padding: 50px;
+      padding: 40px;
       border-radius: 1.5rem;
-      text-align: center;
-      margin-bottom: 40px;
+      margin-bottom: 30px;
       box-shadow: 0 10px 30px rgba(52, 152, 219, 0.3);
       position: relative;
       overflow: hidden;
     }
 
-    .hero::before {
+    .dashboard-header::before {
       content: '';
       position: absolute;
       top: -50%;
@@ -349,211 +282,33 @@
       50% { transform: translateY(-20px) rotate(180deg); }
     }
 
-    .hero h2 {
+    .dashboard-header h2 {
       font-weight: 700;
       margin-bottom: 15px;
       position: relative;
       z-index: 2;
     }
 
-    .hero .lead {
+    .dashboard-header .lead {
       font-size: 1.2rem;
       opacity: 0.9;
       position: relative;
       z-index: 2;
     }
 
-    .main-action-card {
-      background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
-      border-radius: 2rem;
-      padding: 3.5rem 2.5rem;
-      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
-      transition: all 0.4s ease;
-      text-align: center;
-      border: 1px solid rgba(255, 255, 255, 0.3);
+    .stats-card {
+      background: white;
+      border-radius: 1.5rem;
+      padding: 30px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+      border: none;
       position: relative;
       overflow: hidden;
-      /* Cache bust: 2024-12-19 */
+      margin-bottom: 30px;
     }
 
-    .main-action-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 4px;
-      background: linear-gradient(90deg, #3498db, #2ecc71);
-      opacity: 0;
-      transition: opacity 0.3s ease;
-    }
-
-    .main-action-card:hover::before {
-      opacity: 1;
-    }
-
-    .main-action-card:hover {
-      transform: translateY(-8px) scale(1.02);
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
-    }
-
-    .main-action-card:hover .action-icon-large {
-      transform: scale(1.1) rotate(5deg);
-    }
-
-    /* Make My Appointments card same height as Book Appointment card */
-    .main-action-row {
-      display: flex;
-      align-items: stretch;
-    }
-
-    .main-action-row .col-lg-6 {
-      display: flex;
-    }
-
-    .main-action-card {
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      min-height: 450px;
-      max-height: 450px;
-    }
-
-    .upcoming-appointments {
-      margin: 1rem 0;
-      max-height: 150px;
-      overflow-y: auto;
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
-
-    .loading-spinner {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 1rem;
-      color: #6c757d;
-    }
-
-    .loading-spinner i {
-      margin-right: 0.5rem;
-      animation: spin 1s linear infinite;
-    }
-
-    @keyframes spin {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(360deg); }
-    }
-
-    .appointment-preview {
-      background: #f8f9fa;
-      border: 1px solid #e9ecef;
-      border-radius: 0.5rem;
-      padding: 0.75rem;
-      margin-bottom: 0.5rem;
-      font-size: 0.9rem;
-    }
-
-    .appointment-preview:last-child {
-      margin-bottom: 0;
-    }
-
-    .appointment-preview .appointment-title {
-      font-weight: 600;
-      color: #2c3e50;
-      margin-bottom: 0.25rem;
-    }
-
-    .appointment-preview .appointment-details {
-      color: #6c757d;
-      font-size: 0.8rem;
-    }
-
-    .appointment-preview .appointment-status {
-      float: right;
-      padding: 0.25rem 0.5rem;
-      border-radius: 0.25rem;
-      font-size: 0.7rem;
-      font-weight: 600;
-    }
-
-    .appointment-preview .status-scheduled {
-      background: #d4edda;
-      color: #155724;
-    }
-
-    .appointment-preview .status-completed {
-      background: #cce5ff;
-      color: #004085;
-    }
-
-    .appointment-preview .status-cancelled {
-      background: #f8d7da;
-      color: #721c24;
-    }
-
-    .action-icon-large {
-      font-size: 5rem;
-      margin-bottom: 2rem;
-      color: #3498db;
-      background: linear-gradient(135deg, #3498db, #2ecc71);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      filter: drop-shadow(0 4px 8px rgba(52, 152, 219, 0.3));
-      display: block;
-      transition: all 0.4s ease;
-    }
-
-    .main-action-card h3 {
-      color: #2c3e50;
-      margin-bottom: 1.5rem;
-      font-weight: 800;
-      font-size: 2.2rem;
-      letter-spacing: -0.5px;
-    }
-
-    .main-action-card p {
-      color: #6c757d;
-      margin-bottom: 2.5rem;
-      font-size: 1.2rem;
-      line-height: 1.7;
-      font-weight: 500;
-    }
-
-    .quick-access-card {
-      background: white;
-      border-radius: 1rem;
-      padding: 1.5rem;
-      text-align: center;
-      text-decoration: none;
-      color: #2c3e50;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-      transition: all 0.3s ease;
-      display: block;
-    }
-
-    .quick-access-card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-      color: #3498db;
-    }
-
-    .quick-access-card i {
-      font-size: 2rem;
-      margin-bottom: 0.5rem;
-      display: block;
-    }
-
-    .quick-access-card span {
-      font-weight: 600;
-      font-size: 0.9rem;
-    }
-
-    .dashboard-card::before {
+    .stats-card::before {
       content: '';
       position: absolute;
       top: 0;
@@ -563,27 +318,194 @@
       background: linear-gradient(90deg, var(--card-color), var(--card-color-light));
     }
 
-    .dashboard-card:hover {
-      transform: translateY(-10px);
+    .stats-card:hover {
+      transform: translateY(-5px);
       box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
     }
 
-    .card-icon {
-      font-size: 3rem;
-      margin-bottom: 20px;
-      opacity: 0.8;
+    .card-primary {
+      --card-color: #3498db;
+      --card-color-light: #5dade2;
     }
 
-    .card-title {
+    .card-success {
+      --card-color: #27ae60;
+      --card-color-light: #58d68d;
+    }
+
+    .card-warning {
+      --card-color: #f39c12;
+      --card-color-light: #f7dc6f;
+    }
+
+    .card-danger {
+      --card-color: #e74c3c;
+      --card-color-light: #ec7063;
+    }
+
+    .card-info {
+      --card-color: #17a2b8;
+      --card-color-light: #5dade2;
+    }
+
+    .card-purple {
+      --card-color: #9b59b6;
+      --card-color-light: #bb8fce;
+    }
+
+    .stat-item {
+      text-align: center;
+      padding: 20px;
+    }
+
+    .stat-number {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #3498db;
+      margin-bottom: 10px;
+    }
+
+    .stat-label {
+      color: #6c757d;
+      font-weight: 500;
+    }
+
+    .quick-action-card {
+      background: white;
+      border-radius: 1.5rem;
+      padding: 30px;
+      text-align: center;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+      border: none;
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 30px;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+
+    .quick-action-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--card-color), var(--card-color-light));
+    }
+
+    .quick-action-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .action-icon {
+      font-size: 3rem;
+      margin-bottom: 20px;
+      color: var(--card-color);
+    }
+
+    .action-title {
       font-weight: 700;
       margin-bottom: 15px;
       color: #2c3e50;
     }
 
-    .card-text {
+    .action-description {
       color: #6c757d;
       margin-bottom: 25px;
       line-height: 1.6;
+    }
+
+    .appointment-card {
+      background: white;
+      border-radius: 1rem;
+      padding: 20px;
+      margin-bottom: 15px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+      border-left: 4px solid #3498db;
+    }
+
+    .appointment-card:hover {
+      transform: translateX(5px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    }
+
+    .appointment-time {
+      font-size: 0.9rem;
+      color: #6c757d;
+      margin-bottom: 5px;
+    }
+
+    .appointment-title {
+      font-weight: 600;
+      color: #2c3e50;
+      margin-bottom: 5px;
+    }
+
+    .appointment-details {
+      color: #6c757d;
+      font-size: 0.9rem;
+    }
+
+    .appointment-status {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      margin-top: 10px;
+    }
+
+    .status-upcoming {
+      background: #e3f2fd;
+      color: #1976d2;
+    }
+
+    .status-confirmed {
+      background: #e8f5e8;
+      color: #2e7d32;
+    }
+
+    .status-cancelled {
+      background: #ffebee;
+      color: #c62828;
+    }
+
+    .medical-record-item {
+      background: #f8f9fa;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 15px;
+      border-left: 4px solid #27ae60;
+      transition: all 0.3s ease;
+    }
+
+    .medical-record-item:hover {
+      background: #e9ecef;
+      transform: translateX(5px);
+    }
+
+    .record-date {
+      font-size: 0.9rem;
+      color: #6c757d;
+      margin-bottom: 5px;
+    }
+
+    .record-title {
+      font-weight: 600;
+      color: #2c3e50;
+      margin-bottom: 5px;
+    }
+
+    .record-description {
+      color: #6c757d;
+      font-size: 0.9rem;
     }
 
     .btn-modern {
@@ -611,106 +533,24 @@
       left: 100%;
     }
 
-    /* Ensure buttons are at the bottom of cards */
-    .main-action-card .btn {
-      margin-top: auto;
-    }
-
-    /* Force equal height for both cards */
-    .main-action-row .col-lg-6:first-child .main-action-card,
-    .main-action-row .col-lg-6:last-child .main-action-card {
-      height: 450px;
-      min-height: 450px;
-      max-height: 450px;
-    }
-
-    /* Ensure content is properly distributed */
-    .main-action-card .action-icon-large {
-      flex-shrink: 0;
-    }
-
-    .main-action-card h3 {
-      flex-shrink: 0;
-    }
-
-    .main-action-card p {
-      flex-shrink: 0;
-    }
-
-    .stats-section {
-      background: white;
-      border-radius: 1.5rem;
-      padding: 30px;
-      margin-bottom: 30px;
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-    }
-
-    .stat-item {
-      text-align: center;
-      padding: 20px;
-    }
-
-    .stat-number {
-      font-size: 2.5rem;
+    .health-score {
+      font-size: 3rem;
       font-weight: 700;
-      color: #3498db;
-      margin-bottom: 10px;
-    }
-
-    .stat-label {
-      color: #6c757d;
-      font-weight: 500;
-    }
-
-    .action-btn {
-      background: white;
-      border: 2px solid #dee2e6;
-      border-radius: 1rem;
-      padding: 20px;
+      color: #27ae60;
       text-align: center;
-      transition: all 0.3s ease;
-      text-decoration: none;
-      color: #495057;
-      display: block;
-      margin-bottom: 20px;
+      margin: 20px 0;
     }
 
-    .action-btn:hover {
-      border-color: #3498db;
-      color: #3498db;
-      transform: translateY(-5px);
-      box-shadow: 0 10px 25px rgba(52, 152, 219, 0.2);
-      text-decoration: none;
+    .health-score.low {
+      color: #e74c3c;
     }
 
-    .card-primary {
-      --card-color: #3498db;
-      --card-color-light: #5dade2;
+    .health-score.medium {
+      color: #f39c12;
     }
 
-    .card-success {
-      --card-color: #27ae60;
-      --card-color-light: #58d68d;
-    }
-
-    .card-warning {
-      --card-color: #f39c12;
-      --card-color-light: #f7dc6f;
-    }
-
-    .card-info {
-      --card-color: #17a2b8;
-      --card-color-light: #5dade2;
-    }
-
-    .card-danger {
-      --card-color: #e74c3c;
-      --card-color-light: #ec7063;
-    }
-
-    .card-purple {
-      --card-color: #9b59b6;
-      --card-color-light: #bb8fce;
+    .health-score.high {
+      color: #27ae60;
     }
 
     @media (max-width: 768px) {
@@ -733,16 +573,11 @@
         padding-top: 80px;
       }
 
-      .logo-bar {
-        margin: -40px -20px 40px -20px;
-        padding-top: 60px;
-      }
-
-      .hero {
+      .dashboard-header {
         padding: 30px 20px;
       }
 
-      .dashboard-card {
+      .stats-card, .quick-action-card {
         margin-bottom: 20px;
       }
     }
@@ -773,13 +608,13 @@
       <i class="bi bi-heart-pulse-fill" style="font-size: 2rem; color: #3498db; margin-bottom: 10px;"></i>
     </div>
     <h5 class="sidebar-title">QuickMed</h5>
-    <p class="sidebar-subtitle">Healthcare Management</p>
+    <p class="sidebar-subtitle">Patient Dashboard</p>
   </div>
 
   <!-- Main Navigation -->
   <div class="nav-section">
     <h6 class="nav-section-title">Main Menu</h6>
-    <a class="nav-link active" href="homepage.html">
+    <a class="nav-link active" href="patient-dashboard.html">
       <i class="bi bi-speedometer2"></i>
       <span class="nav-text">Dashboard</span>
     </a>
@@ -787,19 +622,19 @@
       <i class="bi bi-search"></i>
       <span class="nav-text">Find Clinics</span>
     </a>
-    <a class="nav-link" href="ClinicProfile.html">
-      <i class="bi bi-building"></i>
-      <span class="nav-text">Clinic Profile</span>
+    <a class="nav-link" href="my-appointments.html">
+      <i class="bi bi-calendar-check"></i>
+      <span class="nav-text">My Appointments</span>
+    </a>
+    <a class="nav-link" href="book-appointment.html">
+      <i class="bi bi-calendar-plus"></i>
+      <span class="nav-text">Book Appointment</span>
     </a>
   </div>
 
   <!-- Services Navigation -->
   <div class="nav-section">
-    <h6 class="nav-section-title">Services</h6>
-    <a class="nav-link" href="available.html">
-      <i class="bi bi-calendar-check"></i>
-      <span class="nav-text">Book Appointment</span>
-    </a>
+    <h6 class="nav-section-title">Health Services</h6>
     <a class="nav-link" href="profile.html">
       <i class="bi bi-file-medical"></i>
       <span class="nav-text">Medical Records</span>
@@ -807,6 +642,11 @@
     <a class="nav-link" href="notifications.html">
       <i class="bi bi-bell"></i>
       <span class="nav-text">Notifications</span>
+      <span class="nav-badge">3</span>
+    </a>
+    <a class="nav-link" href="available_results.html">
+      <i class="bi bi-clipboard-data"></i>
+      <span class="nav-text">Test Results</span>
     </a>
   </div>
 
@@ -837,9 +677,7 @@
         <i class="bi bi-person"></i>
       </div>
       <div class="user-details">
-        <a href="profile.html" style="text-decoration: none; color: inherit;">
-          <h6 id="sidebarUserName" style="cursor: pointer; transition: color 0.3s ease;">User</h6>
-        </a>
+        <h6 id="sidebarUserName">User</h6>
         <p>Patient</p>
       </div>
     </div>
@@ -850,26 +688,17 @@
   </div>
 </div>
 
-<!-- Logo Bar -->
-<div class="logo-bar">
-  <div class="main-logo-container">
-    <i class="bi bi-heart-pulse-fill" style="font-size: 3rem; color: #3498db; margin-bottom: 15px;"></i>
-    <h3 style="color: #2c3e50; margin: 0; font-weight: 700;">QuickMed</h3>
-    <p style="color: #7f8c8d; margin: 5px 0 0 0; font-size: 0.9rem;">Healthcare Management System</p>
-  </div>
-</div>
-
 <!-- Main Dashboard Content -->
 <div class="main-content">
   
-  <!-- Hero Section -->
-  <div class="hero">
+  <!-- Dashboard Header -->
+  <div class="dashboard-header">
     <h2>Welcome back, <strong id="userName">User</strong>! 👋</h2>
-    <p class="lead">Manage your health journey with ease. Book appointments, track your medical history, and stay connected with healthcare providers.</p>
+    <p class="lead">Manage your health journey with ease. Track appointments, view medical records, and stay connected with healthcare providers.</p>
   </div>
 
-  <!-- Stats Section -->
-  <div class="stats-section">
+  <!-- Health Overview Stats -->
+  <div class="stats-card">
     <h4 class="mb-4"><i class="bi bi-graph-up me-2"></i>Your Health Overview</h4>
     <div class="row">
       <div class="col-md-3 col-6">
@@ -892,77 +721,168 @@
       </div>
       <div class="col-md-3 col-6">
         <div class="stat-item">
-          <div class="stat-number" id="healthScore">--</div>
+          <div class="health-score" id="healthScore">--</div>
           <div class="stat-label">Health Score</div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Main Cards -->
-  <!-- Main Actions - Simple & Clear -->
-  <div class="row g-4 mb-4 main-action-row">
-    <div class="col-lg-6 col-md-6">
-      <div class="main-action-card">
-        <div class="action-icon-large">
+  <!-- Quick Actions -->
+  <div class="row g-4 mb-4">
+    <div class="col-lg-4 col-md-6">
+      <a href="book-appointment.html" class="quick-action-card card-primary">
+        <div class="action-icon">
           <i class="bi bi-calendar-plus"></i>
         </div>
-        <h3>Book Appointment</h3>
-        <p>Find and book your next medical appointment quickly</p>
-        <a href="available.html" class="btn btn-primary btn-lg">
+        <h5 class="action-title">Book Appointment</h5>
+        <p class="action-description">Schedule your next medical appointment with healthcare providers</p>
+        <button class="btn btn-primary btn-modern">
           <i class="bi bi-calendar-plus me-2"></i>Book Now
-        </a>
-      </div>
+        </button>
+      </a>
     </div>
 
-    <div class="col-lg-6 col-md-6">
-      <div class="main-action-card">
-        <div class="action-icon-large">
-          <i class="bi bi-calendar-check"></i>
+    <div class="col-lg-4 col-md-6">
+      <a href="available.html" class="quick-action-card card-success">
+        <div class="action-icon">
+          <i class="bi bi-search-heart"></i>
         </div>
-        <h3>My Appointments</h3>
-        <p>View your upcoming and past appointments</p>
-        <div id="upcomingAppointmentsList" class="upcoming-appointments">
-          <div class="loading-spinner">
-            <i class="bi bi-hourglass-split"></i>
-            <span>Loading appointments...</span>
-          </div>
-        </div>
-        <a href="my-appointments.html" class="btn btn-success btn-lg">
-          <i class="bi bi-calendar-check me-2"></i>View All Appointments
-        </a>
-      </div>
-    </div>
+        <h5 class="action-title">Find Clinics</h5>
+        <p class="action-description">Search for doctors and clinics near your location</p>
+        <button class="btn btn-success btn-modern">
+          <i class="bi bi-search me-2"></i>Search
+        </button>
+      </a>
     </div>
 
-  <!-- Quick Access -->
-  <div class="row g-3">
-    <div class="col-lg-3 col-md-6">
-      <a href="profile.html" class="quick-access-card">
-          <i class="bi bi-person-circle"></i>
-        <span>My Profile</span>
-        </a>
-      </div>
-    <div class="col-lg-3 col-md-6">
-      <a href="notifications.html" class="quick-access-card">
-          <i class="bi bi-bell"></i>
-        <span>Notifications</span>
-        </a>
-      </div>
-    <div class="col-lg-3 col-md-6">
-      <a href="support.html" class="quick-access-card">
-          <i class="bi bi-headset"></i>
-        <span>Support</span>
-        </a>
-      </div>
-    <div class="col-lg-3 col-md-6">
-      <a href="settings.html" class="quick-access-card">
-          <i class="bi bi-gear"></i>
-        <span>Settings</span>
+    <div class="col-lg-4 col-md-6">
+      <a href="profile.html" class="quick-action-card card-warning">
+        <div class="action-icon">
+          <i class="bi bi-file-medical"></i>
+        </div>
+        <h5 class="action-title">Medical Records</h5>
+        <p class="action-description">View your complete medical history and records</p>
+        <button class="btn btn-warning btn-modern">
+          <i class="bi bi-file-medical me-2"></i>View Records
+        </button>
       </a>
     </div>
   </div>
 
+  <!-- Recent Appointments and Medical Records -->
+  <div class="row g-4">
+    <div class="col-lg-6">
+      <div class="stats-card">
+        <h5 class="mb-4"><i class="bi bi-calendar-check me-2"></i>Recent Appointments</h5>
+        <div id="recentAppointments">
+          <div class="appointment-card">
+            <div class="appointment-time">Today, 2:00 PM</div>
+            <div class="appointment-title">Dr. Sarah Johnson - Cardiology</div>
+            <div class="appointment-details">Regular checkup and consultation</div>
+            <span class="appointment-status status-upcoming">Upcoming</span>
+          </div>
+          <div class="appointment-card">
+            <div class="appointment-time">Yesterday, 10:30 AM</div>
+            <div class="appointment-title">Dr. Michael Chen - General Practice</div>
+            <div class="appointment-details">Annual physical examination</div>
+            <span class="appointment-status status-confirmed">Completed</span>
+          </div>
+          <div class="appointment-card">
+            <div class="appointment-time">Last Week, 3:15 PM</div>
+            <div class="appointment-title">Dr. Emily Davis - Dermatology</div>
+            <div class="appointment-details">Skin condition follow-up</div>
+            <span class="appointment-status status-confirmed">Completed</span>
+          </div>
+        </div>
+        <div class="text-center mt-3">
+          <a href="my-appointments.html" class="btn btn-outline-primary">View All Appointments</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-6">
+      <div class="stats-card">
+        <h5 class="mb-4"><i class="bi bi-file-medical me-2"></i>Recent Medical Records</h5>
+        <div id="recentMedicalRecords">
+          <div class="medical-record-item">
+            <div class="record-date">December 15, 2024</div>
+            <div class="record-title">Blood Test Results</div>
+            <div class="record-description">Complete blood count - All values within normal range</div>
+          </div>
+          <div class="medical-record-item">
+            <div class="record-date">December 10, 2024</div>
+            <div class="record-title">X-Ray Report</div>
+            <div class="record-description">Chest X-ray - No abnormalities detected</div>
+          </div>
+          <div class="medical-record-item">
+            <div class="record-date">December 5, 2024</div>
+            <div class="record-title">Prescription Update</div>
+            <div class="record-description">Medication dosage adjusted based on recent visit</div>
+          </div>
+        </div>
+        <div class="text-center mt-3">
+          <a href="profile.html" class="btn btn-outline-success">View All Records</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Health Tips and Notifications -->
+  <div class="row g-4 mt-4">
+    <div class="col-lg-8">
+      <div class="stats-card">
+        <h5 class="mb-4"><i class="bi bi-lightbulb me-2"></i>Health Tips</h5>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="medical-record-item">
+              <div class="record-title">💧 Stay Hydrated</div>
+              <div class="record-description">Drink at least 8 glasses of water daily to maintain optimal health</div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="medical-record-item">
+              <div class="record-title">🏃 Regular Exercise</div>
+              <div class="record-description">Aim for 30 minutes of moderate exercise most days of the week</div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="medical-record-item">
+              <div class="record-title">😴 Quality Sleep</div>
+              <div class="record-description">Get 7-9 hours of quality sleep each night for better health</div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="medical-record-item">
+              <div class="record-title">🥗 Balanced Diet</div>
+              <div class="record-description">Include fruits, vegetables, and whole grains in your daily meals</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-4">
+      <div class="stats-card">
+        <h5 class="mb-4"><i class="bi bi-bell me-2"></i>Notifications</h5>
+        <div class="medical-record-item">
+          <div class="record-title">📅 Appointment Reminder</div>
+          <div class="record-description">Your appointment with Dr. Johnson is tomorrow at 2:00 PM</div>
+        </div>
+        <div class="medical-record-item">
+          <div class="record-title">📋 Test Results Ready</div>
+          <div class="record-description">Your blood test results are now available for review</div>
+        </div>
+        <div class="medical-record-item">
+          <div class="record-title">💊 Prescription Refill</div>
+          <div class="record-description">Your medication prescription is due for renewal</div>
+        </div>
+        <div class="text-center mt-3">
+          <a href="notifications.html" class="btn btn-outline-info">View All Notifications</a>
+        </div>
+      </div>
+    </div>
+  </div>
 
 </div>
 
@@ -1008,11 +928,6 @@
     window.location.href = 'login.html';
   }
 
-  // Force cache refresh
-  if (performance.navigation.type === 1) {
-    window.location.reload(true);
-  }
-  
   // Load user name when page loads
   document.addEventListener('DOMContentLoaded', function() {
     loadUserName();
@@ -1090,7 +1005,7 @@
     });
 
     // Animate cards on scroll
-    const cards = document.querySelectorAll('.dashboard-card');
+    const cards = document.querySelectorAll('.stats-card, .quick-action-card');
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -1108,7 +1023,7 @@
     });
 
     // Add active state to current nav link
-    const currentPage = window.location.pathname.split('/').pop() || 'homepage.html';
+    const currentPage = window.location.pathname.split('/').pop() || 'patient-dashboard.html';
     navLinks.forEach(link => {
       if (link.getAttribute('href') === currentPage) {
         link.classList.add('active');
@@ -1127,9 +1042,6 @@
 
     // Load real dashboard statistics
     loadDashboardStats();
-    
-    // Load upcoming appointments
-    loadUpcomingAppointments();
   });
 
   // Function to load real dashboard statistics from the server
@@ -1161,86 +1073,20 @@
     // Set default values for prescriptions and health score
     // These would need additional API endpoints in the future
     document.getElementById('activePrescriptions').textContent = '0';
-    document.getElementById('healthScore').textContent = '--';
-  }
-
-  // Function to load upcoming appointments for homepage
-  async function loadUpcomingAppointments() {
-    try {
-      const token = localStorage.getItem('token');
-      if (!token) {
-        document.getElementById('upcomingAppointmentsList').innerHTML = '';
-        return;
-      }
-
-      const response = await fetch('/api/appointments', {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to load appointments');
-      }
-
-      const appointments = await response.json();
-      displayUpcomingAppointments(appointments);
-    } catch (error) {
-      console.error('Error loading appointments:', error);
-      document.getElementById('upcomingAppointmentsList').innerHTML = '';
-    }
-  }
-
-  // Function to display upcoming appointments on homepage
-  function displayUpcomingAppointments(appointments) {
-    const container = document.getElementById('upcomingAppointmentsList');
     
-    if (appointments.length === 0) {
-      container.innerHTML = '';
-      return;
+    // Set a random health score for demonstration
+    const healthScore = Math.floor(Math.random() * 40) + 60; // Random score between 60-100
+    const healthScoreElement = document.getElementById('healthScore');
+    healthScoreElement.textContent = healthScore;
+    
+    // Add appropriate class based on score
+    if (healthScore < 70) {
+      healthScoreElement.classList.add('low');
+    } else if (healthScore < 85) {
+      healthScoreElement.classList.add('medium');
+    } else {
+      healthScoreElement.classList.add('high');
     }
-
-    // Sort appointments by date and time, show only upcoming ones
-    const now = new Date();
-    const upcomingAppointments = appointments
-      .filter(apt => {
-        const appointmentDate = new Date(apt.appointment_date + 'T' + apt.appointment_time);
-        return appointmentDate >= now && apt.status === 'scheduled';
-      })
-      .sort((a, b) => {
-        const dateA = new Date(a.appointment_date + 'T' + a.appointment_time);
-        const dateB = new Date(b.appointment_date + 'T' + b.appointment_time);
-        return dateA - dateB;
-      })
-      .slice(0, 3); // Show only next 3 appointments
-
-    if (upcomingAppointments.length === 0) {
-      container.innerHTML = '';
-      return;
-    }
-
-    container.innerHTML = upcomingAppointments.map(appointment => `
-      <div class="appointment-preview">
-        <div class="appointment-title">${appointment.service}</div>
-        <div class="appointment-details">
-          <i class="bi bi-building me-1"></i>${appointment.clinic_name}<br>
-          <i class="bi bi-calendar me-1"></i>${formatDate(appointment.appointment_date)}<br>
-          <i class="bi bi-clock me-1"></i>${appointment.appointment_time}
-        </div>
-        <span class="appointment-status status-${appointment.status}">${appointment.status}</span>
-      </div>
-    `).join('');
-  }
-
-  // Function to format date
-  function formatDate(dateString) {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', {
-      weekday: 'short',
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric'
-    });
   }
 </script>
 

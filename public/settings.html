@@ -433,6 +433,13 @@
       <i class="bi bi-headset"></i>
       <span class="nav-text">Help & Support</span>
     </a>
+    <a class="nav-link" href="profile.html">
+      <i class="bi bi-person-circle"></i>
+      <span class="nav-text">My Profile</span>
+    </a>
+  </div>
+  
+  <div class="nav-item">
     <a class="nav-link active" href="settings.html">
       <i class="bi bi-gear"></i>
       <span class="nav-text">Settings</span>
@@ -446,11 +453,11 @@
         <i class="bi bi-person"></i>
       </div>
       <div class="user-details">
-        <h6>John Doe</h6>
+        <h6 id="sidebarUserName">User</h6>
         <p>Patient</p>
       </div>
     </div>
-    <a href="index.html" class="logout-btn">
+    <a href="#" class="logout-btn" id="logoutBtn">
       <i class="bi bi-box-arrow-right me-2"></i>
       Logout
     </a>
@@ -476,27 +483,6 @@
       </button>
     </div>
 
-    <!-- Language -->
-    <div class="setting-item">
-      <div class="setting-label">
-        <i class="bi bi-translate me-2"></i>Language
-      </div>
-      <div class="setting-description">Choose your preferred language for the application</div>
-      <select class="form-select" id="languageSelect">
-        <option value="en" selected>
-          <span class="language-flag">🇺🇸</span>English
-        </option>
-        <option value="he">
-          <span class="language-flag">🇮🇱</span>עברית
-        </option>
-        <option value="ar">
-          <span class="language-flag">🇸🇦</span>العربية
-        </option>
-        <option value="ru">
-          <span class="language-flag">🇷🇺</span>Русский
-        </option>
-      </select>
-    </div>
 
     <!-- Notifications -->
     <div class="setting-item">
@@ -594,33 +580,6 @@
       </div>
     </div>
 
-    <!-- Appearance -->
-    <div class="setting-item">
-      <div class="setting-label">
-        <i class="bi bi-palette me-2"></i>Appearance
-      </div>
-      <div class="setting-description">Customize the look of the application</div>
-      
-      <div class="row">
-        <div class="col-md-6">
-          <label for="themeSelect" class="form-label">Theme</label>
-          <select class="form-select" id="themeSelect">
-            <option value="light" selected>Light</option>
-            <option value="dark">Dark</option>
-            <option value="auto">Auto (System)</option>
-          </select>
-        </div>
-        <div class="col-md-6">
-          <label for="fontSizeSelect" class="form-label">Text Size</label>
-          <select class="form-select" id="fontSizeSelect">
-            <option value="small">Small</option>
-            <option value="medium" selected>Medium</option>
-            <option value="large">Large</option>
-            <option value="extra-large">Extra Large</option>
-          </select>
-        </div>
-      </div>
-    </div>
 
     <!-- About -->
     <div class="setting-item">
@@ -633,13 +592,13 @@
         <div class="row">
           <div class="col-md-6">
             <strong>Version:</strong> 1.0.0<br>
-            <strong>Build Date:</strong> 2024<br>
+            <strong>Build Date:</strong> 2025 <br>
             <strong>Developer:</strong> QuickMed Team
           </div>
           <div class="col-md-6">
             <strong>Support:</strong> <a href="support.html">Contact support team</a><br>
-            <strong>Website:</strong> <a href="#" onclick="alert('Website coming soon')">Contact support team</a><br>
-            <strong>Privacy Policy:</strong> <a href="#" onclick="showPrivacyPolicy()">Read More</a>
+            <strong>Website:</strong> Coming Soon<br>
+            <strong>Privacy Policy:</strong> Coming Soon
           </div>
         </div>
       </div>
@@ -658,27 +617,56 @@
         In case of emergency, contact emergency services or your healthcare provider immediately.
       </div>
       
-      <button class="btn btn-outline-primary" onclick="showMedicalDisclaimer()">
-        <i class="bi bi-file-text"></i> Read Full Disclaimer
-      </button>
     </div>
 
-    <!-- Reset Settings -->
-    <div class="setting-item">
-      <div class="setting-label">
-        <i class="bi bi-arrow-clockwise me-2"></i>Reset Settings
-      </div>
-      <div class="setting-description">Reset all settings to default values</div>
-      
-      <button class="btn btn-outline-secondary" onclick="resetSettings()">
-        <i class="bi bi-arrow-clockwise"></i> Reset Settings
-      </button>
-    </div>
   </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
+  // Load user name from localStorage
+  function loadUserName() {
+    const user = localStorage.getItem('user');
+    if (user) {
+      try {
+        const userData = JSON.parse(user);
+        const userName = userData.username || userData.email || 'User';
+        
+        // Update sidebar user name
+        const sidebarUserName = document.getElementById('sidebarUserName');
+        if (sidebarUserName) {
+          sidebarUserName.textContent = userName;
+        }
+      } catch (error) {
+        console.error('Error parsing user data:', error);
+      }
+    }
+  }
+
+  // Logout function
+  function logout() {
+    // Clear user data from localStorage
+    localStorage.removeItem('user');
+    localStorage.removeItem('token');
+    
+    // Redirect to login page
+    window.location.href = 'login.html';
+  }
+
+  // Load user name when page loads
+  document.addEventListener('DOMContentLoaded', function() {
+    loadUserName();
+    
+    // Add logout event listener
+    const logoutBtn = document.getElementById('logoutBtn');
+    if (logoutBtn) {
+      logoutBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        logout();
+      });
+    }
+  });
+
   // Sidebar toggle functionality
   document.addEventListener('DOMContentLoaded', () => {
     const sidebar = document.querySelector('.sidebar');
@@ -803,60 +791,7 @@
     showNotification('Settings saved successfully!', 'success');
   }
 
-  // Reset settings
-  function resetSettings() {
-    if (confirm('Are you sure you want to reset all settings?')) {
-      localStorage.removeItem('quickmedSettings');
-      location.reload();
-    }
-  }
 
-  // Show medical disclaimer
-  function showMedicalDisclaimer() {
-    const disclaimer = `
-      <div class="modal fade" id="disclaimerModal" tabindex="-1">
-        <div class="modal-dialog modal-lg">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title">Medical Disclaimer</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-              <h6>Important Medical Disclaimer:</h6>
-              <p>QuickMed is an application for managing medical appointments and basic medical information. It's important to understand:</p>
-              <ul>
-                <li>This application is not a substitute for professional medical advice</li>
-                <li>In case of medical emergency, contact emergency services (101) immediately</li>
-                <li>Information in the app is general only and not personalized</li>
-                <li>Always consult with your healthcare provider before making medical decisions</li>
-                <li>The app is not responsible for outcomes from using the displayed information</li>
-              </ul>
-              <div class="alert alert-danger">
-                <strong>Important:</strong> In case of severe symptoms, seek immediate medical attention!
-              </div>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-primary" data-bs-dismiss="modal">I Understand</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    `;
-    
-    document.body.insertAdjacentHTML('beforeend', disclaimer);
-    const modal = new bootstrap.Modal(document.getElementById('disclaimerModal'));
-    modal.show();
-    
-    // Remove modal from page after closing
-    document.getElementById('disclaimerModal').addEventListener('hidden.bs.modal', function() {
-      this.remove();
-    });
-  }
-
-  // Show privacy policy
-  function showPrivacyPolicy() {
-    alert('Privacy Policy - This feature will be added soon');
-  }
 
   // Show notifications
   function showNotification(message, type = 'info') {

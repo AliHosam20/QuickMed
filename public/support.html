@@ -45,6 +45,10 @@
       transform: translateX(-280px);
     }
 
+    .sidebar.collapsed + .main-content {
+      margin-left: 0;
+    }
+
     /* Toggle Button */
     .sidebar-toggle {
       position: fixed;
@@ -65,11 +69,21 @@
       box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
       transition: all 0.3s ease;
       transform: translateX(280px);
+      pointer-events: auto;
+      user-select: none;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      outline: none;
+      touch-action: manipulation;
     }
 
     .sidebar-toggle:hover {
-      transform: scale(1.1);
       box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
+    }
+
+    .sidebar-toggle:active {
+      transform: scale(0.95);
     }
 
     .sidebar-toggle.collapsed {
@@ -93,6 +107,13 @@
     .sidebar-overlay.show {
       opacity: 1;
       visibility: visible;
+    }
+
+    /* Hide overlay on desktop */
+    @media (min-width: 769px) {
+      .sidebar-overlay {
+        display: none !important;
+      }
     }
 
     .sidebar-header {
@@ -275,6 +296,11 @@
       text-align: center;
       box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
       margin-left: 280px;
+      transition: margin-left 0.3s ease;
+    }
+
+    .logo-bar.expanded {
+      margin-left: 0;
     }
 
     /* Main Content */
@@ -282,6 +308,11 @@
       margin-left: 280px;
       padding: 30px;
       min-height: calc(100vh - 100px);
+      transition: margin-left 0.3s ease;
+    }
+
+    .main-content.expanded {
+      margin-left: 0 !important;
     }
 
     /* Support Styles */
@@ -438,6 +469,637 @@
       margin: 0;
     }
 
+    /* Chat Widget Styles */
+    .chat-widget-container {
+      max-width: 800px;
+      margin: 40px auto;
+    }
+
+    .chat-widget {
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      border: 1px solid #e9ecef;
+    }
+
+    .chat-widget-header {
+      background: linear-gradient(135deg, #3498db, #2980b9);
+      color: white;
+      padding: 25px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .chat-avatar-large {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+    }
+
+    .chat-info h3 {
+      margin: 0;
+      font-size: 1.3rem;
+      font-weight: 600;
+    }
+
+    .chat-status {
+      margin: 5px 0 0 0;
+      opacity: 0.9;
+      font-size: 0.9rem;
+    }
+
+    .chat-start-btn {
+      background: rgba(255, 255, 255, 0.2);
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      color: white;
+      padding: 12px 24px;
+      border-radius: 25px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-left: auto;
+    }
+
+    .chat-start-btn:hover {
+      background: rgba(255, 255, 255, 0.3);
+      border-color: rgba(255, 255, 255, 0.5);
+      transform: translateY(-2px);
+    }
+
+    .chat-preview {
+      padding: 25px;
+      background: #f8f9fa;
+    }
+
+    .message-preview {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .message-avatar-small {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #e74c3c, #c0392b);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      flex-shrink: 0;
+    }
+
+    .message-content-preview {
+      background: white;
+      padding: 12px 16px;
+      border-radius: 18px;
+      border: 1px solid #e9ecef;
+      font-size: 0.9rem;
+      line-height: 1.4;
+      color: #2c3e50;
+      max-width: 80%;
+    }
+
+    /* Support Page Styles */
+    .section-title {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #2c3e50;
+      margin-bottom: 30px;
+      text-align: center;
+    }
+
+    .quick-help-section {
+      margin: 50px 0;
+    }
+
+    .help-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+      margin-top: 30px;
+    }
+
+    .help-card {
+      background: white;
+      border-radius: 15px;
+      padding: 30px;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+      border: 1px solid #e9ecef;
+      transition: all 0.3s ease;
+    }
+
+    .help-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    }
+
+    .help-icon {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #3498db, #2980b9);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      margin-bottom: 20px;
+    }
+
+    .help-card h3 {
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: #2c3e50;
+      margin-bottom: 15px;
+    }
+
+    .help-card p {
+      color: #6c757d;
+      margin-bottom: 20px;
+      line-height: 1.6;
+    }
+
+    .faq-list, .help-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .faq-list li, .help-list li {
+      padding: 8px 0;
+      border-bottom: 1px solid #f8f9fa;
+      color: #495057;
+      position: relative;
+      padding-left: 20px;
+    }
+
+    .faq-list li:before, .help-list li:before {
+      content: "•";
+      color: #3498db;
+      font-weight: bold;
+      position: absolute;
+      left: 0;
+    }
+
+    .faq-list li:last-child, .help-list li:last-child {
+      border-bottom: none;
+    }
+
+    .contact-support-section {
+      margin: 60px 0;
+      background: #f8f9fa;
+      padding: 50px 30px;
+      border-radius: 20px;
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 30px;
+      margin-top: 30px;
+    }
+
+    .contact-card {
+      background: white;
+      border-radius: 15px;
+      padding: 30px;
+      text-align: center;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+    }
+
+    .contact-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    }
+
+    .contact-card .contact-icon {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #27ae60, #2ecc71);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      margin: 0 auto 20px;
+    }
+
+    .contact-card h3 {
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: #2c3e50;
+      margin-bottom: 15px;
+    }
+
+    .contact-card p {
+      color: #6c757d;
+      margin-bottom: 20px;
+      line-height: 1.6;
+    }
+
+    .contact-link {
+      color: #3498db;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1.1rem;
+      transition: color 0.3s ease;
+    }
+
+    .contact-link:hover {
+      color: #2980b9;
+      text-decoration: underline;
+    }
+
+    .hours-info p {
+      margin: 8px 0;
+      color: #495057;
+    }
+
+    /* Chat Interface Styles */
+    .chat-interface {
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      margin: 20px 0;
+      overflow: hidden;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .main-content.expanded .chat-interface {
+      max-width: 1000px;
+    }
+
+    .chat-container {
+      height: 500px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .chat-header {
+      background: linear-gradient(135deg, #3498db, #2980b9);
+      color: white;
+      padding: 15px 25px;
+      text-align: center;
+      flex-shrink: 0;
+    }
+
+    .chat-header h3 {
+      margin: 0 0 10px 0;
+      font-size: 1.5rem;
+      font-weight: 600;
+    }
+
+    .chat-subtitle {
+      margin: 0;
+      opacity: 0.9;
+      font-size: 1rem;
+    }
+
+    .chat-messages {
+      flex: 1;
+      padding: 15px;
+      overflow-y: auto;
+      background: #f8f9fa;
+      max-height: 250px;
+      min-height: 150px;
+    }
+
+    .message {
+      display: flex;
+      margin-bottom: 15px;
+      align-items: flex-start;
+    }
+
+    .message.user {
+      flex-direction: row-reverse;
+    }
+
+    .message-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #3498db, #2980b9);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+      margin: 0 10px;
+    }
+
+    .message.user .message-avatar {
+      background: linear-gradient(135deg, #27ae60, #2ecc71);
+    }
+
+    .message-content {
+      background: white;
+      padding: 15px 20px;
+      border-radius: 20px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      max-width: 70%;
+      line-height: 1.5;
+    }
+
+    .message.user .message-content {
+      background: linear-gradient(135deg, #27ae60, #2ecc71);
+      color: white;
+    }
+
+    .quick-options {
+      padding: 15px;
+      background: white;
+      border-top: 1px solid #e9ecef;
+      max-height: 180px;
+      overflow-y: auto;
+      flex-shrink: 0;
+    }
+
+    .quick-option-btn {
+      display: block;
+      width: 100%;
+      padding: 12px 15px;
+      margin: 8px 0;
+      background: #f8f9fa;
+      border: 2px solid #e9ecef;
+      border-radius: 12px;
+      color: #495057;
+      text-align: left;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .quick-option-btn:hover {
+      background: #3498db;
+      color: white;
+      border-color: #3498db;
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+    }
+
+    .quick-option-btn i {
+      font-size: 1.1rem;
+    }
+
+    .typing-indicator {
+      display: none;
+      padding: 20px;
+      background: #f8f9fa;
+      border-top: 1px solid #e9ecef;
+      color: #6c757d;
+      font-style: italic;
+    }
+
+    .typing-indicator.show {
+      display: block;
+    }
+
+    .typing-dots {
+      display: inline-block;
+      margin-left: 10px;
+    }
+
+    .typing-dots span {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #3498db;
+      margin: 0 2px;
+      animation: typing 1.4s infinite ease-in-out;
+    }
+
+    .typing-dots span:nth-child(1) { animation-delay: -0.32s; }
+    .typing-dots span:nth-child(2) { animation-delay: -0.16s; }
+
+    @keyframes typing {
+      0%, 80%, 100% { transform: scale(0); }
+      40% { transform: scale(1); }
+    }
+
+    .chat-input-container {
+      display: flex;
+      padding: 15px;
+      background: white;
+      border-top: 1px solid #e9ecef;
+      flex-shrink: 0;
+    }
+
+    .chat-input {
+      flex: 1;
+      padding: 12px 18px;
+      border: 2px solid #e9ecef;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      outline: none;
+      transition: border-color 0.3s ease;
+    }
+
+    .chat-input:focus {
+      border-color: #3498db;
+    }
+
+    .send-btn {
+      width: 40px;
+      height: 40px;
+      border: none;
+      background: linear-gradient(135deg, #3498db, #2980b9);
+      color: white;
+      border-radius: 50%;
+      margin-left: 10px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .send-btn:hover {
+      background: linear-gradient(135deg, #2980b9, #1f4e79);
+      transform: scale(1.05);
+    }
+
+    .chat-actions {
+      padding: 15px;
+      background: #f8f9fa;
+      border-top: 1px solid #e9ecef;
+      text-align: center;
+    }
+
+    .new-conversation-btn {
+      background: linear-gradient(135deg, #27ae60, #2ecc71);
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .new-conversation-btn:hover {
+      background: linear-gradient(135deg, #2ecc71, #27ae60);
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(46, 204, 113, 0.3);
+    }
+
+    /* Custom scrollbar for chat messages */
+    .chat-messages::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .chat-messages::-webkit-scrollbar-track {
+      background: #f1f1f1;
+      border-radius: 3px;
+    }
+
+    .chat-messages::-webkit-scrollbar-thumb {
+      background: #3498db;
+      border-radius: 3px;
+    }
+
+    .chat-messages::-webkit-scrollbar-thumb:hover {
+      background: #2980b9;
+    }
+
+    /* Custom scrollbar for quick options */
+    .quick-options::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .quick-options::-webkit-scrollbar-track {
+      background: #f1f1f1;
+      border-radius: 3px;
+    }
+
+    .quick-options::-webkit-scrollbar-thumb {
+      background: #3498db;
+      border-radius: 3px;
+    }
+
+    .quick-options::-webkit-scrollbar-thumb:hover {
+      background: #2980b9;
+    }
+
+    /* Chat Modal Styles */
+    .chat-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 10000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .chat-modal.show {
+      display: flex;
+    }
+
+    .chat-container {
+      background: white;
+      border-radius: 20px;
+      width: 90%;
+      max-width: 500px;
+      height: 80%;
+      max-height: 600px;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      overflow: hidden;
+    }
+
+    .chat-header {
+      background: linear-gradient(135deg, #3498db, #2980b9);
+      color: white;
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .chat-header h3 {
+      margin: 0;
+      font-size: 1.2rem;
+    }
+
+    .chat-close {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 1.5rem;
+      cursor: pointer;
+      padding: 5px;
+      border-radius: 50%;
+      transition: background 0.3s ease;
+    }
+
+    .chat-close:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+
+    .typing-indicator {
+      display: none;
+      align-items: center;
+      margin-bottom: 15px;
+      color: #6c757d;
+      font-size: 0.8rem;
+    }
+
+    .typing-indicator.show {
+      display: flex;
+    }
+
+    .typing-dots {
+      display: inline-block;
+      margin-left: 5px;
+    }
+
+    .typing-dots span {
+      display: inline-block;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: #6c757d;
+      margin: 0 1px;
+      animation: typing 1.4s infinite;
+    }
+
+    .typing-dots span:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+
+    .typing-dots span:nth-child(3) {
+      animation-delay: 0.4s;
+    }
+
+    @keyframes typing {
+      0%, 60%, 100% {
+        transform: translateY(0);
+      }
+      30% {
+        transform: translateY(-10px);
+      }
+    }
+
     /* Responsive Design */
     @media (max-width: 768px) {
       .sidebar {
@@ -449,15 +1111,25 @@
       }
 
       .sidebar-toggle {
-        transform: translateX(0);
+        left: 20px;
+        top: 20px;
       }
+
 
       .main-content {
         margin-left: 0;
         padding: 20px;
       }
 
+      .main-content.expanded {
+        margin-left: 0 !important;
+      }
+
       .logo-bar {
+        margin-left: 0;
+      }
+
+      .logo-bar.expanded {
         margin-left: 0;
       }
 
@@ -546,6 +1218,13 @@
         <i class="bi bi-headset"></i>
         <span class="nav-text">Help & Support</span>
       </a>
+      <a class="nav-link" href="profile.html">
+        <i class="bi bi-person-circle"></i>
+        <span class="nav-text">My Profile</span>
+      </a>
+    </div>
+    
+    <div class="nav-item">
       <a class="nav-link" href="settings.html">
         <i class="bi bi-gear"></i>
         <span class="nav-text">Settings</span>
@@ -560,12 +1239,12 @@
         </div>
         <div class="user-details">
           <a href="profile.html" style="text-decoration: none; color: inherit;">
-            <h6 style="cursor: pointer; transition: color 0.3s ease;">John Doe</h6>
+            <h6 id="sidebarUserName" style="cursor: pointer; transition: color 0.3s ease;">User</h6>
           </a>
           <p>Patient</p>
         </div>
       </div>
-      <a href="index.html" class="logout-btn">
+      <a href="#" class="logout-btn" id="logoutBtn">
         <i class="bi bi-box-arrow-right me-2"></i>
         Logout
       </a>
@@ -587,137 +1266,569 @@
       <!-- Support Header -->
       <div class="support-header">
         <h1 class="support-title">
-          <i class="bi bi-headset me-3"></i>
-          How Can We Help You?
+          <i class="bi bi-chat-dots me-3"></i>
+          Support Center
         </h1>
         <p class="support-subtitle">
-          Get the assistance you need with our comprehensive support resources
+          Get instant help with our support bot or browse our help resources
         </p>
       </div>
 
-      <!-- Support Options Grid -->
-      <div class="support-grid">
-        <div class="support-card">
-          <div class="support-card-icon">
-            <i class="bi bi-question-circle"></i>
-          </div>
-          <h3 class="support-card-title">FAQ</h3>
-          <p class="support-card-description">
-            Find answers to commonly asked questions about our services, appointments, and platform usage.
-          </p>
-          <a href="#" class="support-card-link">
-            Browse FAQ <i class="bi bi-arrow-right ms-2"></i>
-          </a>
+      <!-- Chat Interface -->
+      <div class="chat-interface">
+        <div class="chat-container">
+          <div class="chat-header">
+            <h3><i class="bi bi-robot me-2"></i>QuickMed Support Bot</h3>
+            <p class="chat-subtitle">How can I help you today?</p>
         </div>
 
-        <div class="support-card">
-          <div class="support-card-icon">
-            <i class="bi bi-calendar-check"></i>
+          <div class="chat-messages" id="chatMessages">
+            <div class="message bot">
+              <div class="message-avatar">
+                <i class="bi bi-robot"></i>
           </div>
-          <h3 class="support-card-title">Appointment Help</h3>
-          <p class="support-card-description">
-            Learn how to book, reschedule, or cancel appointments, and understand our booking policies.
-          </p>
-          <a href="#" class="support-card-link">
-            Appointment Guide <i class="bi bi-arrow-right ms-2"></i>
-          </a>
+              <div class="message-content">
+                Hi! I'm the QuickMed support bot. Choose one of the options below to get started:
+        </div>
+          </div>
         </div>
 
-        <div class="support-card">
-          <div class="support-card-icon">
-            <i class="bi bi-file-medical"></i>
-          </div>
-          <h3 class="support-card-title">Medical Records</h3>
-          <p class="support-card-description">
-            Understand how to access, manage, and share your medical records securely through our platform.
-          </p>
-          <a href="#" class="support-card-link">
-            Records Guide <i class="bi bi-arrow-right ms-2"></i>
-          </a>
+          <div class="quick-options" id="quickOptions">
+            <button class="quick-option-btn" data-option="How do I book an appointment?">
+              <i class="bi bi-calendar-plus me-2"></i>
+              How do I book an appointment?
+            </button>
+            <button class="quick-option-btn" data-option="How do I update my profile?">
+              <i class="bi bi-person-gear me-2"></i>
+              How do I update my profile?
+            </button>
+            <button class="quick-option-btn" data-option="How do I view my medical records?">
+              <i class="bi bi-file-medical me-2"></i>
+              How do I view my medical records?
+            </button>
+            <button class="quick-option-btn" data-option="How do I reset my password?">
+              <i class="bi bi-key me-2"></i>
+              How do I reset my password?
+            </button>
+            <button class="quick-option-btn" data-option="I have a technical issue">
+              <i class="bi bi-tools me-2"></i>
+              I have a technical issue
+            </button>
+            <button class="quick-option-btn" data-option="I need general help">
+              <i class="bi bi-question-circle me-2"></i>
+              I need general help
+            </button>
         </div>
 
-        <div class="support-card">
-          <div class="support-card-icon">
-            <i class="bi bi-shield-check"></i>
+          <div class="typing-indicator" id="typingIndicator">
+            <i class="bi bi-robot me-2"></i>
+            Bot is typing
+            <div class="typing-dots">
+              <span></span>
+              <span></span>
+              <span></span>
           </div>
-          <h3 class="support-card-title">Privacy & Security</h3>
-          <p class="support-card-description">
-            Learn about our privacy policies, data protection measures, and how we keep your information secure.
-          </p>
-          <a href="#" class="support-card-link">
-            Privacy Policy <i class="bi bi-arrow-right ms-2"></i>
-          </a>
         </div>
 
-        <div class="support-card">
-          <div class="support-card-icon">
-            <i class="bi bi-phone"></i>
-          </div>
-          <h3 class="support-card-title">Technical Support</h3>
-          <p class="support-card-description">
-            Get help with technical issues, account problems, or platform navigation difficulties.
-          </p>
-          <a href="#" class="support-card-link">
-            Get Help <i class="bi bi-arrow-right ms-2"></i>
-          </a>
-        </div>
-
-        <div class="support-card">
-          <div class="support-card-icon">
-            <i class="bi bi-chat-dots"></i>
-          </div>
-          <h3 class="support-card-title">Live Chat</h3>
-          <p class="support-card-description">
-            Connect with our support team in real-time for immediate assistance with any questions or issues.
-          </p>
-          <a href="#" class="support-card-link">
-            Start Chat <i class="bi bi-arrow-right ms-2"></i>
-          </a>
-        </div>
+          <div class="chat-input-container">
+            <input type="text" class="chat-input" id="chatInput" placeholder="Type your question here..." onkeypress="handleKeyPress(event)">
+            <button class="send-btn" onclick="sendMessage()">
+              <i class="bi bi-send"></i>
+            </button>
       </div>
 
-      <!-- Contact Section -->
-      <div class="contact-section">
-        <h2 class="contact-title">Still Need Help?</h2>
-        <p class="lead">Our support team is here to help you 24/7. Reach out to us through any of these channels:</p>
-        
-        <div class="contact-info">
-          <div class="contact-item">
-            <div class="contact-icon">
-              <i class="bi bi-telephone"></i>
+          <div class="chat-actions">
+            <button class="new-conversation-btn" id="newConversationBtn">
+              <i class="bi bi-arrow-clockwise me-2"></i>
+              Start New Conversation
+            </button>
             </div>
-            <div class="contact-text">
-              <div class="contact-label">Phone Support</div>
-              <p class="contact-value">Contact support team</p>
             </div>
           </div>
 
-          <div class="contact-item">
-            <div class="contact-icon">
-              <i class="bi bi-envelope"></i>
-            </div>
-            <div class="contact-text">
-              <div class="contact-label">Email Support</div>
-              <p class="contact-value">Contact support team</p>
             </div>
           </div>
 
-          <div class="contact-item">
-            <div class="contact-icon">
-              <i class="bi bi-clock"></i>
-            </div>
-            <div class="contact-text">
-              <div class="contact-label">Support Hours</div>
-              <p class="contact-value">Contact support team</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script>
+    // Load user name from localStorage
+    function loadUserName() {
+      const user = localStorage.getItem('user');
+      if (user) {
+        try {
+          const userData = JSON.parse(user);
+          const userName = userData.username || userData.email || 'User';
+          
+          // Update sidebar user name
+          const sidebarUserName = document.getElementById('sidebarUserName');
+          if (sidebarUserName) {
+            sidebarUserName.textContent = userName;
+          }
+        } catch (error) {
+          console.error('Error parsing user data:', error);
+        }
+      }
+    }
+
+    // Logout function
+    function logout() {
+      // Clear user data from localStorage
+      localStorage.removeItem('user');
+      localStorage.removeItem('token');
+      
+      // Redirect to login page
+      window.location.href = 'login.html';
+    }
+
+    // Chat Bot Functions
+    function selectQuickOption(option) {
+      // Add user message
+      addMessage(option, 'user');
+      
+      // Hide quick options temporarily
+      document.getElementById('quickOptions').style.display = 'none';
+      
+      // Show typing indicator
+      showTypingIndicator();
+      
+      // Simulate bot response
+      setTimeout(() => {
+        hideTypingIndicator();
+        const botResponse = getBotResponse(option);
+        addMessage(botResponse, 'bot');
+        
+        // Show follow-up options after bot response
+        setTimeout(() => {
+          showFollowUpOptions(option);
+        }, 500);
+      }, 1500);
+    }
+
+    function showFollowUpOptions(originalOption) {
+      const quickOptions = document.getElementById('quickOptions');
+      let followUpButtons = '';
+      
+      if (originalOption.includes('appointment')) {
+        followUpButtons = `
+          <button class="quick-option-btn" data-option="general checkup">
+            <i class="bi bi-heart-pulse me-2"></i>
+            General checkup
+          </button>
+          <button class="quick-option-btn" data-option="specialist consultation">
+            <i class="bi bi-person-badge me-2"></i>
+            Specialist consultation
+          </button>
+          <button class="quick-option-btn" data-option="emergency care">
+            <i class="bi bi-exclamation-triangle me-2"></i>
+            Emergency care
+          </button>
+          <button class="quick-option-btn" data-option="follow-up visit">
+            <i class="bi bi-arrow-repeat me-2"></i>
+            Follow-up visit
+          </button>
+        `;
+      } else if (originalOption.includes('profile')) {
+        followUpButtons = `
+          <button class="quick-option-btn" data-option="personal info">
+            <i class="bi bi-person me-2"></i>
+            Personal info (name, email, phone)
+          </button>
+          <button class="quick-option-btn" data-option="medical information">
+            <i class="bi bi-heart-pulse me-2"></i>
+            Medical information
+          </button>
+          <button class="quick-option-btn" data-option="account settings">
+            <i class="bi bi-gear me-2"></i>
+            Account settings
+          </button>
+          <button class="quick-option-btn" data-option="something else">
+            <i class="bi bi-question-circle me-2"></i>
+            Something else?
+          </button>
+        `;
+      } else if (originalOption.includes('medical records')) {
+        followUpButtons = `
+          <button class="quick-option-btn" data-option="appointment history">
+            <i class="bi bi-calendar-check me-2"></i>
+            Appointment history
+          </button>
+          <button class="quick-option-btn" data-option="test results">
+            <i class="bi bi-clipboard-data me-2"></i>
+            Test results
+          </button>
+          <button class="quick-option-btn" data-option="prescriptions">
+            <i class="bi bi-capsule me-2"></i>
+            Prescriptions
+          </button>
+          <button class="quick-option-btn" data-option="doctor notes">
+            <i class="bi bi-file-text me-2"></i>
+            Doctor notes
+          </button>
+          <button class="quick-option-btn" data-option="something specific">
+            <i class="bi bi-question-circle me-2"></i>
+            Something specific?
+          </button>
+        `;
+      } else if (originalOption.includes('password')) {
+        followUpButtons = `
+          <button class="quick-option-btn" data-option="can't find forgot password button">
+            <i class="bi bi-search me-2"></i>
+            Can't find "Forgot Password" button
+          </button>
+          <button class="quick-option-btn" data-option="not receiving reset email">
+            <i class="bi bi-envelope-x me-2"></i>
+            Not receiving reset email
+          </button>
+          <button class="quick-option-btn" data-option="wrong email address">
+            <i class="bi bi-exclamation-triangle me-2"></i>
+            Wrong email address
+          </button>
+          <button class="quick-option-btn" data-option="other problem">
+            <i class="bi bi-question-circle me-2"></i>
+            Other problem?
+          </button>
+        `;
+      } else if (originalOption.includes('technical issue')) {
+        followUpButtons = `
+          <button class="quick-option-btn" data-option="page won't load">
+            <i class="bi bi-x-circle me-2"></i>
+            Page won't load
+          </button>
+          <button class="quick-option-btn" data-option="error message appears">
+            <i class="bi bi-exclamation-triangle me-2"></i>
+            Error message appears
+          </button>
+          <button class="quick-option-btn" data-option="can't login">
+            <i class="bi bi-lock me-2"></i>
+            Can't login
+          </button>
+          <button class="quick-option-btn" data-option="something else">
+            <i class="bi bi-question-circle me-2"></i>
+            Something else?
+          </button>
+        `;
+      } else {
+        followUpButtons = `
+          <button class="quick-option-btn" data-option="book appointments">
+            <i class="bi bi-calendar-plus me-2"></i>
+            Book appointments
+          </button>
+          <button class="quick-option-btn" data-option="view medical records">
+            <i class="bi bi-file-medical me-2"></i>
+            View medical records
+          </button>
+          <button class="quick-option-btn" data-option="update profile">
+            <i class="bi bi-person-gear me-2"></i>
+            Update profile
+          </button>
+          <button class="quick-option-btn" data-option="reset password">
+            <i class="bi bi-key me-2"></i>
+            Reset password
+          </button>
+          <button class="quick-option-btn" data-option="technical issues">
+            <i class="bi bi-tools me-2"></i>
+            Technical issues
+          </button>
+        `;
+      }
+      
+      quickOptions.innerHTML = followUpButtons;
+      quickOptions.style.display = 'block';
+      
+      // Add event listeners to the new buttons
+      const newButtons = quickOptions.querySelectorAll('.quick-option-btn[data-option]');
+      newButtons.forEach(button => {
+        button.addEventListener('click', function() {
+          const option = this.getAttribute('data-option');
+          selectQuickOption(option);
+        });
+      });
+    }
+
+    function startNewConversation() {
+      // Clear chat messages
+      const chatMessages = document.getElementById('chatMessages');
+      chatMessages.innerHTML = `
+        <div class="message bot">
+          <div class="message-avatar">
+            <i class="bi bi-robot"></i>
+            </div>
+          <div class="message-content">
+            Hi! I'm the QuickMed support bot. Choose one of the options below to get started:
+            </div>
+          </div>
+      `;
+      
+      // Reset quick options to original
+      const quickOptions = document.getElementById('quickOptions');
+      quickOptions.innerHTML = `
+        <button class="quick-option-btn" data-option="How do I book an appointment?">
+          <i class="bi bi-calendar-plus me-2"></i>
+          How do I book an appointment?
+        </button>
+        <button class="quick-option-btn" data-option="How do I update my profile?">
+          <i class="bi bi-person-gear me-2"></i>
+          How do I update my profile?
+        </button>
+        <button class="quick-option-btn" data-option="How do I view my medical records?">
+          <i class="bi bi-file-medical me-2"></i>
+          How do I view my medical records?
+        </button>
+        <button class="quick-option-btn" data-option="How do I reset my password?">
+          <i class="bi bi-key me-2"></i>
+          How do I reset my password?
+        </button>
+        <button class="quick-option-btn" data-option="I have a technical issue">
+          <i class="bi bi-tools me-2"></i>
+          I have a technical issue
+        </button>
+        <button class="quick-option-btn" data-option="I need general help">
+          <i class="bi bi-question-circle me-2"></i>
+          I need general help
+        </button>
+      `;
+      quickOptions.style.display = 'block';
+      
+      // Add event listeners to the reset buttons
+      const resetButtons = quickOptions.querySelectorAll('.quick-option-btn[data-option]');
+      resetButtons.forEach(button => {
+        button.addEventListener('click', function() {
+          const option = this.getAttribute('data-option');
+          selectQuickOption(option);
+        });
+      });
+      
+      // Clear input
+      document.getElementById('chatInput').value = '';
+    }
+
+    function handleKeyPress(event) {
+      if (event.key === 'Enter') {
+        sendMessage();
+      }
+    }
+
+    function sendMessage() {
+      const input = document.getElementById('chatInput');
+      const message = input.value.trim();
+      
+      if (message) {
+        addMessage(message, 'user');
+        input.value = '';
+        
+        // Show typing indicator
+        showTypingIndicator();
+        
+        // Simulate bot response
+        setTimeout(() => {
+          hideTypingIndicator();
+          const botResponse = getBotResponse(message);
+          addMessage(botResponse, 'bot');
+        }, 1500);
+      }
+    }
+
+    function addMessage(text, sender) {
+      const messagesContainer = document.getElementById('chatMessages');
+      const messageDiv = document.createElement('div');
+      messageDiv.className = `message ${sender}`;
+      
+      const avatar = document.createElement('div');
+      avatar.className = 'message-avatar';
+      avatar.innerHTML = sender === 'user' ? '<i class="bi bi-person"></i>' : '<i class="bi bi-robot"></i>';
+      
+      const content = document.createElement('div');
+      content.className = 'message-content';
+      content.textContent = text;
+      
+      messageDiv.appendChild(avatar);
+      messageDiv.appendChild(content);
+      messagesContainer.appendChild(messageDiv);
+      
+      // Scroll to bottom
+      messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    }
+
+    function showTypingIndicator() {
+      document.getElementById('typingIndicator').classList.add('show');
+    }
+
+    function hideTypingIndicator() {
+      document.getElementById('typingIndicator').classList.remove('show');
+    }
+
+    function getBotResponse(userMessage) {
+      const message = userMessage.toLowerCase();
+      
+      // Specific responses for quick options with follow-up questions
+      if (message.includes('how do i book an appointment?')) {
+        return 'Go to "Find Clinics" in your dashboard and choose your appointment type:\n\n**What type of appointment?**\n• General checkup\n• Specialist consultation\n• Emergency care\n• Follow-up visit';
+      }
+      
+      if (message.includes('how do i update my profile?')) {
+        return 'Click "My Profile" in the sidebar and choose what to update:\n\n**What would you like to update?**\n• Personal info (name, email, phone)\n• Medical information\n• Account settings\n• Something else?';
+      }
+      
+      if (message.includes('how do i view my medical records?')) {
+        return 'Go to your profile page and click "Medical Records". What are you looking for?\n\n**What are you looking for?**\n• Appointment history\n• Test results\n• Prescriptions\n• Doctor notes\n• Something specific?';
+      }
+      
+      if (message.includes('how do i reset my password?')) {
+        return 'Go to login page, click "Forgot Password", enter your email. Having trouble?\n\n**What\'s the issue?**\n• Can\'t find "Forgot Password" button\n• Not receiving reset email\n• Wrong email address\n• Other problem?';
+      }
+      
+      if (message.includes('i have a technical issue')) {
+        return 'I\'ll help you fix this! What exactly is happening?\n\n**What\'s the problem?**\n• Page won\'t load\n• Error message appears\n• Can\'t login\n• Something else?';
+      }
+      
+      if (message.includes('i need general help')) {
+        return 'Welcome to QuickMed! What do you need help with?\n\n**What can I help you with?**\n• Book appointments\n• View medical records\n• Update your profile\n• Reset password\n• Technical issues';
+      }
+      
+      // Follow-up responses for common questions
+      if (message.includes('general checkup')) {
+        return 'Perfect! For a general checkup, you can book with any family doctor or general practitioner. When would you like your appointment?\n\n**What time works?**\n• Morning (8 AM - 12 PM)\n• Afternoon (12 PM - 5 PM)\n• Evening (5 PM - 8 PM)\n• Is this urgent?';
+      }
+      
+      if (message.includes('specialist consultation')) {
+        return 'Great! For a specialist consultation, you\'ll need to choose your specialty. What type of specialist do you need?\n\n**What specialty?**\n• Cardiology (Heart)\n• Dermatology (Skin)\n• Orthopedics (Bones)\n• Other specialty?';
+      }
+      
+      if (message.includes('emergency care')) {
+        return 'For emergency care, please call 911 immediately or go to your nearest emergency room. For urgent but non-emergency care, you can book a same-day appointment. Is this truly an emergency?\n\n**What\'s the situation?**\n• True emergency - call 911\n• Urgent but not emergency\n• Need same-day appointment';
+      }
+      
+      if (message.includes('follow-up visit')) {
+        return 'For a follow-up visit, you can book with the same doctor you saw before. Do you know which doctor you need to see?\n\n**Who was your doctor?**\n• Same doctor as before\n• Different doctor\n• Not sure which doctor';
+      }
+      
+      if (message.includes('what type of appointment') || message.includes('appointment type')) {
+        return 'Choose your appointment type:\n\n**What type of care?**\n• General checkup\n• Specialist consultation\n• Emergency care\n• Follow-up visit';
+      }
+      
+      if (message.includes('personal info')) {
+        return 'To update your personal info, go to "My Profile" and click "Edit" next to Personal Information. What do you need to change?\n\n**What to update?**\n• Name\n• Email address\n• Phone number\n• Address\n• All of the above';
+      }
+      
+      if (message.includes('medical information')) {
+        return 'To update your medical information, go to "My Profile" and scroll to the Medical Information section. What do you need to update?\n\n**What to update?**\n• Emergency contact\n• Insurance information\n• Medical history\n• Allergies\n• Current medications';
+      }
+      
+      if (message.includes('account settings')) {
+        return 'To update your account settings, go to "My Profile" and click on "Account Settings". What would you like to change?\n\n**What to change?**\n• Notification preferences\n• Privacy settings\n• Password\n• Email preferences\n• Language settings';
+      }
+      
+      if (message.includes('something else')) {
+        return 'I\'m here to help! What specific information do you need to update in your profile?\n\n**What do you need help with?**\n• Can\'t find the profile section\n• Specific field not working\n• Need to add new information\n• Other issue?';
+      }
+      
+      if (message.includes('preferred date') || message.includes('when') || message.includes('schedule')) {
+        return 'When would you like your appointment?\n\n**What time works?**\n• Morning (8 AM - 12 PM)\n• Afternoon (12 PM - 5 PM)\n• Evening (5 PM - 8 PM)\n• Is this urgent?';
+      }
+      
+      if (message.includes('appointment history')) {
+        return 'To view your appointment history, go to "My Profile" → "Medical Records" → "Appointment History". What are you looking for?\n\n**What do you need?**\n• Past appointments\n• Upcoming appointments\n• Specific date range\n• Doctor visit details';
+      }
+      
+      if (message.includes('test results')) {
+        return 'To view your test results, go to "My Profile" → "Medical Records" → "Test Results". What type of results are you looking for?\n\n**What results?**\n• Blood work\n• Lab tests\n• Imaging (X-rays, MRI)\n• Recent results\n• All results';
+      }
+      
+      if (message.includes('prescriptions')) {
+        return 'To view your prescriptions, go to "My Profile" → "Medical Records" → "Prescriptions". What do you need to know?\n\n**What about prescriptions?**\n• Current medications\n• Past prescriptions\n• Refill information\n• Dosage instructions\n• Drug interactions';
+      }
+      
+      if (message.includes('doctor notes')) {
+        return 'To view doctor notes, go to "My Profile" → "Medical Records" → "Clinical Notes". What notes are you looking for?\n\n**What notes?**\n• Recent visit notes\n• Treatment plans\n• Recommendations\n• Follow-up instructions\n• All notes';
+      }
+      
+      if (message.includes('something specific')) {
+        return 'I\'m here to help you find specific medical records! What exactly are you looking for?\n\n**What do you need?**\n• Records from specific date\n• Information from specific doctor\n• Particular test or procedure\n• Can\'t find what you need';
+      }
+      
+      if (message.includes('specific clinic') || message.includes('clinic location') || message.includes('nearby')) {
+        return 'Go to "Find Clinics" in the menu and search by location. What area are you in?\n\n**What area?**\n• City or neighborhood?\n• Any preferred clinic?\n• Specific specialty needed?';
+      }
+      
+      if (message.includes('can\'t find forgot password button')) {
+        return 'If you can\'t find the "Forgot Password" button, try refreshing the page or clearing your browser cache. Still having trouble?\n\n**What\'s happening?**\n• Button not visible\n• Page looks different\n• Need alternative method\n• Other issue?';
+      }
+      
+      if (message.includes('not receiving reset email')) {
+        return 'If you\'re not receiving the reset email, check your spam folder first. Still not there?\n\n**What to check?**\n• Spam/junk folder\n• Correct email address\n• Email server issues\n• Need to contact support';
+      }
+      
+      if (message.includes('wrong email address')) {
+        return 'If you used the wrong email address, you\'ll need to contact our support team to update your account. What\'s the correct email?\n\n**What\'s the issue?**\n• Typo in email address\n• Old email no longer works\n• Need to add new email\n• Other problem?';
+      }
+      
+      if (message.includes('other problem')) {
+        return 'I\'m here to help with your password reset! What specific problem are you experiencing?\n\n**What\'s the issue?**\n• Reset link not working\n• Password requirements not met\n• Account locked\n• Something else?';
+      }
+      
+      if (message.includes('page won\'t load')) {
+        return 'If the page won\'t load, try refreshing (F5) or clearing your browser cache. Still not working?\n\n**What to try?**\n• Refresh the page\n• Clear browser cache\n• Try different browser\n• Check internet connection';
+      }
+      
+      if (message.includes('error message appears')) {
+        return 'If you\'re seeing an error message, please tell me what it says exactly. This will help me give you the right solution!\n\n**What\'s the error?**\n• Copy the exact error message\n• When does it appear?\n• What were you doing?\n• Need more help?';
+      }
+      
+      if (message.includes('can\'t login')) {
+        return 'If you can\'t login, let\'s troubleshoot this step by step. What\'s happening when you try to login?\n\n**What\'s the issue?**\n• Wrong password\n• Account locked\n• Forgot username\n• Other problem?';
+      }
+      
+      if (message.includes('something else')) {
+        return 'I\'m here to help with your technical issue! What exactly is happening?\n\n**What\'s the problem?**\n• Describe the issue\n• When did it start?\n• What were you doing?\n• Need immediate help?';
+      }
+      
+      // General responses
+      if (message.includes('hello') || message.includes('hi') || message.includes('hey')) {
+        return 'Hello! Welcome to QuickMed! What do you need help with?\n\n**What can I help with?**\n• Book appointments\n• Update profile\n• View records\n• Technical issues';
+      }
+      
+      if (message.includes('thank') || message.includes('thanks')) {
+        return 'You\'re welcome! Need anything else?\n\n**What else can I help with?**\n• More questions\n• Book appointment\n• Other help';
+      }
+      
+      if (message.includes('bye') || message.includes('goodbye') || message.includes('see you')) {
+        return 'Goodbye! 👋 Thanks for using QuickMed! Take care!';
+      }
+      
+      // Default response with more helpful options
+      return 'I understand! What do you need help with?\n\n**What can I help with?**\n• Book appointments\n• Update profile\n• View records\n• Reset password\n• Technical issues';
+    }
+
+    // Load user name when page loads
+    document.addEventListener('DOMContentLoaded', function() {
+      loadUserName();
+      
+      // Add logout event listener
+      const logoutBtn = document.getElementById('logoutBtn');
+      if (logoutBtn) {
+        logoutBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          logout();
+        });
+      }
+      
+      // Add event listeners to initial buttons
+      const initialButtons = document.querySelectorAll('.quick-option-btn[data-option]');
+      initialButtons.forEach(button => {
+        button.addEventListener('click', function() {
+          const option = this.getAttribute('data-option');
+          selectQuickOption(option);
+        });
+      });
+      
+      // Add event listener to new conversation button
+      const newConversationBtn = document.getElementById('newConversationBtn');
+      if (newConversationBtn) {
+        newConversationBtn.addEventListener('click', startNewConversation);
+      }
+    });
+
     // Hide loading spinner when page is loaded
     window.addEventListener('load', function() {
       document.getElementById('loadingSpinner').style.display = 'none';
@@ -729,10 +1840,51 @@
     const sidebarOverlay = document.getElementById('sidebarOverlay');
     let isMobile = window.innerWidth <= 768;
 
-    function toggleSidebar() {
+    function toggleSidebar(event) {
+      if (event) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+      
       sidebar.classList.toggle('collapsed');
       sidebarToggle.classList.toggle('collapsed');
-      sidebarOverlay.classList.toggle('show');
+      
+      // Update main content and logo bar
+      const mainContent = document.querySelector('.main-content');
+      const logoBar = document.querySelector('.logo-bar');
+      
+      if (sidebar.classList.contains('collapsed')) {
+        mainContent.classList.add('expanded');
+        logoBar.classList.add('expanded');
+        sidebarToggle.style.transform = 'translateX(0)';
+        sidebarOverlay.classList.remove('show');
+      } else {
+        mainContent.classList.remove('expanded');
+        logoBar.classList.remove('expanded');
+        sidebarToggle.style.transform = 'translateX(280px)';
+        if (isMobile) {
+          sidebarOverlay.classList.add('show');
+        } else {
+          sidebarOverlay.classList.remove('show');
+        }
+      }
+    }
+
+    // Initialize button position
+    const mainContent = document.querySelector('.main-content');
+    const logoBar = document.querySelector('.logo-bar');
+    if (isMobile) {
+      sidebar.classList.add('collapsed');
+      sidebarToggle.classList.add('collapsed');
+      sidebarToggle.style.transform = 'translateX(0)';
+      sidebarOverlay.classList.remove('show');
+      mainContent.classList.add('expanded');
+      logoBar.classList.add('expanded');
+    } else {
+      sidebarToggle.style.transform = 'translateX(280px)';
+      sidebarOverlay.classList.remove('show');
+      mainContent.classList.remove('expanded');
+      logoBar.classList.remove('expanded');
     }
 
     sidebarToggle.addEventListener('click', toggleSidebar);
@@ -760,11 +1912,24 @@
 
     // Handle window resize
     window.addEventListener('resize', () => {
-      isMobile = window.innerWidth <= 768;
-      if (!isMobile) {
+      const newIsMobile = window.innerWidth <= 768;
+      if (newIsMobile !== isMobile) {
+        isMobile = newIsMobile;
+        if (isMobile) {
+          sidebar.classList.add('collapsed');
+          sidebarToggle.classList.add('collapsed');
+          sidebarToggle.style.transform = 'translateX(0)';
+          sidebarOverlay.classList.remove('show');
+          mainContent.classList.add('expanded');
+          logoBar.classList.add('expanded');
+        } else {
         sidebar.classList.remove('collapsed');
         sidebarToggle.classList.remove('collapsed');
+          sidebarToggle.style.transform = 'translateX(280px)';
         sidebarOverlay.classList.remove('show');
+          mainContent.classList.remove('expanded');
+          logoBar.classList.remove('expanded');
+        }
       }
     });
   </script>

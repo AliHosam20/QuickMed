@@ -576,6 +576,14 @@
       <i class="bi bi-search"></i>
       <span class="nav-text">Find Clinics</span>
     </a>
+    <a class="nav-link" href="my-appointments.html">
+      <i class="bi bi-calendar-check"></i>
+      <span class="nav-text">My Appointments</span>
+    </a>
+    <a class="nav-link" href="book-appointment.html">
+      <i class="bi bi-calendar-plus"></i>
+      <span class="nav-text">Book Appointment</span>
+    </a>
     <a class="nav-link" href="ClinicProfile.html">
       <i class="bi bi-building"></i>
       <span class="nav-text">Clinic Profile</span>
@@ -593,10 +601,9 @@
        <i class="bi bi-file-medical"></i>
        <span class="nav-text">Medical Records</span>
      </a>
-    <a class="nav-link" href="settings.html">
+    <a class="nav-link" href="notifications.html">
       <i class="bi bi-bell"></i>
       <span class="nav-text">Notifications</span>
-      <span class="nav-badge">3</span>
     </a>
   </div>
 
@@ -612,6 +619,13 @@
       <span class="nav-text">My Profile</span>
     </a>
   </div>
+  
+  <div class="nav-item">
+    <a class="nav-link" href="settings.html">
+      <i class="bi bi-gear"></i>
+      <span class="nav-text">Settings</span>
+    </a>
+  </div>
 
   <!-- User Section -->
   <div class="user-section">
@@ -620,11 +634,11 @@
         <i class="bi bi-person"></i>
       </div>
       <div class="user-details">
-        <h6>John Doe</h6>
+        <h6 id="sidebarUserName">User</h6>
         <p>Patient</p>
       </div>
     </div>
-    <a href="index.html" class="logout-btn">
+    <a href="#" class="logout-btn" id="logoutBtn">
       <i class="bi bi-box-arrow-right me-2"></i>
       Logout
     </a>
@@ -644,7 +658,7 @@
       </div>
       <div class="col-md-9">
         <div class="profile-info">
-          <h2>John Doe</h2>
+          <h2 id="profileUserName">User</h2>
           <p>Patient ID: <span id="patientId">Loading...</span></p>
           <div class="profile-stats">
             <div class="stat-item">
@@ -682,13 +696,13 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label class="form-label">First Name</label>
-                <input type="text" class="form-control" value="John">
+                <input type="text" class="form-control" id="firstName" placeholder="First Name">
               </div>
             </div>
             <div class="col-md-6">
               <div class="form-group">
                 <label class="form-label">Last Name</label>
-                <input type="text" class="form-control" value="Doe">
+                <input type="text" class="form-control" id="lastName" placeholder="Last Name">
               </div>
             </div>
           </div>
@@ -712,7 +726,7 @@
           </div>
           <div class="form-group">
             <label class="form-label">Email</label>
-                            <input type="email" class="form-control" placeholder="Enter your email">
+                            <input type="email" class="form-control" id="email" placeholder="Enter your email">
           </div>
           <div class="form-group">
             <label class="form-label">Phone</label>
@@ -752,9 +766,6 @@
             <label class="form-label">Additional Notes</label>
             <textarea class="form-control" rows="3">Primary emergency contact</textarea>
           </div>
-          <button type="submit" class="btn btn-success btn-modern">
-            <i class="bi bi-check-circle me-2"></i>Update Contact
-          </button>
         </form>
       </div>
     </div>
@@ -780,13 +791,6 @@
             <span class="allergy-tag" style="background: #95a5a6;">No known conditions</span>
           </div>
         </div>
-        <div class="form-group">
-          <label class="form-label">Add New Allergy/Condition</label>
-          <input type="text" class="form-control" placeholder="Enter allergy or condition">
-        </div>
-        <button type="button" class="btn btn-warning btn-modern">
-          <i class="bi bi-plus-circle me-2"></i>Add New
-        </button>
       </div>
     </div>
 
@@ -800,13 +804,6 @@
           <div class="medication-name">No medications</div>
           <div class="medication-details">No medications prescribed</div>
         </div>
-        <div class="form-group mt-3">
-          <label class="form-label">Add New Medication</label>
-          <input type="text" class="form-control" placeholder="Enter medication name">
-        </div>
-        <button type="button" class="btn btn-danger btn-modern">
-          <i class="bi bi-plus-circle me-2"></i>Add Medication
-        </button>
       </div>
     </div>
   </div>
@@ -832,14 +829,81 @@
         <div class="record-title">No recent medical records</div>
         <div class="record-description">No recent medical records available.</div>
     </div>
-    <button type="button" class="btn btn-primary btn-modern">
-      <i class="bi bi-eye me-2"></i>View Full History
-    </button>
   </div>
 
 </div>
 
 <script>
+  // Load user data from localStorage
+  function loadUserData() {
+    const user = localStorage.getItem('user');
+    if (user) {
+      try {
+        const userData = JSON.parse(user);
+        const userName = userData.username || userData.email || 'User';
+        
+        // Update sidebar user name
+        const sidebarUserName = document.getElementById('sidebarUserName');
+        if (sidebarUserName) {
+          sidebarUserName.textContent = userName;
+        }
+        
+        // Update profile header name
+        const profileUserName = document.getElementById('profileUserName');
+        if (profileUserName) {
+          profileUserName.textContent = userName;
+        }
+        
+        // Update form fields with user data
+        const firstName = document.getElementById('firstName');
+        const lastName = document.getElementById('lastName');
+        const email = document.getElementById('email');
+        
+        if (firstName) firstName.value = userData.firstName || '';
+        if (lastName) lastName.value = userData.lastName || '';
+        if (email) email.value = userData.email || '';
+        
+        // Set patient ID
+        const patientId = document.getElementById('patientId');
+        if (patientId) {
+          patientId.textContent = userData.id || 'N/A';
+        }
+        
+      } catch (error) {
+        console.error('Error parsing user data:', error);
+        // If no user data, redirect to login
+        window.location.href = 'login.html';
+      }
+    } else {
+      // If no user data, redirect to login
+      window.location.href = 'login.html';
+    }
+  }
+
+  // Logout function
+  function logout() {
+    // Clear user data from localStorage
+    localStorage.removeItem('user');
+    localStorage.removeItem('token');
+    
+    // Redirect to login page
+    window.location.href = 'login.html';
+  }
+
+  // Load user data when page loads
+  document.addEventListener('DOMContentLoaded', function() {
+    loadUserData();
+    
+    // Add logout event listener
+    const logoutBtn = document.getElementById('logoutBtn');
+    if (logoutBtn) {
+      logoutBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        logout();
+      });
+    }
+  });
+
   // Simulate loading spinner
   window.addEventListener('load', () => {
     const spinner = document.getElementById('loadingSpinner');

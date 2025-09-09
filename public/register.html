@@ -185,39 +185,6 @@
       font-weight: 500;
     }
 
-    .social-register {
-      display: flex;
-      gap: 15px;
-      margin-bottom: 30px;
-    }
-
-    .btn-social {
-      flex: 1;
-      border: 2px solid #e9ecef;
-      border-radius: 1rem;
-      padding: 12px;
-      background: white;
-      color: #495057;
-      transition: all 0.3s ease;
-      text-decoration: none;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 500;
-    }
-
-    .btn-social:hover {
-      border-color: #3498db;
-      color: #3498db;
-      transform: translateY(-2px);
-      box-shadow: 0 5px 15px rgba(52, 152, 219, 0.1);
-      text-decoration: none;
-    }
-
-    .btn-social i {
-      margin-right: 8px;
-      font-size: 1.2rem;
-    }
 
     .login-link {
       text-align: center;
@@ -260,27 +227,6 @@
       text-decoration: none;
     }
 
-    .settings-btn {
-      position: absolute;
-      top: 30px;
-      right: 30px;
-      background: rgba(255, 255, 255, 0.9);
-      border: none;
-      border-radius: 1rem;
-      padding: 10px 20px;
-      color: #495057;
-      text-decoration: none;
-      transition: all 0.3s ease;
-      backdrop-filter: blur(10px);
-    }
-
-    .settings-btn:hover {
-      background: white;
-      color: #3498db;
-      transform: translateY(-2px);
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-      text-decoration: none;
-    }
 
     .benefits-section {
       background: linear-gradient(135deg, #f8f9fa, #e9ecef);
@@ -352,9 +298,6 @@
         padding: 30px 20px;
       }
 
-      .social-register {
-        flex-direction: column;
-      }
     }
   </style>
 </head>
@@ -367,10 +310,6 @@
     <i class="bi bi-arrow-left me-1"></i> Back to Home
   </a>
 
-  <!-- Settings Button -->
-  <a href="settings.html" class="settings-btn">
-    <i class="bi bi-gear me-1"></i> Settings
-  </a>
 
   <div class="register-card">
     
@@ -452,40 +391,12 @@
               <input type="date" class="form-control" id="dateOfBirth" required>
             </div>
             
-            <div class="mb-3 form-check">
-              <input type="checkbox" class="form-check-input" id="termsAccepted" required>
-              <label class="form-check-label" for="termsAccepted">
-                I agree to the <a href="#" onclick="showTerms()">Terms of Service</a> and <a href="#" onclick="showPrivacy()">Privacy Policy</a>
-              </label>
-            </div>
-            
-            <div class="mb-3 form-check">
-              <input type="checkbox" class="form-check-input" id="newsletter">
-              <label class="form-check-label" for="newsletter">
-                Subscribe to our newsletter for health tips and updates
-              </label>
-            </div>
             
             <button type="submit" class="btn btn-register">
               <i class="bi bi-person-plus me-2"></i>Create Account
             </button>
           </form>
 
-          <div class="divider">
-            <span>or sign up with</span>
-          </div>
-
-          <div class="social-register">
-            <a href="#" class="btn-social">
-              <i class="bi bi-google"></i>Google
-            </a>
-            <a href="#" class="btn-social">
-              <i class="bi bi-facebook"></i>Facebook
-            </a>
-            <a href="#" class="btn-social">
-              <i class="bi bi-apple"></i>Apple
-            </a>
-          </div>
 
           <div class="login-link">
             <p>Already have an account? <a href="login.html">Sign in here</a></p>
@@ -514,13 +425,6 @@
             <div class="benefit-description">Keep all your medical information organized and accessible</div>
           </div>
           
-          <div class="benefit-item">
-            <div class="benefit-icon">
-              <i class="bi bi-bell"></i>
-            </div>
-            <div class="benefit-title">Smart Reminders</div>
-            <div class="benefit-description">Never miss an appointment or medication with intelligent notifications</div>
-          </div>
           
           <div class="benefit-item">
             <div class="benefit-icon">
@@ -612,7 +516,14 @@
         password: password
       })
     })
-    .then(response => response.json())
+    .then(response => {
+      if (!response.ok) {
+        return response.json().then(data => {
+          throw new Error(data.message || `HTTP error! status: ${response.status}`);
+        });
+      }
+      return response.json();
+    })
     .then(data => {
       if (data.message === 'Registration successful') {
         // Show success notification
@@ -621,15 +532,19 @@
         notification.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 350px;';
         notification.innerHTML = `
           <i class="bi bi-check-circle me-2"></i>
-          <strong>Welcome to QuickMed!</strong> Your account has been created successfully. You can now sign in.
+          <strong>Welcome to QuickMed!</strong> Your account has been created successfully. You are now signed in!
           <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
         `;
         
         document.body.appendChild(notification);
         
-        // Redirect to login page after 3 seconds
+        // Store user info and token in localStorage
+        localStorage.setItem('user', JSON.stringify(data.user));
+        localStorage.setItem('token', data.token);
+        
+        // Redirect to dashboard after 3 seconds
         setTimeout(() => {
-          window.location.href = 'login.html';
+          window.location.href = 'homepage.html';
         }, 3000);
       } else {
         throw new Error(data.message || 'Registration failed');
@@ -654,13 +569,6 @@
     });
   });
 
-  function showTerms() {
-    alert('Terms of Service - This feature will be added soon');
-  }
-
-  function showPrivacy() {
-    alert('Privacy Policy - This feature will be added soon');
-  }
 
   // Add some interactive animations
   document.addEventListener('DOMContentLoaded', () => {
