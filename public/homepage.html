@@ -364,41 +364,24 @@
     }
 
     .main-action-card {
-      background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
-      border-radius: 2rem;
-      padding: 3.5rem 2.5rem;
-      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
-      transition: all 0.4s ease;
+      background: white;
+      border-radius: 1.5rem;
+      padding: 3rem 2rem;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+      transition: all 0.3s ease;
       text-align: center;
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      position: relative;
-      overflow: hidden;
-      /* Cache bust: 2024-12-19 */
-    }
-
-    .main-action-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 4px;
-      background: linear-gradient(90deg, #3498db, #2ecc71);
-      opacity: 0;
-      transition: opacity 0.3s ease;
-    }
-
-    .main-action-card:hover::before {
-      opacity: 1;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      height: 100%;
+      min-height: 600px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      width: 100%;
     }
 
     .main-action-card:hover {
-      transform: translateY(-8px) scale(1.02);
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
-    }
-
-    .main-action-card:hover .action-icon-large {
-      transform: scale(1.1) rotate(5deg);
+      transform: translateY(-5px);
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
     }
 
     /* Make My Appointments card same height as Book Appointment card */
@@ -407,17 +390,56 @@
       align-items: stretch;
     }
 
-    .main-action-row .col-lg-6 {
-      display: flex;
+    /* Mobile responsiveness for main action cards */
+    @media (max-width: 768px) {
+      .main-action-card {
+        min-height: 500px;
+        padding: 2rem 1.5rem;
+      }
+      
+      .upcoming-appointments {
+        min-height: 150px;
+        max-height: 150px;
+      }
+      
+      .action-icon-large {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+      }
+      
+      .main-action-card h3 {
+        font-size: 1.5rem;
+        margin-bottom: 0.75rem;
+      }
+      
+      .main-action-card p {
+        font-size: 1rem;
+        margin-bottom: 1rem;
+      }
+
+      .card-features {
+        margin: 1rem 0;
+        gap: 0.5rem;
+      }
+
+      .feature-item {
+        font-size: 0.9rem;
+      }
+
+      .btn-xl {
+        padding: 0.875rem 2rem;
+        font-size: 1.1rem;
+        min-width: 180px;
+        height: 55px;
+      }
+
+      .btn-xl i {
+        font-size: 1.3rem;
+      }
     }
 
-    .main-action-card {
-      height: 100%;
+    .main-action-row .col-lg-6 {
       display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      min-height: 450px;
-      max-height: 450px;
     }
 
     .upcoming-appointments {
@@ -496,32 +518,21 @@
     }
 
     .action-icon-large {
-      font-size: 5rem;
-      margin-bottom: 2rem;
+      font-size: 4rem;
+      margin-bottom: 1.5rem;
       color: #3498db;
-      background: linear-gradient(135deg, #3498db, #2ecc71);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      filter: drop-shadow(0 4px 8px rgba(52, 152, 219, 0.3));
-      display: block;
-      transition: all 0.4s ease;
     }
 
     .main-action-card h3 {
       color: #2c3e50;
-      margin-bottom: 1.5rem;
-      font-weight: 800;
-      font-size: 2.2rem;
-      letter-spacing: -0.5px;
+      margin-bottom: 1rem;
+      font-weight: 700;
     }
 
     .main-action-card p {
-      color: #6c757d;
-      margin-bottom: 2.5rem;
-      font-size: 1.2rem;
-      line-height: 1.7;
-      font-weight: 500;
+      color: #7f8c8d;
+      margin-bottom: 2rem;
+      font-size: 1.1rem;
     }
 
     .quick-access-card {
@@ -616,14 +627,6 @@
       margin-top: auto;
     }
 
-    /* Force equal height for both cards */
-    .main-action-row .col-lg-6:first-child .main-action-card,
-    .main-action-row .col-lg-6:last-child .main-action-card {
-      height: 450px;
-      min-height: 450px;
-      max-height: 450px;
-    }
-
     /* Ensure content is properly distributed */
     .main-action-card .action-icon-large {
       flex-shrink: 0;
@@ -635,6 +638,72 @@
 
     .main-action-card p {
       flex-shrink: 0;
+    }
+
+    /* Style for upcoming appointments list */
+    .upcoming-appointments {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 200px;
+      max-height: 200px;
+      overflow: hidden;
+      margin: 1rem 0;
+    }
+
+    .upcoming-appointments .loading-spinner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      color: #7f8c8d;
+    }
+
+    .upcoming-appointments .loading-spinner i {
+      font-size: 1.5rem;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .upcoming-appointments .appointment-preview {
+      background: #f8f9fa;
+      border-radius: 0.5rem;
+      padding: 0.75rem;
+      margin-bottom: 0.5rem;
+      border-left: 4px solid #3498db;
+      font-size: 0.9rem;
+      width: 100%;
+      max-width: 100%;
+    }
+
+    .upcoming-appointments .no-appointments {
+      color: #7f8c8d;
+      font-style: italic;
+      text-align: center;
+    }
+
+
+    /* Extra large button styling */
+    .btn-xl {
+      padding: 1rem 2.5rem;
+      font-size: 1.25rem;
+      font-weight: 600;
+      border-radius: 0.75rem;
+      min-width: 200px;
+      height: 60px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .btn-xl i {
+      font-size: 1.5rem;
     }
 
     .stats-section {
@@ -908,8 +977,8 @@
           <i class="bi bi-calendar-plus"></i>
         </div>
         <h3>Book Appointment</h3>
-        <p>Find and book your next medical appointment quickly</p>
-        <a href="available.html" class="btn btn-primary btn-lg">
+        <p>Find and book your next medical appointment quickly and easily. Choose from our network of qualified healthcare providers.</p>
+        <a href="available.html" class="btn btn-primary btn-xl">
           <i class="bi bi-calendar-plus me-2"></i>Book Now
         </a>
       </div>
@@ -921,19 +990,19 @@
           <i class="bi bi-calendar-check"></i>
         </div>
         <h3>My Appointments</h3>
-        <p>View your upcoming and past appointments</p>
+        <p>View your upcoming and past appointments. Manage your healthcare schedule with ease.</p>
         <div id="upcomingAppointmentsList" class="upcoming-appointments">
           <div class="loading-spinner">
             <i class="bi bi-hourglass-split"></i>
             <span>Loading appointments...</span>
           </div>
         </div>
-        <a href="my-appointments.html" class="btn btn-success btn-lg">
+        <a href="my-appointments.html" class="btn btn-success btn-xl">
           <i class="bi bi-calendar-check me-2"></i>View All Appointments
         </a>
       </div>
     </div>
-    </div>
+  </div>
 
   <!-- Quick Access -->
   <div class="row g-3">
@@ -1009,9 +1078,9 @@
   }
 
   // Force cache refresh
-  if (performance.navigation.type === 1) {
-    window.location.reload(true);
-  }
+  // if (performance.navigation.type === 1) {
+  //   window.location.reload(true);
+  // }
   
   // Load user name when page loads
   document.addEventListener('DOMContentLoaded', function() {
@@ -1132,40 +1201,95 @@
     loadUpcomingAppointments();
   });
 
+  // Listen for storage changes to update appointment count
+  window.addEventListener('storage', function(e) {
+    if (e.key === 'lastAppointment') {
+      // New appointment was booked, refresh the count
+      loadDashboardStats();
+      loadUpcomingAppointments();
+    }
+  });
+
+  // Also listen for focus events to refresh when user returns to page
+  window.addEventListener('focus', function() {
+    loadDashboardStats();
+    loadUpcomingAppointments();
+  });
+
   // Function to load real dashboard statistics from the server
   async function loadDashboardStats() {
-    try {
-      // Load upcoming appointments (today's appointments)
-      const upcomingResponse = await fetch('/api/appointments/today/count');
-      if (upcomingResponse.ok) {
-        const upcomingData = await upcomingResponse.json();
-        document.getElementById('upcomingAppointments').textContent = upcomingData.count || 0;
-      }
-    } catch (error) {
-      console.log('No upcoming appointments API endpoint, showing 0');
+    const token = localStorage.getItem('token');
+    if (!token) {
+      // User not logged in, show default values
       document.getElementById('upcomingAppointments').textContent = '0';
+      document.getElementById('completedVisits').textContent = '0';
+      document.getElementById('activePrescriptions').textContent = '0';
+      document.getElementById('healthScore').textContent = '--';
+      return;
     }
 
     try {
-      // Load completed visits (total appointments)
-      const completedResponse = await fetch('/api/appointments/count');
-      if (completedResponse.ok) {
-        const completedData = await completedResponse.json();
-        document.getElementById('completedVisits').textContent = completedData.count || 0;
+      // Load user's appointments
+      const appointmentsResponse = await fetch('/api/appointments', {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      
+      if (appointmentsResponse.ok) {
+        const appointments = await appointmentsResponse.json();
+        
+        // Count upcoming appointments (future appointments)
+        const today = new Date();
+        const upcomingCount = appointments.filter(apt => {
+          const appointmentDate = new Date(apt.appointment_date + 'T' + apt.appointment_time);
+          return appointmentDate >= today && apt.status !== 'cancelled';
+        }).length;
+        
+        // Count completed visits
+        const completedCount = appointments.filter(apt => apt.status === 'completed').length;
+        
+        // Update the display
+        document.getElementById('upcomingAppointments').textContent = upcomingCount;
+        document.getElementById('completedVisits').textContent = completedCount;
+        
+        // Calculate health score based on completed visits
+        let healthScore = '--';
+        if (completedCount > 0) {
+          const totalAppointments = appointments.length;
+          const completionRate = (completedCount / totalAppointments) * 100;
+          healthScore = Math.round(completionRate);
+        }
+        document.getElementById('healthScore').textContent = healthScore;
+        
+      } else {
+        console.log('Failed to load appointments, showing 0');
+        document.getElementById('upcomingAppointments').textContent = '0';
+        document.getElementById('completedVisits').textContent = '0';
+        document.getElementById('healthScore').textContent = '--';
       }
     } catch (error) {
-      console.log('No completed visits API endpoint, showing 0');
+      console.log('Error loading appointments:', error);
+      document.getElementById('upcomingAppointments').textContent = '0';
       document.getElementById('completedVisits').textContent = '0';
+      document.getElementById('healthScore').textContent = '--';
     }
 
-    // Set default values for prescriptions and health score
-    // These would need additional API endpoints in the future
+    // Set default value for prescriptions (would need additional API endpoint)
     document.getElementById('activePrescriptions').textContent = '0';
-    document.getElementById('healthScore').textContent = '--';
   }
+
+  // Prevent multiple simultaneous requests
+  let isLoadingAppointments = false;
 
   // Function to load upcoming appointments for homepage
   async function loadUpcomingAppointments() {
+    if (isLoadingAppointments) {
+      return; // Prevent multiple simultaneous requests
+    }
+    
+    isLoadingAppointments = true;
+    
     try {
       const token = localStorage.getItem('token');
       if (!token) {
@@ -1173,21 +1297,37 @@
         return;
       }
 
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 second timeout
+      
       const response = await fetch('/api/appointments', {
         headers: {
           'Authorization': `Bearer ${token}`
-        }
+        },
+        signal: controller.signal
       });
+      
+      clearTimeout(timeoutId);
 
       if (!response.ok) {
+        if (response.status === 403) {
+          // Token expired, redirect to login
+          localStorage.removeItem('token');
+          localStorage.removeItem('username');
+          window.location.href = 'login.html';
+          return;
+        }
         throw new Error('Failed to load appointments');
       }
 
       const appointments = await response.json();
+      console.log('Loaded appointments:', appointments);
       displayUpcomingAppointments(appointments);
     } catch (error) {
       console.error('Error loading appointments:', error);
       document.getElementById('upcomingAppointmentsList').innerHTML = '';
+    } finally {
+      isLoadingAppointments = false;
     }
   }
 
@@ -1195,7 +1335,10 @@
   function displayUpcomingAppointments(appointments) {
     const container = document.getElementById('upcomingAppointmentsList');
     
+    console.log('Displaying appointments:', appointments);
+    
     if (appointments.length === 0) {
+      console.log('No appointments found');
       container.innerHTML = '';
       return;
     }
@@ -1205,7 +1348,7 @@
     const upcomingAppointments = appointments
       .filter(apt => {
         const appointmentDate = new Date(apt.appointment_date + 'T' + apt.appointment_time);
-        return appointmentDate >= now && apt.status === 'scheduled';
+        return appointmentDate >= now && (apt.status === 'scheduled' || !apt.status);
       })
       .sort((a, b) => {
         const dateA = new Date(a.appointment_date + 'T' + a.appointment_time);
@@ -1214,7 +1357,10 @@
       })
       .slice(0, 3); // Show only next 3 appointments
 
+    console.log('Upcoming appointments after filter:', upcomingAppointments);
+
     if (upcomingAppointments.length === 0) {
+      console.log('No upcoming appointments found');
       container.innerHTML = '';
       return;
     }

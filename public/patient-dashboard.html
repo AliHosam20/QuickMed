@@ -1046,47 +1046,78 @@
 
   // Function to load real dashboard statistics from the server
   async function loadDashboardStats() {
-    try {
-      // Load upcoming appointments (today's appointments)
-      const upcomingResponse = await fetch('/api/appointments/today/count');
-      if (upcomingResponse.ok) {
-        const upcomingData = await upcomingResponse.json();
-        document.getElementById('upcomingAppointments').textContent = upcomingData.count || 0;
-      }
-    } catch (error) {
-      console.log('No upcoming appointments API endpoint, showing 0');
+    const token = localStorage.getItem('token');
+    if (!token) {
+      // User not logged in, show default values
       document.getElementById('upcomingAppointments').textContent = '0';
+      document.getElementById('completedVisits').textContent = '0';
+      document.getElementById('activePrescriptions').textContent = '0';
+      document.getElementById('healthScore').textContent = '--';
+      return;
     }
 
     try {
-      // Load completed visits (total appointments)
-      const completedResponse = await fetch('/api/appointments/count');
-      if (completedResponse.ok) {
-        const completedData = await completedResponse.json();
-        document.getElementById('completedVisits').textContent = completedData.count || 0;
+      // Load user's appointments
+      const appointmentsResponse = await fetch('/api/appointments', {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      
+      if (appointmentsResponse.ok) {
+        const appointments = await appointmentsResponse.json();
+        
+        // Count upcoming appointments (future appointments)
+        const today = new Date();
+        const upcomingCount = appointments.filter(apt => {
+          const appointmentDate = new Date(apt.appointment_date + 'T' + apt.appointment_time);
+          return appointmentDate >= today && apt.status !== 'cancelled';
+        }).length;
+        
+        // Count completed visits
+        const completedCount = appointments.filter(apt => apt.status === 'completed').length;
+        
+        // Update the display
+        document.getElementById('upcomingAppointments').textContent = upcomingCount;
+        document.getElementById('completedVisits').textContent = completedCount;
+        
+        // Calculate health score based on completed visits
+        let healthScore = '--';
+        if (completedCount > 0) {
+          const totalAppointments = appointments.length;
+          const completionRate = (completedCount / totalAppointments) * 100;
+          healthScore = Math.round(completionRate);
+        }
+        
+        const healthScoreElement = document.getElementById('healthScore');
+        healthScoreElement.textContent = healthScore;
+        
+        // Add appropriate class based on score
+        if (healthScore !== '--') {
+          if (healthScore < 70) {
+            healthScoreElement.classList.add('low');
+          } else if (healthScore < 85) {
+            healthScoreElement.classList.add('medium');
+          } else {
+            healthScoreElement.classList.add('high');
+          }
+        }
+        
+      } else {
+        console.log('Failed to load appointments, showing 0');
+        document.getElementById('upcomingAppointments').textContent = '0';
+        document.getElementById('completedVisits').textContent = '0';
+        document.getElementById('healthScore').textContent = '--';
       }
     } catch (error) {
-      console.log('No completed visits API endpoint, showing 0');
+      console.log('Error loading appointments:', error);
+      document.getElementById('upcomingAppointments').textContent = '0';
       document.getElementById('completedVisits').textContent = '0';
+      document.getElementById('healthScore').textContent = '--';
     }
 
-    // Set default values for prescriptions and health score
-    // These would need additional API endpoints in the future
+    // Set default value for prescriptions (would need additional API endpoint)
     document.getElementById('activePrescriptions').textContent = '0';
-    
-    // Set a random health score for demonstration
-    const healthScore = Math.floor(Math.random() * 40) + 60; // Random score between 60-100
-    const healthScoreElement = document.getElementById('healthScore');
-    healthScoreElement.textContent = healthScore;
-    
-    // Add appropriate class based on score
-    if (healthScore < 70) {
-      healthScoreElement.classList.add('low');
-    } else if (healthScore < 85) {
-      healthScoreElement.classList.add('medium');
-    } else {
-      healthScoreElement.classList.add('high');
-    }
   }
 </script>
 

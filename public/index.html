@@ -707,6 +707,19 @@
 
   // Load statistics when page loads
   document.addEventListener('DOMContentLoaded', loadHomepageStats);
+
+  // Listen for storage changes to update appointment count
+  window.addEventListener('storage', function(e) {
+    if (e.key === 'lastAppointment') {
+      // New appointment was booked, refresh the count
+      loadHomepageStats();
+    }
+  });
+
+  // Also listen for focus events to refresh when user returns to page
+  window.addEventListener('focus', function() {
+    loadHomepageStats();
+  });
 </script>
 
 </body>

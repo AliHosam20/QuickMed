@@ -428,16 +428,6 @@
       background: #e3f2fd;
     }
 
-    .search-icon {
-      font-size: 2.5rem;
-      color: #6c757d;
-      margin-right: 2rem;
-      transition: color 0.3s ease;
-    }
-
-    .search-bar-container:hover .search-icon {
-      color: #3498db;
-    }
 
     .search-text {
       flex: 1;
@@ -457,20 +447,6 @@
       margin: 0;
     }
 
-    .search-arrow {
-      font-size: 1.5rem;
-      color: #6c757d;
-      transition: all 0.3s ease;
-    }
-
-    .search-bar-container:hover .search-arrow {
-      color: #3498db;
-      transform: translateX(5px);
-    }
-
-    .main-service-card.expanded .search-arrow {
-      transform: rotate(180deg);
-    }
 
     .service-options {
       border-top: 1px solid #e9ecef;
@@ -514,21 +490,6 @@
       box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
     }
 
-    .service-option-icon {
-      font-size: 2.5rem;
-      color: #3498db;
-      margin-right: 1.5rem;
-      width: 60px;
-      text-align: center;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: linear-gradient(135deg, #3498db, #2ecc71);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      filter: drop-shadow(0 2px 4px rgba(52, 152, 219, 0.3));
-    }
 
     .service-option-text {
       flex: 1;
@@ -550,10 +511,6 @@
       font-weight: 500;
     }
 
-    .service-option-arrow {
-      font-size: 1.2rem;
-      color: #6c757d;
-    }
 
     .clinic-selection-card {
       background: white;
@@ -1176,15 +1133,9 @@
         <div class="main-service-card" id="mainServiceCard">
           <div class="main-service-content">
             <div class="search-bar-container">
-              <div class="search-icon">
-                <i class="bi bi-search"></i>
-              </div>
               <div class="search-text">
                 <h2>Browse clinics by medical specialty</h2>
                 <p>Click here to explore our clinics organized by medical services</p>
-              </div>
-              <div class="search-arrow">
-                <i class="bi bi-chevron-down"></i>
               </div>
             </div>
           </div>
@@ -1192,54 +1143,30 @@
           <!-- Service Options (Hidden by default) -->
           <div class="service-options" id="serviceOptions" style="display: none;">
             <div class="service-option" data-service="dental">
-              <div class="service-option-icon">
-                <i class="bi bi-tooth"></i>
-              </div>
               <div class="service-option-text">
                 <h4>Dental Care</h4>
                 <p>Teeth cleaning, fillings, root canal, braces</p>
               </div>
-              <div class="service-option-arrow">
-                <i class="bi bi-chevron-right"></i>
-              </div>
             </div>
             
             <div class="service-option" data-service="imaging">
-              <div class="service-option-icon">
-                <i class="bi bi-cpu"></i>
-              </div>
               <div class="service-option-text">
                 <h4>Imaging & Tests</h4>
                 <p>MRI, X-Ray, CT scan, ultrasound</p>
               </div>
-              <div class="service-option-arrow">
-                <i class="bi bi-chevron-right"></i>
-              </div>
             </div>
             
             <div class="service-option" data-service="general">
-              <div class="service-option-icon">
-                <i class="bi bi-heart-pulse"></i>
-              </div>
               <div class="service-option-text">
                 <h4>General Medicine</h4>
                 <p>Checkups, skin, eyes, ears, nose, throat</p>
               </div>
-              <div class="service-option-arrow">
-                <i class="bi bi-chevron-right"></i>
-              </div>
             </div>
             
             <div class="service-option" data-service="emergency">
-              <div class="service-option-icon">
-                <i class="bi bi-ambulance"></i>
-              </div>
               <div class="service-option-text">
                 <h4>Emergency Care</h4>
                 <p>Urgent medical attention, trauma, accidents</p>
-              </div>
-              <div class="service-option-arrow">
-                <i class="bi bi-chevron-right"></i>
               </div>
             </div>
           </div>
@@ -1294,7 +1221,7 @@
     <div class="row">
       <div class="col-12">
         <div class="clinic-image-container">
-          <img id="clinicImage" src="https://via.placeholder.com/1200x400/3498db/ffffff?text=Dental+Clinic" 
+          <img id="clinicImage" src="images/1-3.jpg" 
                alt="Dental Clinic" class="clinic-image">
           <div class="clinic-image-overlay">
             <div class="clinic-rating-badge">
@@ -1405,7 +1332,7 @@
           <a href="support.html" class="btn btn-outline-primary btn-lg action-btn">
             <i class="bi bi-chat-dots me-2"></i>Get Support
           </a>
-          <button onclick="showPhoneModal()" class="btn btn-success btn-lg action-btn">
+          <button id="callNowBtn" class="btn btn-success btn-lg action-btn">
             <i class="bi bi-telephone me-2"></i>Call Now
           </button>
         </div>
@@ -1465,10 +1392,10 @@
 
   // Clinic data - All 12 clinics with full profiles
   const clinicData = {
-    dental: {
+    dental:     {
       name: "Smile Dental Center",
       description: "Professional dental care with modern equipment and experienced dentists",
-      image: "https://via.placeholder.com/1200x400/3498db/ffffff?text=Smile+Dental+Center",
+      image: "images/1-3.jpg",
       address: "Tel Aviv, Dizengoff 123",
       hours: "Sun-Thu: 8AM-8PM, Fri: 8AM-2PM",
       phone: "Contact Support",
@@ -1483,7 +1410,7 @@
     imaging: {
       name: "Advanced MRI Center",
       description: "State-of-the-art imaging services with cutting-edge technology",
-      image: "https://via.placeholder.com/1200x400/27ae60/ffffff?text=Advanced+MRI+Center",
+      image: "images/images (1).jpg",
       address: "Haifa, Rambam Medical Center",
       hours: "Sun-Thu: 7AM-10PM, Fri: 7AM-2PM",
       phone: "Contact Support",
@@ -1498,7 +1425,7 @@
     general: {
       name: "Family Health Center",
       description: "Comprehensive healthcare services for the whole family",
-      image: "https://via.placeholder.com/1200x400/e74c3c/ffffff?text=Family+Health+Center",
+      image: "images/images (2).jpg",
       address: "Jerusalem, Malha Mall",
       hours: "Sun-Thu: 8AM-7PM, Fri: 8AM-1PM",
       phone: "Contact Support",
@@ -1513,7 +1440,7 @@
     emergency: {
       name: "24/7 Emergency Clinic",
       description: "Round-the-clock emergency medical care with experienced trauma specialists",
-      image: "https://via.placeholder.com/1200x400/f39c12/ffffff?text=24%2F7+Emergency+Clinic",
+      image: "images/images (3).jpg",
       address: "Eilat, Yoseftal Hospital",
       hours: "24/7 Emergency Service",
       phone: "Contact Support",
@@ -1528,7 +1455,7 @@
     cardiology: {
       name: "Heart Care Center",
       description: "Specialized cardiac care with advanced diagnostic equipment and experienced cardiologists",
-      image: "https://via.placeholder.com/1200x400/e91e63/ffffff?text=Heart+Care+Center",
+      image: "images/images.jpg",
       address: "Ramat Gan, Sheba Medical Center",
       hours: "Sun-Thu: 7AM-6PM, Fri: 7AM-1PM",
       phone: "Contact Support",
@@ -1543,7 +1470,7 @@
     orthopedic: {
       name: "Orthopedic Center",
       description: "Expert orthopedic care for bones, joints, and sports injuries with specialized surgeons",
-      image: "https://via.placeholder.com/1200x400/795548/ffffff?text=Orthopedic+Center",
+      image: "images/מרפאה-ואגפי-מועצה-עומר-4.jpg",
       address: "Petah Tikva, Schneider Children's",
       hours: "Sun-Thu: 8AM-5PM, Fri: 8AM-1PM",
       phone: "Contact Support",
@@ -1559,7 +1486,7 @@
     "perfect-smile": {
       name: "Perfect Smile Clinic",
       description: "Advanced dental treatments with cosmetic and restorative procedures",
-      image: "https://via.placeholder.com/1200x400/9b59b6/ffffff?text=Perfect+Smile+Clinic",
+      image: "images/עיצוב-מרפאות.jpg",
       address: "Jerusalem, King George 45",
       hours: "Sun-Thu: 9AM-7PM, Fri: 9AM-1PM",
       phone: "Contact Support",
@@ -1574,7 +1501,7 @@
     "dental-care-plus": {
       name: "Dental Care Plus",
       description: "Comprehensive dental services with family-friendly approach",
-      image: "https://via.placeholder.com/1200x400/16a085/ffffff?text=Dental+Care+Plus",
+      image: "images/1-3.jpg",
       address: "Haifa, Herzl 78",
       hours: "Sun-Thu: 8AM-6PM, Fri: 8AM-2PM",
       phone: "Contact Support",
@@ -1589,7 +1516,7 @@
     "diagnostic-imaging-plus": {
       name: "Diagnostic Imaging Plus",
       description: "Comprehensive imaging services with advanced diagnostic capabilities",
-      image: "https://via.placeholder.com/1200x400/8e44ad/ffffff?text=Diagnostic+Imaging+Plus",
+      image: "images/images (1).jpg",
       address: "Jerusalem, Jaffa 67",
       hours: "Sun-Thu: 7AM-9PM, Fri: 7AM-2PM",
       phone: "Contact Support",
@@ -1604,7 +1531,7 @@
     "medical-imaging-center": {
       name: "Medical Imaging Center",
       description: "State-of-the-art medical imaging with cutting-edge technology",
-      image: "https://via.placeholder.com/1200x400/2c3e50/ffffff?text=Medical+Imaging+Center",
+      image: "images/images (2).jpg",
       address: "Haifa, Balfour 22",
       hours: "Sun-Thu: 8AM-8PM, Fri: 8AM-1PM",
       phone: "Contact Support",
@@ -1619,7 +1546,7 @@
     "health-plus-clinic": {
       name: "Health Plus Clinic",
       description: "Multi-specialty medical center with comprehensive healthcare services",
-      image: "https://via.placeholder.com/1200x400/27ae60/ffffff?text=Health+Plus+Clinic",
+      image: "images/images (3).jpg",
       address: "Jerusalem, Agron 34",
       hours: "Sun-Thu: 8AM-6PM, Fri: 8AM-1PM",
       phone: "Contact Support",
@@ -1634,7 +1561,7 @@
     "wellness-medical-center": {
       name: "Wellness Medical Center",
       description: "Holistic approach to healthcare with focus on prevention and wellness",
-      image: "https://via.placeholder.com/1200x400/1abc9c/ffffff?text=Wellness+Medical+Center",
+      image: "images/images.jpg",
       address: "Haifa, Allenby 56",
       hours: "Sun-Thu: 7AM-7PM, Fri: 7AM-2PM",
       phone: "Contact Support",
@@ -1707,7 +1634,8 @@
             { service: "Filling", price: "₪300" },
             { service: "Root Canal", price: "₪800" },
             { service: "Braces Consultation", price: "₪200" }
-          ]
+          ],
+          image: "images/1-3.jpg"
         },
         {
           name: "Perfect Smile Clinic",
@@ -1719,7 +1647,8 @@
             { service: "Filling", price: "₪350" },
             { service: "Crown", price: "₪1,200" },
             { service: "Implant", price: "₪3,500" }
-          ]
+          ],
+          image: "images/עיצוב-מרפאות.jpg"
         },
         {
           name: "Dental Care Plus",
@@ -1731,7 +1660,8 @@
             { service: "Filling", price: "₪280" },
             { service: "Root Canal", price: "₪750" },
             { service: "Dentures", price: "₪2,000" }
-          ]
+          ],
+          image: "images/1-3.jpg"
         }
       ]
     },
@@ -1748,7 +1678,8 @@
             { service: "Spine MRI", price: "₪1,500" },
             { service: "Joint MRI", price: "₪1,000" },
             { service: "CT Scan", price: "₪800" }
-          ]
+          ],
+          image: "images/images (1).jpg"
         },
         {
           name: "Diagnostic Imaging Plus",
@@ -1760,7 +1691,8 @@
             { service: "CT Scan", price: "₪750" },
             { service: "Ultrasound", price: "₪300" },
             { service: "X-Ray", price: "₪120" }
-          ]
+          ],
+          image: "images/images (1).jpg"
         },
         {
           name: "Medical Imaging Center",
@@ -1772,7 +1704,8 @@
             { service: "CT Scan", price: "₪850" },
             { service: "Ultrasound", price: "₪280" },
             { service: "PET Scan", price: "₪2,500" }
-          ]
+          ],
+          image: "images/images (2).jpg"
         }
       ]
     },
@@ -1789,7 +1722,8 @@
             { service: "Skin Consultation", price: "₪250" },
             { service: "Eye Exam", price: "₪180" },
             { service: "ENT Consultation", price: "₪220" }
-          ]
+          ],
+          image: "images/images (2).jpg"
         },
         {
           name: "Health Plus Clinic",
@@ -1801,7 +1735,8 @@
             { service: "Skin Treatment", price: "₪300" },
             { service: "Gynecology Exam", price: "₪250" },
             { service: "Pediatric Checkup", price: "₪150" }
-          ]
+          ],
+          image: "images/images (3).jpg"
         },
         {
           name: "Wellness Medical Center",
@@ -1813,7 +1748,8 @@
             { service: "Internal Medicine", price: "₪300" },
             { service: "Endocrinology", price: "₪350" },
             { service: "Gastroenterology", price: "₪400" }
-          ]
+          ],
+          image: "images/images.jpg"
         }
       ]
     },
@@ -1830,7 +1766,8 @@
             { service: "Trauma Care", price: "₪800" },
             { service: "Urgent Surgery", price: "₪2,000" },
             { service: "Ambulance", price: "₪300" }
-          ]
+          ],
+          image: "images/images (3).jpg"
         },
         {
           name: "Rapid Response Center",
@@ -1842,7 +1779,8 @@
             { service: "Cardiac Emergency", price: "₪1,200" },
             { service: "Stroke Care", price: "₪1,500" },
             { service: "Trauma Care", price: "₪900" }
-          ]
+          ],
+          image: "images/מרפאה-ואגפי-מועצה-עומר-4.jpg"
         },
         {
           name: "Critical Care Center",
@@ -1854,7 +1792,8 @@
             { service: "Intensive Care", price: "₪1,800" },
             { service: "Emergency Surgery", price: "₪2,500" },
             { service: "Recovery Room", price: "₪400" }
-          ]
+          ],
+          image: "images/עיצוב-מרפאות.jpg"
         }
       ]
     }
@@ -1960,7 +1899,8 @@
         phone: clinicData.phone,
         services: clinicData.services,
         prices: clinicData.prices,
-        type: serviceType
+        type: serviceType,
+        image: clinicData.image || "images/1-3.jpg"
       }));
       
       // Navigate to clinic profile
@@ -2057,7 +1997,7 @@
       if (clinicName) clinicName.textContent = clinicData.name;
       if (clinicDescription) clinicDescription.textContent = `Professional ${clinicData.type} services with experienced doctors`;
       if (clinicImage) {
-        clinicImage.src = `https://via.placeholder.com/1200x400/3498db/ffffff?text=${encodeURIComponent(clinicData.name)}`;
+        clinicImage.src = clinicData.image || "images/1-3.jpg";
         clinicImage.alt = clinicData.name;
       }
       if (clinicAddress) clinicAddress.textContent = clinicData.location;
@@ -2358,17 +2298,8 @@
             <i class="bi bi-exclamation-triangle text-warning" style="font-size: 3rem;"></i>
           </div>
           <p class="mb-3">We apologize, but our phone service is currently unavailable. We're working hard to bring you the best possible experience.</p>
-          <div class="alert alert-info">
-            <strong>Alternative Options:</strong><br>
-            • Book appointments online<br>
-            • Use live chat support<br>
-            • Send us an email
-          </div>
         </div>
         <div class="modal-footer">
-          <a href="book-appointment.html" class="btn btn-primary">
-            <i class="bi bi-calendar-plus me-2"></i>Book Appointment
-          </a>
           <a href="support.html" class="btn btn-outline-primary">
             <i class="bi bi-headset me-2"></i>Get Support
           </a>
@@ -2382,6 +2313,16 @@
       const modal = new bootstrap.Modal(document.getElementById('phoneModal'));
       modal.show();
     }
+
+    // Add event listener for Call Now button
+    document.addEventListener('DOMContentLoaded', function() {
+      const callNowBtn = document.getElementById('callNowBtn');
+      if (callNowBtn) {
+        callNowBtn.addEventListener('click', function() {
+          showPhoneModal();
+        });
+      }
+    });
   </script>
   </body>
 </html>

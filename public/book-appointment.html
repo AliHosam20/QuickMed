@@ -8,18 +8,333 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
     <style>
         body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
             min-height: 100vh;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            width: 280px;
+            background: linear-gradient(180deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            z-index: 1000;
+            transition: transform 0.3s ease;
+            overflow-y: auto;
+        }
+
+        .sidebar.collapsed {
+            transform: translateX(-100%);
+        }
+
+        .sidebar-header {
+            padding: 30px 25px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            background: rgba(255, 255, 255, 0.05);
+            margin: 15px;
+            border-radius: 15px;
+        }
+
+        .sidebar-logo {
+            height: 50px;
+            margin-bottom: 15px;
+            filter: brightness(0) invert(1);
+            opacity: 0.9;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar-logo:hover {
+            opacity: 1;
+            transform: scale(1.05);
+        }
+
+        .sidebar-logo-container {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .main-logo-container {
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        .main-logo-container i {
+            transition: all 0.3s ease;
+        }
+
+        .main-logo-container:hover i {
+            transform: scale(1.1);
+            color: #2980b9;
+        }
+
+        .sidebar-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #ecf0f1;
+            margin: 0;
+        }
+
+        .sidebar-subtitle {
+            font-size: 0.85rem;
+            color: #bdc3c7;
+            margin: 5px 0 0 0;
+        }
+
+        .sidebar-nav {
+            padding: 20px 0;
+        }
+
+        .nav-section {
+            padding: 20px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .nav-section-title {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #95a5a6;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 0 25px 10px;
+            margin: 0;
+        }
+
+        .nav-link {
+            color: #ecf0f1;
+            font-weight: 500;
+            margin: 2px 15px;
+            padding: 12px 20px;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-link:hover {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            transform: translateX(5px);
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+        }
+
+        .nav-link.active {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+            box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+        }
+
+        .nav-link i {
+            margin-right: 12px;
+            font-size: 1.1rem;
+            width: 20px;
+            text-align: center;
+        }
+
+        .nav-link .nav-text {
+            flex: 1;
+        }
+
+        .nav-link .nav-badge {
+            background: #e74c3c;
+            color: white;
+            font-size: 0.7rem;
+            padding: 2px 6px;
+            border-radius: 10px;
+            margin-left: auto;
+        }
+
+        .user-section {
+            padding: 20px 25px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: auto;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            margin-bottom: 15px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+            font-size: 1.2rem;
+        }
+
+        .user-details h6 {
+            margin: 0;
+            font-size: 0.9rem;
+            color: #ecf0f1;
+        }
+
+        .user-details p {
+            margin: 0;
+            font-size: 0.8rem;
+            color: #bdc3c7;
+        }
+
+        .logout-btn {
+            width: 100%;
+            padding: 10px;
+            background: rgba(231, 76, 60, 0.1);
+            border: 1px solid rgba(231, 76, 60, 0.3);
+            color: #e74c3c;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logout-btn:hover {
+            background: #e74c3c;
+            color: white;
+            text-decoration: none;
+        }
+
+        .main-content {
+            margin-left: 280px;
+            padding: 40px 20px;
+            min-height: 100vh;
+            transition: margin-left 0.3s ease;
+        }
+
+        .main-content.expanded {
+            margin-left: 0;
+        }
+
+        .logo-bar {
+            background: linear-gradient(135deg, #ffffff, #f8f9fa);
+            padding: 30px 0;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            margin: -40px -20px 40px -20px;
+            border-bottom: 3px solid #3498db;
+            position: relative;
+        }
+
+        .logo-bar::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(52, 152, 219, 0.1), rgba(155, 89, 182, 0.1));
+            z-index: 1;
+        }
+
+        .logo-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .logo {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo-subtitle {
+            color: #7f8c8d;
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        .sidebar-toggle {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1001;
+            background: #2c3e50;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .sidebar-toggle:hover {
+            background: #34495e;
+            transform: scale(1.05);
+        }
+
+        .sidebar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            display: none;
+        }
+
+        .sidebar-overlay.show {
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            
+            .sidebar.show {
+                transform: translateX(0);
+            }
+            
+            .main-content {
+                margin-left: 0;
+            }
+            
+            .sidebar-toggle {
+                display: flex;
+            }
+        }
+
+        @media (min-width: 769px) {
+            .sidebar-toggle {
+                display: none;
+            }
         }
 
         .appointment-container {
             background: white;
             border-radius: 1.5rem;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
             overflow: hidden;
             margin: 2rem auto;
             max-width: 800px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
         .appointment-header {
@@ -27,6 +342,34 @@
             color: white;
             padding: 2rem;
             text-align: center;
+            position: relative;
+        }
+
+        .appointment-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+            z-index: 1;
+        }
+
+        .appointment-header h1 {
+            position: relative;
+            z-index: 2;
+            margin: 0;
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+
+        .appointment-header p {
+            position: relative;
+            z-index: 2;
+            margin: 10px 0 0 0;
+            font-size: 1.1rem;
+            opacity: 0.9;
         }
 
         .appointment-form {
@@ -41,6 +384,7 @@
             font-weight: 600;
             color: #2c3e50;
             margin-bottom: 0.5rem;
+            font-size: 1rem;
         }
 
         .form-control, .form-select {
@@ -48,15 +392,23 @@
             border-radius: 0.75rem;
             padding: 0.75rem 1rem;
             transition: all 0.3s ease;
+            font-size: 1rem;
+            background: #f8f9fa;
         }
 
         .form-control:focus, .form-select:focus {
             border-color: #3498db;
             box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.25);
+            background: white;
+        }
+
+        .form-control:hover, .form-select:hover {
+            border-color: #3498db;
+            background: white;
         }
 
         .btn-book {
-            background: linear-gradient(135deg, #27ae60, #229954);
+            background: linear-gradient(135deg, #3498db, #2980b9);
             border: none;
             color: white;
             padding: 1rem 2rem;
@@ -65,11 +417,29 @@
             font-size: 1.1rem;
             transition: all 0.3s ease;
             width: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-book::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn-book:hover::before {
+            left: 100%;
         }
 
         .btn-book:hover {
+            background: linear-gradient(135deg, #2980b9, #1f618d);
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(39, 174, 96, 0.4);
+            box-shadow: 0 8px 25px rgba(52, 152, 219, 0.3);
         }
 
         .time-slots {
@@ -82,22 +452,27 @@
         .time-slot {
             padding: 0.75rem;
             border: 2px solid #e9ecef;
-            border-radius: 0.5rem;
+            border-radius: 0.75rem;
             text-align: center;
             cursor: pointer;
             transition: all 0.3s ease;
-            background: white;
+            background: #f8f9fa;
+            font-weight: 500;
         }
 
         .time-slot:hover {
             border-color: #3498db;
-            background: #f8f9fa;
+            background: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.2);
         }
 
         .time-slot.selected {
-            border-color: #27ae60;
-            background: #27ae60;
+            border-color: #3498db;
+            background: linear-gradient(135deg, #3498db, #2980b9);
             color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
         }
 
         .time-slot.unavailable {
@@ -108,10 +483,12 @@
         }
 
         .clinic-info {
-            background: #f8f9fa;
-            border-radius: 0.75rem;
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border-radius: 1rem;
             padding: 1.5rem;
             margin-bottom: 2rem;
+            border-left: 4px solid #3498db;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
         }
 
         .clinic-name {
@@ -134,32 +511,152 @@
 
         .success-message {
             display: none;
-            background: #d4edda;
+            background: linear-gradient(135deg, #d4edda, #c3e6cb);
             color: #155724;
             padding: 1rem;
-            border-radius: 0.5rem;
+            border-radius: 0.75rem;
             margin-bottom: 1rem;
             border: 1px solid #c3e6cb;
+            box-shadow: 0 4px 15px rgba(21, 87, 36, 0.1);
         }
 
         .error-message {
             display: none;
-            background: #f8d7da;
+            background: linear-gradient(135deg, #f8d7da, #f5c6cb);
             color: #721c24;
             padding: 1rem;
-            border-radius: 0.5rem;
+            border-radius: 0.75rem;
             margin-bottom: 1rem;
             border: 1px solid #f5c6cb;
+            box-shadow: 0 4px 15px rgba(114, 28, 36, 0.1);
+        }
+
+        /* Pre-filled form styling */
+        .form-select:disabled {
+            background-color: #e9ecef;
+            color: #6c757d;
+            border-color: #ced4da;
+            cursor: not-allowed;
+        }
+
+        .form-select:disabled:hover {
+            border-color: #ced4da;
+            background-color: #e9ecef;
+        }
+
+        .pre-filled-info {
+            background: linear-gradient(135deg, #d1ecf1, #bee5eb);
+            border: 1px solid #bee5eb;
+            border-radius: 0.5rem;
+            padding: 0.75rem;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            color: #0c5460;
+        }
+
+        .pre-filled-info i {
+            color: #17a2b8;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="appointment-container">
-            <div class="appointment-header">
-                <h1><i class="bi bi-calendar-plus me-2"></i>Book Appointment</h1>
-                <p class="mb-0">Schedule your medical appointment</p>
+    <!-- Sidebar Toggle Button -->
+    <button class="sidebar-toggle" id="sidebarToggle">
+        <i class="bi bi-list" id="toggleIcon"></i>
+    </button>
+
+    <!-- Sidebar Overlay for Mobile -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="main-logo-container">
+                <i class="bi bi-heart-pulse" style="font-size: 2.5rem; color: #3498db;"></i>
             </div>
+            <div class="sidebar-title">QuickMed</div>
+            <div class="sidebar-subtitle">Medical Services</div>
+        </div>
+        
+        <nav class="sidebar-nav">
+            <div class="nav-section">
+                <div class="nav-section-title">Main</div>
+                <a href="homepage.html" class="nav-link">
+                    <i class="bi bi-house-door"></i>
+                    <span class="nav-text">Dashboard</span>
+                </a>
+                <a href="available.html" class="nav-link">
+                    <i class="bi bi-building"></i>
+                    <span class="nav-text">Find Clinics</span>
+                </a>
+                <a href="book-appointment.html" class="nav-link active">
+                    <i class="bi bi-calendar-plus"></i>
+                    <span class="nav-text">Book Appointment</span>
+                </a>
+                <a href="my-appointments.html" class="nav-link">
+                    <i class="bi bi-calendar-check"></i>
+                    <span class="nav-text">My Appointments</span>
+                </a>
+            </div>
+            
+            <div class="nav-section">
+                <div class="nav-section-title">Account</div>
+                <a href="profile.html" class="nav-link">
+                    <i class="bi bi-person"></i>
+                    <span class="nav-text">Profile</span>
+                </a>
+                <a href="notifications.html" class="nav-link">
+                    <i class="bi bi-bell"></i>
+                    <span class="nav-text">Notifications</span>
+                    <span class="nav-badge">3</span>
+                </a>
+                <a href="settings.html" class="nav-link">
+                    <i class="bi bi-gear"></i>
+                    <span class="nav-text">Settings</span>
+                </a>
+            </div>
+            
+            <div class="nav-section">
+                <div class="nav-section-title">Support</div>
+                <a href="support.html" class="nav-link">
+                    <i class="bi bi-question-circle"></i>
+                    <span class="nav-text">Support</span>
+                </a>
+            </div>
+        </nav>
+        
+        <div class="user-section">
+            <div class="user-info" id="userInfo">
+                <div class="user-avatar">
+                    <i class="bi bi-person"></i>
+                </div>
+                <div class="user-details">
+                    <h6 id="userName">Loading...</h6>
+                    <p>Patient</p>
+                </div>
+            </div>
+            <a href="login.html" class="logout-btn" id="logoutBtn">
+                <i class="bi bi-box-arrow-right me-2"></i>Logout
+            </a>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content" id="mainContent">
+        <!-- Logo Bar -->
+        <div class="logo-bar">
+            <div class="logo-content">
+                <div class="logo">QuickMed</div>
+                <div class="logo-subtitle">Book Your Medical Appointment</div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="appointment-container">
+                <div class="appointment-header">
+                    <h1><i class="bi bi-calendar-plus me-2"></i>Book Appointment</h1>
+                    <p class="mb-0">Schedule your medical appointment</p>
+                </div>
 
             <div class="appointment-form">
                 <div class="success-message" id="successMessage">
@@ -183,6 +680,11 @@
                     <div class="clinic-info" id="clinicInfo">
                         <div class="clinic-name" id="clinicName">Select a clinic</div>
                         <div class="clinic-details" id="clinicDetails">Choose a clinic to see details</div>
+                    </div>
+
+                    <div class="pre-filled-info" id="preFilledInfo" style="display: none;">
+                        <i class="bi bi-info-circle me-2"></i>
+                        <strong>Pre-filled Information:</strong> Clinic and service have been automatically selected based on your previous choice. You only need to select the date and time.
                     </div>
 
                     <div class="row">
@@ -244,6 +746,270 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+        // Check if user is logged in
+        const token = localStorage.getItem('token');
+        if (!token) {
+            // Redirect to login page
+            window.location.href = 'login.html';
+        }
+
+        // Load user name when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            loadUserName();
+            
+            // Initialize sidebar functionality
+            initializeSidebar();
+            
+            // Load clinic data from URL parameters
+            loadClinicFromURL();
+        });
+
+        // Function to load user name
+        function loadUserName() {
+            const username = localStorage.getItem('username');
+            const userNameElement = document.getElementById('userName');
+            if (username && userNameElement) {
+                userNameElement.textContent = username;
+            }
+        }
+
+        // Function to load clinic data from URL parameters
+        function loadClinicFromURL() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const clinicName = urlParams.get('clinic');
+            const clinicType = urlParams.get('type');
+            
+            if (clinicName && clinicType) {
+                // Find clinic data
+                const clinic = findClinicByName(clinicName, clinicType);
+                if (clinic) {
+                    // Update clinic info display
+                    document.getElementById('clinicName').textContent = clinic.name;
+                    document.getElementById('clinicDetails').innerHTML = `
+                        <div><i class="bi bi-geo-alt me-2"></i>${clinic.address}</div>
+                        <div><i class="bi bi-telephone me-2"></i>${clinic.phone}</div>
+                        <div><i class="bi bi-envelope me-2"></i>${clinic.email}</div>
+                    `;
+                    
+                    // Pre-select clinic type
+                    const clinicTypeSelect = document.getElementById('clinicType');
+                    clinicTypeSelect.value = clinicType;
+                    clinicTypeSelect.disabled = true; // Disable selection
+                    
+                    // Load services for this clinic type
+                    loadServicesForClinicType(clinicType);
+                    
+                    // Show pre-filled info message
+                    document.getElementById('preFilledInfo').style.display = 'block';
+                }
+            }
+        }
+
+        // Function to find clinic by name and type
+        function findClinicByName(name, type) {
+            const clinicData = {
+                dental: {
+                    "Smile Dental Center": {
+                        name: "Smile Dental Center",
+                        address: "Tel Aviv, Dizengoff 123",
+                        phone: "Contact Support",
+                        email: "info@smiledental.co.il"
+                    },
+                    "Perfect Smile Clinic": {
+                        name: "Perfect Smile Clinic",
+                        address: "Jerusalem, King George 45",
+                        phone: "Contact Support",
+                        email: "info@perfectsmile.co.il"
+                    },
+                    "Dental Care Plus": {
+                        name: "Dental Care Plus",
+                        address: "Haifa, Herzl 78",
+                        phone: "Contact Support",
+                        email: "info@dentalcareplus.co.il"
+                    }
+                },
+                imaging: {
+                    "Advanced MRI Center": {
+                        name: "Advanced MRI Center",
+                        address: "Haifa, Rambam Medical Center",
+                        phone: "Contact Support",
+                        email: "info@advancedmri.co.il"
+                    },
+                    "Diagnostic Imaging Plus": {
+                        name: "Diagnostic Imaging Plus",
+                        address: "Jerusalem, Jaffa 67",
+                        phone: "Contact Support",
+                        email: "info@diagnosticimaging.co.il"
+                    },
+                    "Medical Imaging Center": {
+                        name: "Medical Imaging Center",
+                        address: "Haifa, Balfour 22",
+                        phone: "Contact Support",
+                        email: "info@medicalimaging.co.il"
+                    }
+                },
+                general: {
+                    "Family Health Center": {
+                        name: "Family Health Center",
+                        address: "Jerusalem, Malha Mall",
+                        phone: "Contact Support",
+                        email: "info@familyhealth.co.il"
+                    },
+                    "Health Plus Clinic": {
+                        name: "Health Plus Clinic",
+                        address: "Jerusalem, Agron 34",
+                        phone: "Contact Support",
+                        email: "info@healthplus.co.il"
+                    },
+                    "Wellness Medical Center": {
+                        name: "Wellness Medical Center",
+                        address: "Haifa, Allenby 56",
+                        phone: "Contact Support",
+                        email: "info@wellnessmedical.co.il"
+                    }
+                },
+                emergency: {
+                    "24/7 Emergency Clinic": {
+                        name: "24/7 Emergency Clinic",
+                        address: "Eilat, Yoseftal Hospital",
+                        phone: "Contact Support",
+                        email: "emergency@yoseftal.co.il"
+                    }
+                },
+                cardiology: {
+                    "Heart Care Center": {
+                        name: "Heart Care Center",
+                        address: "Ramat Gan, Sheba Medical Center",
+                        phone: "Contact Support",
+                        email: "cardiology@sheba.co.il"
+                    }
+                },
+                orthopedic: {
+                    "Orthopedic Center": {
+                        name: "Orthopedic Center",
+                        address: "Petah Tikva, Schneider Children's",
+                        phone: "Contact Support",
+                        email: "orthopedics@schneider.co.il"
+                    }
+                }
+            };
+            
+            return clinicData[type] && clinicData[type][name] ? clinicData[type][name] : null;
+        }
+
+        // Function to load services for specific clinic type
+        function loadServicesForClinicType(clinicType) {
+            const serviceSelect = document.getElementById('service');
+            serviceSelect.innerHTML = '<option value="">Select service</option>';
+            
+            const services = {
+                dental: [
+                    { value: "Teeth Cleaning", text: "Teeth Cleaning" },
+                    { value: "Fillings", text: "Dental Fillings" },
+                    { value: "Root Canal", text: "Root Canal Treatment" },
+                    { value: "Dental Crown", text: "Dental Crown" },
+                    { value: "Tooth Extraction", text: "Tooth Extraction" }
+                ],
+                imaging: [
+                    { value: "Brain MRI", text: "Brain MRI" },
+                    { value: "Spine MRI", text: "Spine MRI" },
+                    { value: "CT Scan", text: "CT Scan" },
+                    { value: "X-Ray", text: "X-Ray" },
+                    { value: "Ultrasound", text: "Ultrasound" }
+                ],
+                general: [
+                    { value: "General Checkup", text: "General Checkup" },
+                    { value: "בדיקה כללית", text: "General Medical Checkup" },
+                    { value: "Vaccination", text: "Vaccination" },
+                    { value: "Blood Test", text: "Blood Test" },
+                    { value: "Prescription Renewal", text: "Prescription Renewal" }
+                ],
+                emergency: [
+                    { value: "טיפול דחוף", text: "Emergency Treatment" },
+                    { value: "Injury Treatment", text: "Injury Treatment" },
+                    { value: "Fever Treatment", text: "Fever Treatment" },
+                    { value: "Pain Management", text: "Pain Management" }
+                ],
+                cardiology: [
+                    { value: "Heart Checkup", text: "Heart Checkup" },
+                    { value: "ECG Test", text: "ECG Test" },
+                    { value: "Stress Test", text: "Stress Test" },
+                    { value: "Echocardiogram", text: "Echocardiogram" }
+                ],
+                orthopedic: [
+                    { value: "Joint Pain Treatment", text: "Joint Pain Treatment" },
+                    { value: "Fracture Treatment", text: "Fracture Treatment" },
+                    { value: "Sports Injury", text: "Sports Injury" },
+                    { value: "Back Pain Treatment", text: "Back Pain Treatment" }
+                ]
+            };
+            
+            if (services[clinicType]) {
+                services[clinicType].forEach(service => {
+                    const option = document.createElement('option');
+                    option.value = service.value;
+                    option.textContent = service.text;
+                    serviceSelect.appendChild(option);
+                });
+            }
+        }
+
+        // Initialize sidebar functionality
+        function initializeSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.getElementById('mainContent');
+            const sidebarToggle = document.getElementById('sidebarToggle');
+            const sidebarOverlay = document.getElementById('sidebarOverlay');
+            const toggleIcon = document.getElementById('toggleIcon');
+
+            // Check if sidebar should be collapsed by default on mobile
+            const isMobile = window.innerWidth <= 768;
+            if (isMobile) {
+                sidebar.classList.add('collapsed');
+                mainContent.classList.add('expanded');
+                sidebarToggle.classList.add('collapsed');
+                sidebarToggle.style.transform = 'translateX(0)';
+            } else {
+                // On desktop, start with sidebar open and button in correct position
+                sidebarToggle.style.transform = 'translateX(280px)';
+            }
+
+            // Toggle sidebar function
+            function toggleSidebar() {
+                sidebar.classList.toggle('collapsed');
+                mainContent.classList.toggle('expanded');
+                sidebarToggle.classList.toggle('collapsed');
+                
+                // Update icon and position with smooth animation
+                if (sidebar.classList.contains('collapsed')) {
+                    toggleIcon.className = 'bi bi-list';
+                    sidebarToggle.style.transform = 'translateX(0)';
+                } else {
+                    toggleIcon.className = 'bi bi-x-lg';
+                    sidebarToggle.style.transform = 'translateX(280px)';
+                }
+
+                // Show/hide overlay on mobile
+                if (isMobile) {
+                    sidebarOverlay.classList.toggle('show');
+                }
+            }
+
+            // Event listeners
+            sidebarToggle.addEventListener('click', toggleSidebar);
+            sidebarOverlay.addEventListener('click', toggleSidebar);
+
+            // Close sidebar when clicking on nav links (mobile)
+            const navLinks = document.querySelectorAll('.nav-link');
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    if (isMobile && !sidebar.classList.contains('collapsed')) {
+                        toggleSidebar();
+                    }
+                });
+            });
+        }
+
         // Clinic data
         const clinicData = {
             dental: {
@@ -397,6 +1163,8 @@
                 notes: document.getElementById('notes').value
             };
 
+            console.log('Sending appointment data:', formData);
+
             // Validate form
             if (!formData.clinic_type || !formData.service || !formData.appointment_date || !selectedTime) {
                 showError('Please fill in all required fields');
@@ -417,6 +1185,8 @@
                 });
 
                 const result = await response.json();
+                console.log('Response status:', response.status);
+                console.log('Response data:', result);
 
                 if (response.ok) {
                     // Store appointment data for confirmation page
@@ -435,7 +1205,14 @@
                     // Redirect to confirmation page
                     window.location.href = `appointment-confirmation.html?id=${result.id}`;
                 } else {
-                    showError(result.error || 'Failed to book appointment');
+                    if (response.status === 403 && result.message === 'Invalid or expired token') {
+                        // Token expired, redirect to login
+                        localStorage.removeItem('token');
+                        localStorage.removeItem('username');
+                        window.location.href = 'login.html';
+                    } else {
+                        showError(result.error || 'Failed to book appointment');
+                    }
                 }
             } catch (error) {
                 showError('Network error. Please try again.');

@@ -48,9 +48,9 @@ const authLimiter = rateLimit({
   legacyHeaders: false,
 });
 
-app.use(limiter);
-app.use('/api/login', authLimiter);
-app.use('/api/register', authLimiter);
+// app.use(limiter); // Temporarily disabled for development
+// app.use('/api/login', authLimiter);
+// app.use('/api/register', authLimiter);
 
 // Body parsing
 app.use(bodyParser.json({ limit: '10mb' }));
@@ -61,18 +61,29 @@ const authenticateToken = (req, res, next) => {
   const authHeader = req.headers['authorization'];
   const token = authHeader && authHeader.split(' ')[1];
 
+  console.log('Auth header:', authHeader);
+  console.log('Token:', token);
+
   if (!token) {
+    console.log('No token provided');
     return res.status(401).json({ message: 'Access token required' });
   }
 
   jwt.verify(token, JWT_SECRET, (err, user) => {
     if (err) {
+      console.log('Token verification failed:', err.message);
       return res.status(403).json({ message: 'Invalid or expired token' });
     }
+    console.log('User authenticated:', user);
     req.user = user;
     next();
   });
 };
+
+// Health check endpoint
+app.get("/api/health", (req, res) => {
+  res.json({ status: "OK", message: "Server is running" });
+});
 
 // מסלול לדף הראשי
 app.get("/", (req, res) => {
@@ -310,49 +321,7 @@ app.get("/api/available-slots", (req, res) => {
   });
 });
 
-// API לזימון תור
-app.post("/api/appointments", (req, res) => {
-  const { user_id, clinic_id, service_id, appointment_date, appointment_time, notes } = req.body;
-  
-  // בדוק שהתור עדיין זמין
-  db.get(
-    "SELECT * FROM available_slots WHERE clinic_id = ? AND service_id = ? AND date = ? AND time = ? AND is_available = 1",
-    [clinic_id, service_id, appointment_date, appointment_time],
-    (err, slot) => {
-      if (err) {
-        console.error("DB error checking slot:", err);
-        return res.status(500).json({ message: "Internal server error" });
-      }
-      
-      if (!slot) {
-        return res.status(400).json({ message: "Slot is not available" });
-      }
-      
-      // צור את התור
-      db.run(
-        "INSERT INTO appointments (user_id, clinic_id, service_id, appointment_date, appointment_time, notes) VALUES (?, ?, ?, ?, ?, ?)",
-        [user_id, clinic_id, service_id, appointment_date, appointment_time, notes],
-        function(err) {
-          if (err) {
-            console.error("DB error creating appointment:", err);
-            return res.status(500).json({ message: "Internal server error" });
-          }
-          
-          // סמן את התור כלא זמין
-          db.run(
-            "UPDATE available_slots SET is_available = 0 WHERE clinic_id = ? AND service_id = ? AND date = ? AND time = ?",
-            [clinic_id, service_id, appointment_date, appointment_time]
-          );
-          
-          res.status(201).json({ 
-            message: "Appointment created successfully", 
-            appointment_id: this.lastID 
-          });
-        }
-      );
-    }
-  );
-});
+// Old appointment endpoint removed - using new authenticated endpoint below
 
 // API לקבלת תורים של משתמש
 app.get("/api/appointments/:user_id", (req, res) => {
@@ -703,16 +672,22 @@ app.post("/api/refresh-token", authenticateToken, (req, res) => {
 app.get('/api/appointments', authenticateToken, (req, res) => {
   const userId = req.user.id;
   
-  db.all(
-    'SELECT * FROM appointments WHERE user_id = ? ORDER BY appointment_date DESC, appointment_time DESC',
-    [userId],
-    (err, rows) => {
-      if (err) {
-        return res.status(500).json({ error: 'Database error' });
-      }
-      res.json(rows);
+  const query = `
+    SELECT a.*, c.name as clinic_name, c.address, s.name as service_name, s.price_range
+    FROM appointments a
+    LEFT JOIN clinics c ON a.clinic_id = c.id
+    LEFT JOIN services s ON a.service_id = s.id
+    WHERE a.user_id = ?
+    ORDER BY a.appointment_date DESC, a.appointment_time DESC
+  `;
+  
+  db.all(query, [userId], (err, rows) => {
+    if (err) {
+      console.error('Error fetching appointments:', err);
+      return res.status(500).json({ error: 'Database error' });
     }
-  );
+    res.json(rows);
+  });
 });
 
 // Create new appointment
@@ -720,49 +695,76 @@ app.post('/api/appointments', authenticateToken, [
   body('clinic_name').notEmpty().trim(),
   body('clinic_type').notEmpty().trim(),
   body('service').notEmpty().trim(),
-  body('appointment_date').isISO8601(),
-  body('appointment_time').matches(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/),
+  body('appointment_date').notEmpty().trim(),
+  body('appointment_time').notEmpty().trim(),
   body('notes').optional().trim()
 ], (req, res) => {
+  console.log('Received appointment request:', req.body);
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
+    console.log('Validation errors:', errors.array());
     return res.status(400).json({ errors: errors.array() });
   }
 
   const { clinic_name, clinic_type, service, appointment_date, appointment_time, notes } = req.body;
   const userId = req.user.id;
 
-  // Check if appointment time is available
-  db.get(
-    'SELECT id FROM appointments WHERE clinic_name = ? AND appointment_date = ? AND appointment_time = ? AND status != "cancelled"',
-    [clinic_name, appointment_date, appointment_time],
-    (err, row) => {
+  // First, find the clinic_id and service_id
+  db.get('SELECT id FROM clinics WHERE name = ?', [clinic_name], (err, clinic) => {
+    if (err) {
+      console.error('Error finding clinic:', err);
+      return res.status(500).json({ error: 'Database error finding clinic' });
+    }
+    
+    if (!clinic) {
+      return res.status(400).json({ error: 'Clinic not found' });
+    }
+
+    // Find service_id
+    db.get('SELECT id FROM services WHERE name = ?', [service], (err, serviceRow) => {
       if (err) {
-        return res.status(500).json({ error: 'Database error' });
+        console.error('Error finding service:', err);
+        return res.status(500).json({ error: 'Database error finding service' });
       }
       
-      if (row) {
-        return res.status(400).json({ error: 'This time slot is already booked' });
+      if (!serviceRow) {
+        return res.status(400).json({ error: 'Service not found' });
       }
 
-      // Create appointment
-      db.run(
-        'INSERT INTO appointments (user_id, clinic_name, clinic_type, service, appointment_date, appointment_time, notes) VALUES (?, ?, ?, ?, ?, ?, ?)',
-        [userId, clinic_name, clinic_type, service, appointment_date, appointment_time, notes || ''],
-        function(err) {
+      // Check if appointment time is available
+      db.get(
+        'SELECT id FROM appointments WHERE clinic_id = ? AND appointment_date = ? AND appointment_time = ? AND status != "cancelled"',
+        [clinic.id, appointment_date, appointment_time],
+        (err, row) => {
           if (err) {
-            console.error('Database error creating appointment:', err);
-            return res.status(500).json({ error: 'Failed to create appointment' });
+            console.error('Error checking availability:', err);
+            return res.status(500).json({ error: 'Database error checking availability' });
           }
           
-          res.json({
-            id: this.lastID,
-            message: 'Appointment created successfully'
-          });
+          if (row) {
+            return res.status(400).json({ error: 'This time slot is already booked' });
+          }
+
+          // Create appointment
+          db.run(
+            'INSERT INTO appointments (user_id, clinic_id, service_id, appointment_date, appointment_time, notes) VALUES (?, ?, ?, ?, ?, ?)',
+            [userId, clinic.id, serviceRow.id, appointment_date, appointment_time, notes || ''],
+            function(err) {
+              if (err) {
+                console.error('Database error creating appointment:', err);
+                return res.status(500).json({ error: 'Failed to create appointment' });
+              }
+              
+              res.json({
+                id: this.lastID,
+                message: 'Appointment created successfully'
+              });
+            }
+          );
         }
       );
-    }
-  );
+    });
+  });
 });
 
 // Update appointment status
@@ -793,6 +795,39 @@ app.put('/api/appointments/:id', authenticateToken, [
       res.json({ message: 'Appointment updated successfully' });
     }
   );
+});
+
+// Get specific appointment by ID
+app.get('/api/appointments/:id', authenticateToken, (req, res) => {
+  const { id } = req.params;
+  const userId = req.user.id;
+
+  const query = `
+    SELECT a.*, 
+           c.name as clinic_name, 
+           c.address,
+           c.phone,
+           c.email,
+           s.name as service_name,
+           s.price_range
+    FROM appointments a
+    LEFT JOIN clinics c ON a.clinic_id = c.id
+    LEFT JOIN services s ON a.service_id = s.id
+    WHERE a.id = ? AND a.user_id = ?
+  `;
+
+  db.get(query, [id, userId], (err, appointment) => {
+    if (err) {
+      console.error('Database error fetching appointment:', err);
+      return res.status(500).json({ error: 'Database error' });
+    }
+    
+    if (!appointment) {
+      return res.status(404).json({ error: 'Appointment not found' });
+    }
+    
+    res.json(appointment);
+  });
 });
 
 // Delete appointment
@@ -837,8 +872,14 @@ db.run(`
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users (id)
   )
-`);
+`, (err) => {
+  if (err) {
+    console.error('Error creating appointments table:', err);
+  } else {
+    console.log('Appointments table created/verified successfully');
+  }
+});
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
-});
+})

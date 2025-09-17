@@ -381,7 +381,7 @@
 
         .appointment-header {
             display: flex;
-            justify-content: between;
+            justify-content: space-between;
             align-items: center;
             margin-bottom: 1rem;
         }
@@ -484,6 +484,26 @@
 
         .btn-complete:hover {
             background: #218838;
+            color: white;
+        }
+
+        .btn-delete {
+            background: #dc3545;
+            color: white;
+        }
+
+        .btn-delete:hover {
+            background: #c82333;
+            color: white;
+        }
+
+        .btn-call {
+            background: #17a2b8;
+            color: white;
+        }
+
+        .btn-call:hover {
+            background: #138496;
             color: white;
         }
 
@@ -841,57 +861,80 @@
             container.innerHTML = appointments.map(appointment => `
                 <div class="appointment-card">
                     <div class="appointment-header">
-                        <h4 class="appointment-title">${appointment.service}</h4>
+                        <h4 class="appointment-title">${appointment.service_name || appointment.service}</h4>
                         <span class="appointment-status status-${appointment.status}">${appointment.status}</span>
                     </div>
                     
                     <div class="appointment-details">
                         <div class="detail-item">
                             <i class="bi bi-hospital"></i>
-                            <span>${appointment.clinic_name}</span>
+                            <span><strong>Clinic:</strong> ${appointment.clinic_name}</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="bi bi-geo-alt"></i>
+                            <span><strong>Address:</strong> ${appointment.address || 'Address not available'}</span>
                         </div>
                         <div class="detail-item">
                             <i class="bi bi-calendar-date"></i>
-                            <span>${formatDate(appointment.appointment_date)}</span>
+                            <span><strong>Date:</strong> ${formatDate(appointment.appointment_date)}</span>
                         </div>
                         <div class="detail-item">
                             <i class="bi bi-clock"></i>
-                            <span>${appointment.appointment_time}</span>
+                            <span><strong>Time:</strong> ${appointment.appointment_time}</span>
                         </div>
                         <div class="detail-item">
                             <i class="bi bi-tag"></i>
-                            <span>${appointment.clinic_type}</span>
+                            <span><strong>Type:</strong> ${appointment.clinic_type}</span>
                         </div>
                         <div class="detail-item">
                             <i class="bi bi-currency-dollar"></i>
-                            <span>$${appointment.cost || 'N/A'}</span>
+                            <span><strong>Price:</strong> ${appointment.price_range || 'Contact clinic for pricing'}</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="bi bi-telephone"></i>
+                            <span><strong>Phone:</strong> ${appointment.phone || 'Phone not available'}</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="bi bi-envelope"></i>
+                            <span><strong>Email:</strong> ${appointment.email || 'Email not available'}</span>
                         </div>
                     </div>
                     
                     ${appointment.notes ? `
-                        <div class="mb-3">
-                            <strong>Notes:</strong> ${appointment.notes}
+                        <div class="mb-3 p-3" style="background: #f8f9fa; border-radius: 0.5rem; border-left: 4px solid #3498db;">
+                            <strong><i class="bi bi-sticky me-1"></i>Notes:</strong> ${appointment.notes}
                         </div>
                     ` : ''}
                     
                     <div class="appointment-actions">
+                        <button class="btn-action btn-call" data-phone="${appointment.phone || ''}">
+                            <i class="bi bi-telephone me-1"></i>Call Clinic
+                        </button>
+                        
                         ${appointment.status === 'scheduled' ? `
-                            <button class="btn-action btn-reschedule" onclick="rescheduleAppointment(${appointment.id})">
+                            <button class="btn-action btn-reschedule" data-id="${appointment.id}">
                                 <i class="bi bi-arrow-clockwise me-1"></i>Reschedule
                             </button>
-                            <button class="btn-action btn-cancel" onclick="cancelAppointment(${appointment.id})">
+                            <button class="btn-action btn-cancel" data-id="${appointment.id}">
                                 <i class="bi bi-x-circle me-1"></i>Cancel
                             </button>
                         ` : ''}
                         
                         ${appointment.status === 'scheduled' ? `
-                            <button class="btn-action btn-complete" onclick="completeAppointment(${appointment.id})">
+                            <button class="btn-action btn-complete" data-id="${appointment.id}">
                                 <i class="bi bi-check-circle me-1"></i>Mark Complete
                             </button>
                         ` : ''}
+                        
+                        <button class="btn-action btn-delete" data-id="${appointment.id}">
+                            <i class="bi bi-trash me-1"></i>Delete
+                        </button>
                     </div>
                 </div>
             `).join('');
+            
+            // Add event listeners to all buttons
+            addEventListeners();
         }
 
         function formatDate(dateString) {
@@ -960,6 +1003,29 @@
             }
         }
 
+        async function deleteAppointment(appointmentId) {
+            if (confirm('Are you sure you want to permanently delete this appointment? This action cannot be undone.')) {
+                try {
+                    const token = localStorage.getItem('token');
+                    const response = await fetch(`/api/appointments/${appointmentId}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                        }
+                    });
+
+                    if (response.ok) {
+                        loadAppointments(); // Reload appointments
+                        showSuccess('Appointment deleted successfully');
+                    } else {
+                        showError('Failed to delete appointment');
+                    }
+                } catch (error) {
+                    showError('Failed to delete appointment');
+                }
+            }
+        }
+
         function showError(message) {
             document.getElementById('errorText').textContent = message;
             document.getElementById('errorMessage').style.display = 'block';
@@ -968,6 +1034,103 @@
                 document.getElementById('errorMessage').style.display = 'none';
             }, 5000);
         }
+
+        function showSuccess(message) {
+            // Create success message element if it doesn't exist
+            let successMessage = document.getElementById('successMessage');
+            if (!successMessage) {
+                successMessage = document.createElement('div');
+                successMessage.id = 'successMessage';
+                successMessage.className = 'alert alert-success';
+                successMessage.style.display = 'none';
+                successMessage.innerHTML = `
+                    <i class="bi bi-check-circle me-2"></i>
+                    <span id="successText"></span>
+                `;
+                document.querySelector('.appointments-content').insertBefore(successMessage, document.getElementById('appointmentsList'));
+            }
+            
+            document.getElementById('successText').textContent = message;
+            successMessage.style.display = 'block';
+            
+            setTimeout(() => {
+                successMessage.style.display = 'none';
+            }, 3000);
+        }
+
+        function callClinic(phoneNumber) {
+            // Show the phone service unavailable modal
+            const modal = new bootstrap.Modal(document.getElementById('phoneModal'));
+            modal.show();
+        }
+
+        function addEventListeners() {
+            // Call clinic buttons
+            document.querySelectorAll('.btn-call').forEach(button => {
+                button.addEventListener('click', function() {
+                    const phoneNumber = this.getAttribute('data-phone');
+                    callClinic(phoneNumber);
+                });
+            });
+
+            // Reschedule buttons
+            document.querySelectorAll('.btn-reschedule').forEach(button => {
+                button.addEventListener('click', function() {
+                    const appointmentId = this.getAttribute('data-id');
+                    rescheduleAppointment(appointmentId);
+                });
+            });
+
+            // Cancel buttons
+            document.querySelectorAll('.btn-cancel').forEach(button => {
+                button.addEventListener('click', function() {
+                    const appointmentId = this.getAttribute('data-id');
+                    cancelAppointment(appointmentId);
+                });
+            });
+
+            // Complete buttons
+            document.querySelectorAll('.btn-complete').forEach(button => {
+                button.addEventListener('click', function() {
+                    const appointmentId = this.getAttribute('data-id');
+                    completeAppointment(appointmentId);
+                });
+            });
+
+            // Delete buttons
+            document.querySelectorAll('.btn-delete').forEach(button => {
+                button.addEventListener('click', function() {
+                    const appointmentId = this.getAttribute('data-id');
+                    deleteAppointment(appointmentId);
+                });
+            });
+        }
     </script>
+
+    <!-- Phone Service Modal -->
+    <div id="phoneModal" class="modal fade" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-warning text-dark">
+                    <h5 class="modal-title">
+                        <i class="bi bi-telephone-x me-2"></i>Phone Service Unavailable
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <div class="mb-3">
+                        <i class="bi bi-exclamation-triangle text-warning" style="font-size: 3rem;"></i>
+                    </div>
+                    <p class="mb-3">We apologize, but our phone service is currently unavailable. We're working hard to bring you the best possible experience.</p>
+                </div>
+                <div class="modal-footer">
+                    <a href="support.html" class="btn btn-outline-primary">
+                        <i class="bi bi-headset me-2"></i>Get Support
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </body>
 </html>
